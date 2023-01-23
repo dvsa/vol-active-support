@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.2.xsd">
+    <suppress>
+        <notes><![CDATA[
+      file name: selenium-opera-driver-3.141.59.jar
+      ]]></notes>
+        <gav regex="true">^org\.seleniumhq\.selenium:selenium-opera-driver:.*$</gav>
+        <cpe>cpe:/a:opera:opera</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: postgresql-8.4-701.jdbc3.jar
+   ]]></notes>
+        <gav regex="true">^postgresql:postgresql:.*$</gav>
+        <cpe>cpe:/a:postgresql:postgresql</cpe>
+    </suppress>
+</suppressions>
