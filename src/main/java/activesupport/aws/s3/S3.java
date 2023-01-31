@@ -310,7 +310,6 @@ public class S3 {
         }
     }
 
-
     public static void downloadObject(String bucketName, String path, String fileName) {
         S3Object s3object = client().getObject(bucketName, path);
         S3ObjectInputStream inputStream = s3object.getObjectContent();
