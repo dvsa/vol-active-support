@@ -293,6 +293,9 @@ public class S3 {
     }
 
     public static String listObjectsByLastModified(String bucketName, String path) {
+        long kickOut = System.currentTimeMillis() + 5000;
+        while (System.currentTimeMillis() < kickOut) {
+        }
         ObjectListing objectListing = client().listObjects(bucketName, path);
         S3ObjectSummary latestObject = null;
         for (S3ObjectSummary os : objectListing.getObjectSummaries()) {
