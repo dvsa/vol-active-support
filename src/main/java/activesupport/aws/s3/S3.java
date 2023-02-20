@@ -11,32 +11,23 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.Test;
-import org.stringtemplate.v4.ST;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.TemporalUnit;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class S3 {
 
     private static AmazonS3 client = null;
     private static String s3BucketName = "devapp-olcs-pri-olcs-autotest-s3";
+
     private static String sesBucketName = "gov-uk-testing-ses-emails";
 
     private static String sesBucketPath = "gov_uk_testing_dev-dvsacloud_uk";
-
-
 
 
     public static String getLatestNIGVExportContents() throws IllegalAccessException, MissingRequiredArgument {
@@ -116,7 +107,6 @@ public class S3 {
     }
 
 
-
     /**
      * This extracts the temporary password out the emails stored in the S3 bucket.
      * The specific object that the password will be extracted out of if inferred from the emailAddress.
@@ -134,11 +124,19 @@ public class S3 {
         return S3.getS3Object(s3BucketName, S3Path);
     }
 
-    public static S3Object getPasswordResetLink() throws MissingRequiredArgument {
-        String S3ObjectName = Util.s3ResetPassword("__Reset_your_password");
-        String stringCap = S3ObjectName.substring(0, Math.min(S3ObjectName.length(), 100));
-        String S3Path = Util.s3Path(stringCap);
-        return S3.getS3Object(s3BucketName, S3Path);
+    public static String getPasswordResetLink(@NotNull String emailAddress) throws MissingRequiredArgument {
+        try {
+            TimeUnit.SECONDS.sleep(1);
+            String S3ObjectName = Util.s3RetrieveObject(emailAddress, "__Reset_your_password");
+            String stringCap = S3ObjectName.substring(0, Math.min(S3ObjectName.length(), 100));
+            String S3Path = Util.s3Path(stringCap);
+            S3Object s3Object = S3.getS3Object(s3BucketName, S3Path);
+            String s3ObjContents = (new Scanner(s3Object.getObjectContent())).useDelimiter("\\A").next();
+            return s3ObjContents;
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        return emailAddress;
     }
 
     public static String getUsernameInfoLink(@NotNull String emailAddress) throws MissingRequiredArgument {
@@ -171,8 +169,6 @@ public class S3 {
         matcher.find();
         return matcher.group();
     }
-
-
 
     private static String extractUsernameFromS3Object(S3Object s3Object) {
         String s3ObjContents = new Scanner(s3Object.getObjectContent()).useDelimiter("\\A").next();
@@ -293,6 +289,9 @@ public class S3 {
     }
 
     public static String listObjectsByLastModified(String bucketName, String path) {
+        long kickOut = System.currentTimeMillis() + 5000;
+        while (System.currentTimeMillis() < kickOut) {
+        }
         ObjectListing objectListing = client().listObjects(bucketName, path);
         S3ObjectSummary latestObject = null;
         for (S3ObjectSummary os : objectListing.getObjectSummaries()) {
@@ -306,7 +305,6 @@ public class S3 {
             return null;
         }
     }
-
 
     public static void downloadObject(String bucketName, String path, String fileName) {
         S3Object s3object = client().getObject(bucketName, path);
