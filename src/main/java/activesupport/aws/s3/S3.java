@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -124,12 +125,18 @@ public class S3 {
     }
 
     public static String getPasswordResetLink(@NotNull String emailAddress) throws MissingRequiredArgument {
-        String S3ObjectName = Util.s3RetrieveObject(emailAddress, "__Reset_your_password");
-        String stringCap = S3ObjectName.substring(0, Math.min(S3ObjectName.length(), 100));
-        String S3Path = Util.s3Path(stringCap);
-        S3Object s3Object = S3.getS3Object(s3BucketName, S3Path);
-        String s3ObjContents = (new Scanner(s3Object.getObjectContent())).useDelimiter("\\A").next();
-        return s3ObjContents;
+        try {
+            TimeUnit.SECONDS.sleep(1);
+            String S3ObjectName = Util.s3RetrieveObject(emailAddress, "__Reset_your_password");
+            String stringCap = S3ObjectName.substring(0, Math.min(S3ObjectName.length(), 100));
+            String S3Path = Util.s3Path(stringCap);
+            S3Object s3Object = S3.getS3Object(s3BucketName, S3Path);
+            String s3ObjContents = (new Scanner(s3Object.getObjectContent())).useDelimiter("\\A").next();
+            return s3ObjContents;
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        return emailAddress;
     }
 
     public static String getUsernameInfoLink(@NotNull String emailAddress) throws MissingRequiredArgument {
