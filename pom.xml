@@ -12,9 +12,9 @@
         <nexus.releases>https://nexus.olcs.dev-dvsacloud.uk/repository/maven-releases</nexus.releases>
         <annotations.version>23.0.0</annotations.version>
         <autoIt.version>0.2.44</autoIt.version>
-        <aws-java-sdk-s3.version>1.12.343</aws-java-sdk-s3.version>
-        <aws-secrets-manager>1.12.342</aws-secrets-manager>
-        <aws-sdk-version>1.12.134</aws-sdk-version>
+        <aws-java-sdk-s3.version>1.12.412</aws-java-sdk-s3.version>
+        <aws-secrets-manager>1.12.412</aws-secrets-manager>
+        <aws-sdk-version>1.12.412</aws-sdk-version>
         <dbunit.version>2.7.3</dbunit.version>
         <faker.version>1.0.2</faker.version>
         <httpclient.version>5.2.1</httpclient.version>
@@ -32,13 +32,12 @@
         <mockito.version>4.8.0</mockito.version>
         <mysql-connector-java.version>8.0.30</mysql-connector-java.version>
         <java-native-access.version>5.12.1</java-native-access.version>
-        <rest-assured.version>5.2.0</rest-assured.version>
-        <selenium.version>4.8.0</selenium.version>
+        <rest-assured.version>5.3.0</rest-assured.version>
+        <selenium.version>4.8.1</selenium.version>
         <slf4j.version>2.19.0</slf4j.version>
         <slf4j-log4j12.version>2.19.0</slf4j-log4j12.version>
         <typesafe.version>1.4.2</typesafe.version>
         <webdriver-manager.version>5.3.2</webdriver-manager.version>
-        <mailSlurp.version>15.14.0</mailSlurp.version>
     </properties>
 
     <build>
@@ -167,11 +166,6 @@
             <version>${aws-java-sdk-s3.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-sns</artifactId>
-            <version>1.12.346</version>
-        </dependency>
-        <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
             <version>${webdriver-manager.version}</version>
@@ -259,11 +253,6 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
             <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.mailslurp</groupId>
-            <artifactId>mailslurp-client-java</artifactId>
-            <version>${mailSlurp.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.zxing</groupId>
