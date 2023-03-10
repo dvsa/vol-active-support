@@ -5,8 +5,6 @@ import activesupport.config.Configuration;
 import activesupport.driver.Parallel.*;
 import activesupport.proxy.ProxyConfig;
 import com.browserstack.local.Local;
-import org.openqa.selenium.HasAuthentication;
-import org.openqa.selenium.UsernameAndPassword;
 import org.openqa.selenium.WebDriver;
 
 import java.net.MalformedURLException;
@@ -95,7 +93,7 @@ public class Browser {
     }
 
 
-    private static WebDriver whichBrowser(String browserName) throws IllegalBrowserException, MalformedURLException {
+    private static void whichBrowser(String browserName) throws IllegalBrowserException, MalformedURLException {
         browserName = browserName.toLowerCase().trim();
         ChromeSetUp chrome = new ChromeSetUp();
         FirefoxSetUp firefox = new FirefoxSetUp();
@@ -111,6 +109,7 @@ public class Browser {
                 break;
             case "firefox":
                 driver = firefox.driver();
+                break;
             case "safari":
                 driver = safari.driver();
                 break;
@@ -130,7 +129,7 @@ public class Browser {
                 throw new IllegalBrowserException();
         }
         threadLocalDriver.set(driver);
-        return getDriver();
+        getDriver();
     }
 
     public static void closeBrowser() throws Exception {

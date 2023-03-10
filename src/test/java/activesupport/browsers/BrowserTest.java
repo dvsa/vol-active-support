@@ -5,6 +5,13 @@ import activesupport.driver.Browser;
 import org.junit.jupiter.api.*;
 import org.mockserver.integration.ClientAndServer;
 import org.mockserver.model.HttpRequest;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.devtools.DevTools;
+import org.openqa.selenium.devtools.HasDevTools;
+import org.openqa.selenium.devtools.v110.network.Network;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
@@ -45,6 +52,19 @@ public class BrowserTest {
         System.setProperty("browser", "headless");
         Browser.navigate().get(baseURL.concat(resource));
         assertEquals("Browser Test", Browser.navigate().getTitle());
+    }
+
+    @Test
+    public void chromeDevToolsTest(){
+        System.setProperty("browser", "chrome");
+        DevTools devTools = ((HasDevTools) Browser.navigate()).getDevTools();
+        devTools.createSession();
+        devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
+        devTools.addListener(Network.responseReceived(), responseReceived -> {
+            System.out.println("Response URL =>" + responseReceived.getResponse().getUrl());
+            System.out.println("Response Headers => " + responseReceived.getResponse().getHeaders().toString());
+        });
+        Browser.navigate().get(baseURL.concat(resource));
     }
 
     private static void startMockSite() {
