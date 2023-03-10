@@ -14,6 +14,7 @@ import org.openqa.selenium.devtools.v110.network.Network;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 import static org.mockserver.model.HttpResponse.response;
 
@@ -61,8 +62,8 @@ public class BrowserTest {
         devTools.createSession();
         devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
         devTools.addListener(Network.responseReceived(), responseReceived -> {
-            System.out.println("Response URL =>" + responseReceived.getResponse().getUrl());
-            System.out.println("Response Headers => " + responseReceived.getResponse().getHeaders().toString());
+            assertNotNull(responseReceived.getResponse().getUrl(), "Response URL =>" + responseReceived.getResponse().getUrl());
+            assertNotNull(responseReceived.getResponse().getHeaders().toString(), "Response Headers => " + responseReceived.getResponse().getHeaders().toString());
         });
         Browser.navigate().get(baseURL.concat(resource));
     }
