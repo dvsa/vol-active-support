@@ -1,30 +1,31 @@
 package activesupport.faker;
 
-import org.junit.Assert;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.LinkedHashMap;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class FakerUtilsTest {
 
-    private FakerUtils sut = new FakerUtils();
+    private static final FakerUtils sut = new FakerUtils();
 
-    private String[] addressKeys = new String[] {"addressLine1", "addressLine2", "addressLine3", "addressLine4", "town"};
+    private final String[] addressKeys = new String[] {"addressLine1", "addressLine2", "addressLine3", "addressLine4", "town"};
 
     private LinkedHashMap<String, String> address;
     private String firstName;
     private String lastName;
     private String companyName;
-    private int idSize = 24;
-    private int underMinimumIdSize = 12;
-    private int mininumIdSize = 16;
+    private static final int idSize = 24;
+    private static final int underMinimumIdSize = 12;
+    private final int mininumIdSize = 16;
     private String uniqueId;
     private String uniqueIdMinimum;
     private String natureOfBusiness;
     private String realPostcode;
 
-    @Before
+    @BeforeAll
     public void generateFaker() {
         this.firstName = sut.generateFirstName();
         this.lastName = sut.generateLastName();
@@ -38,106 +39,106 @@ public class FakerUtilsTest {
 
     @Test
     public void firstNameIsTypeString() {
-        Assert.assertEquals(firstName.getClass(), String.class);
+        assertEquals(firstName.getClass(), String.class);
     }
 
     @Test
     public void firstNameIsNotEmptyString() {
-        Assert.assertTrue(firstName.length() > 0);
+        assertTrue(firstName.length() > 0);
     }
 
     @Test
     public void firstNameHasNoInvalidCharacters() {
-        String invalidCharacters = ".\'ìí-";
+        String invalidCharacters = ".'ìí-";
         for (int i = 0; i < invalidCharacters.length(); i++) {
-            Assert.assertFalse(firstName.contains(String.valueOf(invalidCharacters.charAt(i))));
+            assertFalse(firstName.contains(String.valueOf(invalidCharacters.charAt(i))));
         }
     }
 
     @Test
     public void lastNameIsTypeString() {
-        Assert.assertEquals(lastName.getClass(), String.class);
+        assertEquals(lastName.getClass(), String.class);
     }
 
     @Test
     public void lastNameIsNotEmptyString() {
-            Assert.assertTrue(lastName.length() > 0);
+            assertTrue(lastName.length() > 0);
     }
 
     @Test
     public void lastNameHasNoInvalidCharacters() {
-        String invalidCharacters = ".\'ìí-";
+        String invalidCharacters = ".'ìí-";
         for (int i = 0; i < invalidCharacters.length(); i++) {
-            Assert.assertFalse(lastName.contains(String.valueOf(invalidCharacters.charAt(i))));
+            assertFalse(lastName.contains(String.valueOf(invalidCharacters.charAt(i))));
         }
     }
 
     @Test
     public void addressIsTypeString() {
         for (int i = 0; i < addressKeys.length; i++) {
-            Assert.assertEquals(address.get(addressKeys[i]).getClass(), String.class);
+            assertEquals(address.get(addressKeys[i]).getClass(), String.class);
         }
     }
 
     @Test
     public void AddressIsNotEmptyString() {
         for (int i = 0; i < addressKeys.length; i++) {
-            Assert.assertTrue(address.get(addressKeys[i]).length() > 0);
+            assertTrue(address.get(addressKeys[i]).length() > 0);
         }
     }
 
     @Test
     public void AddressTownIsMaximum30InLength() {
-        Assert.assertTrue(address.get("town").length() < 30);
+        assertTrue(address.get("town").length() < 30);
     }
 
     @Test
     public void CompanyNameIsTypeString() {
-        Assert.assertEquals(companyName.getClass(), String.class);
+        assertEquals(companyName.getClass(), String.class);
     }
 
     @Test
     public void CompanyNameIsNotEmptyString() {
-        Assert.assertTrue(companyName.length() > 0);
+        assertTrue(companyName.length() > 0);
     }
 
     @Test
     public void UniqueIdIsTypeString() {
-        Assert.assertEquals(uniqueId.getClass(), String.class);
+        assertEquals(uniqueId.getClass(), String.class);
     }
 
     @Test
     public void UniqueIdIsNotEmptyString() {
-        Assert.assertTrue(uniqueId.length() > 0);
+        assertTrue(uniqueId.length() > 0);
     }
 
     @Test
     public void UniqueIdIsCorrectSize() {
-        Assert.assertEquals(idSize, uniqueId.length());
+        assertEquals(idSize, uniqueId.length());
     }
 
     @Test
     public void UniqueIdIsMinimum16Size() {
-        Assert.assertEquals(mininumIdSize, uniqueIdMinimum.length());
+        assertEquals(mininumIdSize, uniqueIdMinimum.length());
     }
 
     @Test
     public void NatureOfBusinessIsTypeString() {
-        Assert.assertEquals(natureOfBusiness.getClass(), String.class);
+        assertEquals(natureOfBusiness.getClass(), String.class);
     }
 
     @Test
     public void NatureOfBusinessIsNotEmptyString() {
-        Assert.assertTrue(natureOfBusiness.length() > 0);
+        assertTrue(natureOfBusiness.length() > 0);
     }
 
     @Test
     public void RealPostcodeIsTypeString() {
-        Assert.assertEquals(realPostcode.getClass(), String.class);
+        assertEquals(realPostcode.getClass(), String.class);
     }
 
     @Test
     public  void RealPostcodeIsNotEmptyString() {
-        Assert.assertTrue(realPostcode.length() > 0);
+        assertTrue(realPostcode.length() > 0);
     }
 }

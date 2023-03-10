@@ -126,13 +126,12 @@ public class S3 {
 
     public static String getPasswordResetLink(@NotNull String emailAddress) throws MissingRequiredArgument {
         try {
-            TimeUnit.SECONDS.sleep(1);
+            TimeUnit.SECONDS.sleep(10);
             String S3ObjectName = Util.s3RetrieveObject(emailAddress, "__Reset_your_password");
             String stringCap = S3ObjectName.substring(0, Math.min(S3ObjectName.length(), 100));
             String S3Path = Util.s3Path(stringCap);
             S3Object s3Object = S3.getS3Object(s3BucketName, S3Path);
-            String s3ObjContents = (new Scanner(s3Object.getObjectContent())).useDelimiter("\\A").next();
-            return s3ObjContents;
+            return (new Scanner(s3Object.getObjectContent())).useDelimiter("\\A").next();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }

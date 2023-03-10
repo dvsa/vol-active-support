@@ -31,6 +31,7 @@ public class ChromeSetUp {
         WebDriverManager.chromedriver().setup();
         chromeOptions.addArguments(ProxyConfig.ignoreCertErrors());
         chromeOptions.addArguments("--disable-dev-shm-usage");
+        chromeOptions.addArguments("--remote-allow-origins=*");
         if (getBrowserVersion() == null) {
             driver = new ChromeDriver(getChromeOptions());
         } else {

@@ -1,8 +1,6 @@
 package activesupport.dates;
 
 import org.joda.time.LocalDate;
-import org.junit.Before;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -16,11 +14,11 @@ import static org.mockito.Mockito.when;
 
 public class DatesTest {
 
-    private Dates sut;
-    private CalendarInterface calendar;
+    private static Dates sut;
+    private static CalendarInterface calendar;
 
-    @Before
-    public void setup() {
+    @BeforeAll
+    public static void setup() {
         calendar = mock(CalendarInterface.class);
         sut = new Dates(calendar);
     }

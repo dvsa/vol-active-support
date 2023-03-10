@@ -5,8 +5,6 @@ import activesupport.config.Configuration;
 import activesupport.driver.Parallel.*;
 import activesupport.proxy.ProxyConfig;
 import com.browserstack.local.Local;
-import org.openqa.selenium.HasAuthentication;
-import org.openqa.selenium.UsernameAndPassword;
 import org.openqa.selenium.WebDriver;
 
 import java.net.MalformedURLException;
@@ -22,7 +20,8 @@ public class Browser {
     private static String portNumber;
     private static String platform;
     private static String browserVersion;
-
+    protected static
+    ThreadLocal<WebDriver> threadLocalDriver = new ThreadLocal<>();
     private static final Logger LOGGER = LogManager.getLogger(Browser.class);
 
     static Local bsLocal = new Local();
@@ -70,7 +69,8 @@ public class Browser {
     }
 
     public static WebDriver navigate() {
-        if (driver == null) {
+        //set driver
+        if (getDriver() == null) {
             setGridURL(System.getProperty("gridURL"));
             setPlatform(System.getProperty("platform"));
             setBrowserVersion(System.getProperty("browserVersion"));
@@ -80,7 +80,11 @@ public class Browser {
                 LOGGER.info("STACK TRACE: ".concat(e.toString()));
             }
         }
-        return driver;
+        return getDriver();
+    }
+
+    public static WebDriver getDriver(){
+        return threadLocalDriver.get();
     }
 
     public static String hubURL(){
@@ -89,7 +93,7 @@ public class Browser {
     }
 
 
-    private static WebDriver whichBrowser(String browserName) throws IllegalBrowserException, MalformedURLException {
+    private static void whichBrowser(String browserName) throws IllegalBrowserException, MalformedURLException {
         browserName = browserName.toLowerCase().trim();
         ChromeSetUp chrome = new ChromeSetUp();
         FirefoxSetUp firefox = new FirefoxSetUp();
@@ -105,6 +109,7 @@ public class Browser {
                 break;
             case "firefox":
                 driver = firefox.driver();
+                break;
             case "safari":
                 driver = safari.driver();
                 break;
@@ -123,18 +128,20 @@ public class Browser {
             default:
                 throw new IllegalBrowserException();
         }
-        return driver;
+        threadLocalDriver.set(driver);
+        getDriver();
     }
 
     public static void closeBrowser() throws Exception {
-        if (driver != null)
-            driver.quit();
+        if (getDriver() != null)
+            getDriver().quit();
         bsLocal.stop();
+        threadLocalDriver.remove();
     }
 
     public static boolean isBrowserOpen() {
         boolean isOpen;
-        isOpen = driver != null;
+        isOpen = getDriver() != null;
         return isOpen;
     }
 }
