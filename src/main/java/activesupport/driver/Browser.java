@@ -13,8 +13,6 @@ import org.apache.logging.log4j.Logger;
 
 public class Browser {
 
-    private static WebDriver driver;
-
     private static String gridURL;
     private static String ipAddress;
     private static String portNumber;
@@ -100,6 +98,7 @@ public class Browser {
         EdgeSetUp edge = new EdgeSetUp();
         SafariSetUp safari = new SafariSetUp();
 
+        WebDriver driver;
         switch (browserName) {
             case "chrome":
                 driver = chrome.driver();
