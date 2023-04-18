@@ -27,7 +27,7 @@ public class Mailhog {
     }
 
     private static String extractTempPassword(String apiResponseBody) {
-        String mailServerContents = new Scanner("s3Object.getObjectContent()").useDelimiter("\\A").next();
+        String mailServerContents = new Scanner(apiResponseBody).useDelimiter("\\A").next();
         Pattern pattern = Pattern.compile("[.\\w\\S]{0,30}(?==0ASign)");
         Matcher matcher = pattern.matcher(mailServerContents);
         matcher.find();
