@@ -24,8 +24,8 @@ public class BrowserTest {
     private final String baseURL = "http://localhost:8080";
     private final String resource = "/vol/dummy";
 
-    @BeforeAll
-    public static void setMockServer() {
+    @BeforeEach
+    public void setMockServer() {
         mockServer = startClientAndServer(8080);
         startMockSite();
     }
@@ -82,8 +82,8 @@ public class BrowserTest {
         return "<html><head><title>Browser Test</title></head><body><h1>Hello from VOL</h1></body></html>";
     }
 
-    @AfterAll
-    public static void tearDown() throws Exception {
+    @AfterEach
+    public void tearDown() throws Exception {
         if (Browser.isBrowserOpen()) {
             Browser.closeBrowser();
         }
