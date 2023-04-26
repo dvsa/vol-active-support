@@ -35,8 +35,6 @@ public class SafariSetUp {
         } else {
             safari.setCapability("platform", getPlatform());
             safari.setCapability("browser_version", getBrowserVersion());
-            safari.setCapability("browserstack.localIdentifier", "vol");
-            safari.setCapability("browserstack.local", "true");
             driver = new RemoteWebDriver(new URL(hubURL()), getSafari()
             );
         }

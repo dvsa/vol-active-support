@@ -14,16 +14,20 @@ public class Mailhog {
     private String ip;
     private String port;
 
-    public String retrievePassword(String emailSubject) {
-        if (getIp().equals("")) {
+    public String retrievePassword(String emailAddress) {
+        if (getIp() == null) {
             setIp("http://localhost");
             setPort("8025");
         }
         Map<String, String> headers = new HashMap<>();
-        headers.put("Accept", "*/*");
+        headers.put("test", "dvsa");
 
-        RestUtils.get(String.format("%s:%s", getIp(), getPort()), headers);
-        return extractTempPassword(response.extract().jsonPath().getString("items.Content.Headers.Body"));
+        Map<String, String> queryParams = new HashMap<>();
+        queryParams.put("kind", "containing");
+        queryParams.put("query", emailAddress.concat(" : Your temporary password"));
+
+        response = RestUtils.getWithQueryParams(String.format("%s:%s/api/v2/search/", getIp(), getPort()), queryParams, headers);
+        return extractTempPassword(response.extract().jsonPath().prettyPeek().getString("items.Content.Body"));
     }
 
     private static String extractTempPassword(String apiResponseBody) {

@@ -9,8 +9,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 import static activesupport.driver.Browser.*;
 
@@ -36,8 +34,8 @@ public class FirefoxSetUp {
             driver = new FirefoxDriver(getOptions());
         } else {
             options.setCapability("proxy",ProxyConfig.dvsaProxy());
+            options.setPlatformName(getPlatform());
             options.setCapability("browser_version", getBrowserVersion());
-            options.setCapability("platform", getPlatform());
             driver = new RemoteWebDriver(new URL(hubURL()), getOptions());
         }
         return driver;

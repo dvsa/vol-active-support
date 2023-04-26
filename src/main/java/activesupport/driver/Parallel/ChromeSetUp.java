@@ -9,8 +9,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 import static activesupport.driver.Browser.*;
 
@@ -31,15 +29,12 @@ public class ChromeSetUp {
         WebDriverManager.chromedriver().setup();
         chromeOptions.addArguments(ProxyConfig.ignoreCertErrors());
         chromeOptions.addArguments("--disable-dev-shm-usage");
-        chromeOptions.addArguments("--remote-allow-origins=*");
         if (getBrowserVersion() == null) {
             driver = new ChromeDriver(getChromeOptions());
         } else {
             chromeOptions.setCapability("proxy",ProxyConfig.dvsaProxy());
-            chromeOptions.setCapability("browserstack.local", "true");
-            chromeOptions.setCapability("browserstack.localIdentifier", "vol");
+            chromeOptions.setPlatformName(getPlatform());
             chromeOptions.setCapability("browser_version", getBrowserVersion());
-            chromeOptions.setCapability("platform", getPlatform());
             driver = new RemoteWebDriver(new URL(hubURL()), getChromeOptions());
         }
         return driver;
