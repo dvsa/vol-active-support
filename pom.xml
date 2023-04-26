@@ -6,36 +6,36 @@
 
     <groupId>org.dvsa.testing.lib</groupId>
     <artifactId>active-support</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
 
     <properties>
         <nexus.releases>https://nexus.olcs.dev-dvsacloud.uk/repository/maven-releases</nexus.releases>
-        <annotations.version>23.0.0</annotations.version>
+        <annotations.version>24.0.1</annotations.version>
         <autoIt.version>0.2.44</autoIt.version>
-        <aws-java-sdk-s3.version>1.12.412</aws-java-sdk-s3.version>
-        <aws-secrets-manager>1.12.412</aws-secrets-manager>
+        <aws-java-sdk-s3.version>1.12.429</aws-java-sdk-s3.version>
+        <aws-secrets-manager>1.12.429</aws-secrets-manager>
         <aws-sdk-version>1.12.412</aws-sdk-version>
         <dbunit.version>2.7.3</dbunit.version>
         <faker.version>1.0.2</faker.version>
         <httpclient.version>5.2.1</httpclient.version>
-        <jackson-annotations.version>2.14.0</jackson-annotations.version>
-        <jackson-core.version>2.14.0</jackson-core.version>
-        <jackson-databind>2.14.0</jackson-databind>
+        <jackson-annotations.version>2.14.2</jackson-annotations.version>
+        <jackson-core.version>2.14.2</jackson-core.version>
+        <jackson-databind>2.14.2</jackson-databind>
         <jacob.version>1.14.3</jacob.version>
         <jansi.version>2.4.0</jansi.version>
         <javax.mail.version>1.4.7</javax.mail.version>
         <jenkins-client.version>0.3.8</jenkins-client.version>
         <jsch.version>0.1.55</jsch.version>
-        <junit.version>5.9.0</junit.version>
+        <junit.version>5.9.2</junit.version>
         <maven.compiler.version>3.8.0</maven.compiler.version>
         <mock-server.version>5.14.0</mock-server.version>
-        <mockito.version>4.8.0</mockito.version>
-        <mysql-connector-java.version>8.0.30</mysql-connector-java.version>
+        <mockito.version>5.3.1</mockito.version>
+        <mysql-connector-java.version>8.0.32</mysql-connector-java.version>
         <java-native-access.version>5.12.1</java-native-access.version>
         <rest-assured.version>5.3.0</rest-assured.version>
-        <selenium.version>4.8.1</selenium.version>
-        <slf4j.version>2.19.0</slf4j.version>
-        <slf4j-log4j12.version>2.19.0</slf4j-log4j12.version>
+        <selenium.version>4.8.3</selenium.version>
+        <slf4j.version>2.20.0</slf4j.version>
+        <slf4j-log4j12.version>2.20.0</slf4j-log4j12.version>
         <typesafe.version>1.4.2</typesafe.version>
         <webdriver-manager.version>5.3.2</webdriver-manager.version>
     </properties>
@@ -165,7 +165,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>31.0.1-jre</version>
+            <version>31.1-jre</version>
         </dependency>
         <dependency>
             <groupId>net.java.dev.jna</groupId>

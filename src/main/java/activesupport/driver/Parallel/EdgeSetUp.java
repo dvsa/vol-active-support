@@ -36,10 +36,8 @@ public class EdgeSetUp {
             driver = new EdgeDriver(edgeOptions);
         } else {
             edgeOptions.setCapability("proxy",ProxyConfig.dvsaProxy());
-            edgeOptions.setCapability("browserstack.local", "true");
-            edgeOptions.setCapability("browserstack.localIdentifier", "vol");
+            edgeOptions.setPlatformName(getPlatform());
             edgeOptions.setCapability("browser_version", getBrowserVersion());
-            edgeOptions.setCapability("platform", getPlatform());
             driver = new RemoteWebDriver(new URL(hubURL()), edgeOptions);
         }
         return driver;

@@ -13,20 +13,20 @@ public class FakerUtilsTest {
 
     private final String[] addressKeys = new String[] {"addressLine1", "addressLine2", "addressLine3", "addressLine4", "town"};
 
-    private LinkedHashMap<String, String> address;
-    private String firstName;
-    private String lastName;
-    private String companyName;
+    private final LinkedHashMap<String, String> address;
+    private final String firstName;
+    private final String lastName;
+    private final String companyName;
     private static final int idSize = 24;
     private static final int underMinimumIdSize = 12;
     private final int mininumIdSize = 16;
-    private String uniqueId;
-    private String uniqueIdMinimum;
-    private String natureOfBusiness;
-    private String realPostcode;
+    private final String uniqueId;
+    private final String uniqueIdMinimum;
+    private final String natureOfBusiness;
+    private final String realPostcode;
 
-    @BeforeAll
-    public void generateFaker() {
+
+    public FakerUtilsTest() {
         this.firstName = sut.generateFirstName();
         this.lastName = sut.generateLastName();
         this.address = sut.generateAddress();

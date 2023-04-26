@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import io.restassured.response.ValidatableResponse;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockserver.integration.ClientAndServer;
 import org.mockserver.model.HttpRequest;
@@ -20,10 +19,9 @@ import static org.mockserver.model.HttpResponse.response;
 public class RestUtilsTest {
 
 
-    private static ClientAndServer mockServer;
+    private ClientAndServer mockServer;
 
-    @BeforeAll
-    public static void setUp() {
+    public RestUtilsTest() {
         try {
             mockServer = startClientAndServer(8080);
             mockGETcall();
@@ -106,7 +104,7 @@ public class RestUtilsTest {
         return queryParam;
     }
 
-    public static void mockGETcall() {
+    public void mockGETcall() {
         mockServer
                 .when(
                         HttpRequest.request()
@@ -121,7 +119,7 @@ public class RestUtilsTest {
                 );
     }
 
-    private static void mockPOSTcall() {
+    private void mockPOSTcall() {
         mockServer
                 .when(
                         HttpRequest.request()
@@ -136,7 +134,7 @@ public class RestUtilsTest {
                 );
     }
 
-    private static void mockPUTcall() {
+    private void mockPUTcall() {
         mockServer
                 .when(
                         HttpRequest.request()
@@ -151,7 +149,7 @@ public class RestUtilsTest {
                 );
     }
 
-    private static void mockGETwithQueryParam() {
+    private void mockGETwithQueryParam() {
         mockServer
                 .when(
                         HttpRequest.request()
