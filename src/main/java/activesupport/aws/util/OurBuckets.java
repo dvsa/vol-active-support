@@ -1,4 +1,4 @@
-package activesupport.aws.s3.util;
+package activesupport.aws.util;
 
 public interface OurBuckets {
     String QA = "devappci-shd-pri-qarepo";

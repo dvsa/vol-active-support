@@ -64,7 +64,7 @@ public class Properties {
      * */
     public static void loadProperties(@NotNull String path) throws FileNotFoundException{
         if(!Files.exists(Paths.get(path))){
-            throw new FileNotFoundException(Output.printColoredLog(String.format("[ERROR] %s does not exist", path.toString())));
+            throw new FileNotFoundException(Output.printColoredLog(String.format("[ERROR] %s does not exist", path)));
         }
 
         java.util.Properties properties = new java.util.Properties();

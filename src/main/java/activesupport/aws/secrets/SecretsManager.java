@@ -1,4 +1,4 @@
-package activesupport.aws.s3;
+package activesupport.aws.secrets;
 
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.services.secretsmanager.AWSSecretsManager;
