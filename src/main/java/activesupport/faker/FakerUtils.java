@@ -9,17 +9,16 @@ import com.github.javafaker.service.RandomService;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Objects;
 
 public class FakerUtils {
 
-    private Faker faker = new Faker();
-    private FakeValuesService fakeValuesService = new FakeValuesService(
+    private final Faker faker = new Faker();
+    private final FakeValuesService fakeValuesService = new FakeValuesService(
             new Locale("en-GB"), new RandomService());
 
-
     private LinkedHashMap<String, String> generateFullName() {
-
-        int fakerLibraries = (int)(Math.floor(Math.random() * 7) + 1);
+        var fakerLibraries = (int)(Math.floor(Math.random() * 7) + 1);
         String fullName = null;
 
         do {
@@ -49,9 +48,9 @@ public class FakerUtils {
                     fullName = faker.witcher().character().toLowerCase();
                     break;
             }
-        } while ( !fullName.contains(" ") || fullName.split(" ").length > 2 || fullName.replaceAll("[.\'ìí-]", ".").contains("."));
+        } while ( !Objects.requireNonNull(fullName).contains(" ") || fullName.split(" ").length > 2 || fullName.replaceAll("[.\'ìí-]", ".").contains("."));
 
-        String[] splitName = fullName.split(" ");
+        var splitName = fullName.split(" ");
 
         LinkedHashMap<String, String> hashName = new LinkedHashMap<>();
         hashName.put("firstName", splitName[0]);
@@ -61,15 +60,11 @@ public class FakerUtils {
     }
 
     public String generateFirstName() {
-
         return generateFullName().get("firstName");
-
     }
 
     public String generateLastName() {
-
         return generateFullName().get("lastName");
-
     }
 
     /**
@@ -79,7 +74,6 @@ public class FakerUtils {
      */
 
     public LinkedHashMap<String, String> generateAddress() {
-
         LinkedHashMap<String, String> address = new LinkedHashMap<>();
 
         address.put("addressLine1", faker.address().streetAddressNumber());
@@ -93,9 +87,7 @@ public class FakerUtils {
     }
 
     public String generateCompanyName() {
-
         return String.format("%s, %s %s", faker.funnyName().name(), faker.company().name(), faker.company().suffix());
-
     }
 
     /**
@@ -106,20 +98,17 @@ public class FakerUtils {
      */
 
     public String generateUniqueId(int sizeMin16) {
-
-        String lowercaseLetters = "abcdefghijklmnopqrstuvwxyz";
-        String uppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        String numbers = "0123456789";
-        String specials = "!@£#$%^&*";
-        String id = "";
+        var lowercaseLetters = "abcdefghijklmnopqrstuvwxyz";
+        var uppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var numbers = "0123456789";
+        var specials = "!@£#$%^&*";
+        var id = "";
 
         for (int i = 0; i < (i < 16 ? 16 : sizeMin16); i++) {
             int choice = Int.random(1, 62);
             id = id.concat(String.valueOf((lowercaseLetters + uppercaseLetters + numbers + specials).charAt(choice)));
         }
-
         return id;
-
     }
 
     public String generateNatureOfBusiness() {
