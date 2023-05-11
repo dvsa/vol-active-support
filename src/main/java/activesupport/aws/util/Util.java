@@ -1,7 +1,7 @@
-package activesupport.aws.s3.util;
+package activesupport.aws.util;
 
 import activesupport.MissingRequiredArgument;
-import activesupport.aws.s3.FolderType;
+import activesupport.aws.FolderType;
 import activesupport.system.Properties;
 import activesupport.system.out.Output;
 import org.jetbrains.annotations.NotNull;

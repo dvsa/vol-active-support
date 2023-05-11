@@ -1,4 +1,4 @@
-package activesupport.aws.s3.util;
+package activesupport.aws.util;
 
 import activesupport.system.out.Output;
 import org.fusesource.jansi.Ansi;

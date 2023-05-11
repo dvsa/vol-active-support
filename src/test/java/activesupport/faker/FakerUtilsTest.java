@@ -13,28 +13,29 @@ public class FakerUtilsTest {
 
     private final String[] addressKeys = new String[] {"addressLine1", "addressLine2", "addressLine3", "addressLine4", "town"};
 
-    private final LinkedHashMap<String, String> address;
-    private final String firstName;
-    private final String lastName;
-    private final String companyName;
+    private static LinkedHashMap<String, String> address;
+    private static String firstName;
+    private static String lastName;
+    private static String companyName;
     private static final int idSize = 24;
     private static final int underMinimumIdSize = 12;
-    private final int mininumIdSize = 16;
-    private final String uniqueId;
-    private final String uniqueIdMinimum;
-    private final String natureOfBusiness;
-    private final String realPostcode;
+    private static int minimumIdSize = 16;
+    private static String uniqueId;
+    private static String uniqueIdMinimum;
+    private static String natureOfBusiness;
+    private static String realPostcode;
 
 
-    public FakerUtilsTest() {
-        this.firstName = sut.generateFirstName();
-        this.lastName = sut.generateLastName();
-        this.address = sut.generateAddress();
-        this.companyName = sut.generateCompanyName();
-        this.uniqueId = sut.generateUniqueId(idSize);
-        this.uniqueIdMinimum = sut.generateUniqueId(underMinimumIdSize);
-        this.natureOfBusiness = sut.generateNatureOfBusiness();
-        this.realPostcode = sut.getRandomRealUKPostcode();
+    @BeforeAll
+    public static void setUp() {
+        firstName = sut.generateFirstName();
+        lastName = sut.generateLastName();
+        address = sut.generateAddress();
+        companyName = sut.generateCompanyName();
+        uniqueId = sut.generateUniqueId(idSize);
+        uniqueIdMinimum = sut.generateUniqueId(underMinimumIdSize);
+        natureOfBusiness = sut.generateNatureOfBusiness();
+        realPostcode = sut.getRandomRealUKPostcode();
     }
 
     @Test
@@ -119,7 +120,7 @@ public class FakerUtilsTest {
 
     @Test
     public void UniqueIdIsMinimum16Size() {
-        assertEquals(mininumIdSize, uniqueIdMinimum.length());
+        assertEquals(minimumIdSize, uniqueIdMinimum.length());
     }
 
     @Test

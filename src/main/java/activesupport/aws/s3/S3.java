@@ -1,8 +1,9 @@
 package activesupport.aws.s3;
 
 import activesupport.MissingRequiredArgument;
-import activesupport.aws.s3.util.OurBuckets;
-import activesupport.aws.s3.util.Util;
+import activesupport.aws.FolderType;
+import activesupport.aws.util.OurBuckets;
+import activesupport.aws.util.Util;
 import activesupport.string.Str;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.regions.Regions;
@@ -23,12 +24,28 @@ import java.util.regex.Pattern;
 public class S3 {
 
     private static AmazonS3 client = null;
-    private static String s3BucketName = "devapp-olcs-pri-olcs-autotest-s3";
+    private static Regions region = Regions.EU_WEST_1;
+    private static final String s3BucketName = "devapp-olcs-pri-olcs-autotest-s3";
+    private static final String sesBucketName = "gov-uk-testing-ses-emails";
+    private static final String sesBucketPath = "gov_uk_testing_dev-dvsacloud_uk";
 
-    private static String sesBucketName = "gov-uk-testing-ses-emails";
+    public static AmazonS3 client() {
+        return createS3Client();
+    }
 
-    private static String sesBucketPath = "gov_uk_testing_dev-dvsacloud_uk";
+    public static AmazonS3 createS3Client() {
+        return createS3Client(getRegion());
+    }
 
+    public static AmazonS3 createS3Client(Regions region) {
+        if (client == null) {
+            client = AmazonS3ClientBuilder.standard()
+                    .withCredentials(new DefaultAWSCredentialsProviderChain())
+                    .withRegion(region)
+                    .build();
+        }
+        return client;
+    }
 
     public static String getLatestNIGVExportContents() throws IllegalAccessException, MissingRequiredArgument {
         String latestObjectName = getLatestNIExportName();
@@ -50,8 +67,7 @@ public class S3 {
     }
 
     private static List<S3ObjectSummary> getS3ObjectSummaries(ObjectListing objectListing) {
-        ObjectListing objectList = objectListing;
-        return objectList.getObjectSummaries();
+        return objectListing.getObjectSummaries();
     }
 
     private static ObjectListing getObjectListing(@NotNull String prefix) {
@@ -63,13 +79,13 @@ public class S3 {
     }
 
     public static String getNIGVExport(@NotNull String S3ObjectName) throws MissingRequiredArgument {
-        String S3Path = Util.s3Path(S3ObjectName, FolderType.NI_EXPORT);
-        S3Object s3Object = S3.getS3Object(s3BucketName, S3Path);
+        var S3Path = Util.s3Path(S3ObjectName, FolderType.NI_EXPORT);
+        var s3Object = S3.getS3Object(s3BucketName, S3Path);
         return objectContents(s3Object);
     }
 
     public static String getSecrets() {
-        S3Object s3Object = S3.getS3Object("devappci-shd-pri-qarepo", "secrets.json");
+        var s3Object = S3.getS3Object("devappci-shd-pri-qarepo", "secrets.json");
         return objectContents(s3Object);
     }
 
@@ -85,18 +101,40 @@ public class S3 {
      * @param S3BucketName This is the name of the S3 bucket.
      */
     public static String getTempPassword(@NotNull String emailAddress, @NotNull String S3BucketName) throws MissingRequiredArgument {
-        String S3ObjectName = Util.s3RetrieveObject(emailAddress, "__Your_temporary_password");
-        String S3Path = Util.s3Path(S3ObjectName);
-        S3Object s3Object = S3.getS3Object(S3BucketName, S3Path);
-        return extractTempPasswordFromS3Object(s3Object);
+        var S3ObjectName = Util.s3RetrieveObject(emailAddress, "__Your_temporary_password");
+        var s3Object = getObject(S3BucketName, S3ObjectName);
+        return extractS3Object(s3Object, "getTemPassword");
     }
 
+    private static S3Object getObject(@NotNull String S3BucketName, String S3ObjectName) {
+        var S3Path = Util.s3Path(S3ObjectName);
+        return S3.getS3Object(S3BucketName, S3Path);
+    }
 
+    public static String getPasswordResetLink(@NotNull String emailAddress, @NotNull String S3BucketName) throws MissingRequiredArgument {
+        try {
+            TimeUnit.SECONDS.sleep(10);
+            var S3ObjectName = Util.s3RetrieveObject(emailAddress, "__Reset_your_password");
+            var stringCap = S3ObjectName.substring(0, Math.min(S3ObjectName.length(), 100));
+            var s3Object = getObject(S3BucketName, stringCap);
+            return (new Scanner(s3Object.getObjectContent())).useDelimiter("\\A").next();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        return emailAddress;
+    }
+
+    public static String getUsernameInfoLink(@NotNull String emailAddress) throws MissingRequiredArgument {
+        var S3ObjectName = Util.s3RetrieveObject(emailAddress, "__Your_account_information");
+        var stringCap = S3ObjectName.substring(0, Math.min(S3ObjectName.length(), 100));
+        var s3Object = getObject(s3BucketName, stringCap);
+        return extractS3Object(s3Object, "getUsernameInfoLink");
+    }
     public static String getGovSignInCode(String sesBucketName, String sesBucketPath) throws MissingRequiredArgument {
-        String lastModified = listObjectsByLastModified(sesBucketName, sesBucketPath);
+        var lastModified = listObjectsByLastModified(sesBucketName, sesBucketPath);
         if (client().doesObjectExist(sesBucketName, lastModified)) {
             S3Object s3Object = client().getObject(sesBucketName, lastModified);
-            return extractEmailCodeFromS3Object(s3Object);
+            return extractS3Object(s3Object, "getGovSignInCode");
         } else {
             return null;
         }
@@ -105,7 +143,6 @@ public class S3 {
     public static String getSignInCode() {
         return getGovSignInCode(sesBucketName, sesBucketPath);
     }
-
 
     /**
      * This extracts the temporary password out the emails stored in the S3 bucket.
@@ -118,64 +155,34 @@ public class S3 {
     }
 
     private static S3Object getTMLastLetterEmail(@NotNull String emailAddress) throws MissingRequiredArgument {
-        String S3ObjectName = Util.s3RetrieveObject(emailAddress, "__Urgent_Removal_of_last_Transport_Manager");
-        String stringCap = S3ObjectName.substring(0, Math.min(S3ObjectName.length(), 100));
-        String S3Path = Util.s3Path(stringCap);
+        var S3ObjectName = Util.s3RetrieveObject(emailAddress, "__Urgent_Removal_of_last_Transport_Manager");
+        var stringCap = S3ObjectName.substring(0, Math.min(S3ObjectName.length(), 100));
+        var S3Path = Util.s3Path(stringCap);
         return S3.getS3Object(s3BucketName, S3Path);
     }
 
-    public static String getPasswordResetLink(@NotNull String emailAddress) throws MissingRequiredArgument {
-        try {
-            TimeUnit.SECONDS.sleep(10);
-            String S3ObjectName = Util.s3RetrieveObject(emailAddress, "__Reset_your_password");
-            String stringCap = S3ObjectName.substring(0, Math.min(S3ObjectName.length(), 100));
-            String S3Path = Util.s3Path(stringCap);
-            S3Object s3Object = S3.getS3Object(s3BucketName, S3Path);
-            return (new Scanner(s3Object.getObjectContent())).useDelimiter("\\A").next();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        return emailAddress;
-    }
-
-    public static String getUsernameInfoLink(@NotNull String emailAddress) throws MissingRequiredArgument {
-        String S3ObjectName = Util.s3RetrieveObject(emailAddress, "__Your_account_information");
-        String stringCap = S3ObjectName.substring(0, Math.min(S3ObjectName.length(), 100));
-        String s3Path = Util.s3Path(stringCap);
-        S3Object s3Object = S3.getS3Object(s3BucketName, s3Path);
-        return extractUsernameFromS3Object(s3Object);
-    }
-
     public static boolean checkLastTMLetterAttachment(@NotNull String emailAddress, String licenceNo) throws MissingRequiredArgument {
-        S3Object emailObject = getTMLastLetterEmail(emailAddress);
-        String s3ObjContents = new Scanner(emailObject.getObjectContent()).useDelimiter("\\A").next();
+        var emailObject = getTMLastLetterEmail(emailAddress);
+        var s3ObjContents = new Scanner(emailObject.getObjectContent()).useDelimiter("\\A").next();
         return s3ObjContents.contains(String.format("%s_Last_TM_letter_Licence_%s", licenceNo, licenceNo));
     }
 
-    private static String extractTempPasswordFromS3Object(S3Object s3Object) {
-        String s3ObjContents = new Scanner(s3Object.getObjectContent()).useDelimiter("\\A").next();
-        Pattern pattern = Pattern.compile("[.\\w\\S]{0,30}(?==0ASign)");
+    private static String extractS3Object(S3Object s3Object, @NotNull String methodName) {
+        var regex = "";
+        var EXTRACT_EMAIL_CODE_REGEX = "[\\d]{6}(?= The code)";
+        var EXTRACT_TEMP_PASSWORD_REGEX = "[.\\w\\S]{0,30}(?==0ASign)";
+
+        if(methodName.equals("getTempPassword") || methodName.equals("getUsernameInfoLink")){
+            regex = EXTRACT_TEMP_PASSWORD_REGEX;
+        }else {
+            regex = EXTRACT_EMAIL_CODE_REGEX;
+        }
+
+        var s3ObjContents = new Scanner(s3Object.getObjectContent()).useDelimiter("\\A").next();
+        Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(s3ObjContents);
         matcher.find();
         return matcher.group();
-    }
-
-
-    private static String extractEmailCodeFromS3Object(S3Object s3Object) {
-        String s3ObjContents = new Scanner(s3Object.getObjectContent()).useDelimiter("\\A").next();
-        Pattern pattern = Pattern.compile("[\\d]{6}(?= The code)");
-        Matcher matcher = pattern.matcher(s3ObjContents);
-        matcher.find();
-        return matcher.group();
-    }
-
-    private static String extractUsernameFromS3Object(S3Object s3Object) {
-        String s3ObjContents = new Scanner(s3Object.getObjectContent()).useDelimiter("\\A").next();
-        Pattern pattern = Pattern.compile("[\\w\\S]{0,30}(?==0ASign)");
-        Matcher matcher = pattern.matcher(s3ObjContents);
-        matcher.find();
-        String username = matcher.group();
-        return username;
     }
 
     public static S3Object getS3Object(String s3BucketName, String s3Path) {
@@ -187,17 +194,12 @@ public class S3 {
     }
 
     public static String getEcmtCorrespondences(String email, String referenceNumber) {
-        String sanitisedEmail = email.replaceAll("[@\\.]", "");
-        String licenceNumber = Str.find("\\w{2}\\d{7}", referenceNumber).get();
-        String permitNumber = Str.find("(?<=\\w{2}\\d{7} / )\\d+", referenceNumber).get();
+        var sanitisedEmail = email.replaceAll("[@\\.]", "");
+        var licenceNumber = Str.find("\\w{2}\\d{7}", referenceNumber).get();
+        var permitNumber = Str.find("(?<=\\w{2}\\d{7} / )\\d+", referenceNumber).get();
 
-        String objectKey = Util.s3Path(
-                String.format(
-                        "%s__ECMT_permit_application_response_reference_%s__%s",
-                        sanitisedEmail,
-                        licenceNumber,
-                        permitNumber
-                ),
+        var objectKey = Util.s3Path(
+                sanitisedEmail + "__ECMT_permit_application_response_reference_" + licenceNumber + "__" + permitNumber,
                 FolderType.EMAIL
         );
 
@@ -205,29 +207,6 @@ public class S3 {
                 s3BucketName,
                 objectKey
         );
-    }
-
-    public static AmazonS3 client() {
-        return createS3Client();
-    }
-
-    public static AmazonS3 client(Regions region) {
-        return createS3Client(region);
-    }
-
-    public static AmazonS3 createS3Client() {
-        return createS3Client(Regions.EU_WEST_1);
-    }
-
-    public static AmazonS3 createS3Client(Regions region) {
-        if (client == null) {
-            client = AmazonS3ClientBuilder.standard()
-                    .withCredentials(new DefaultAWSCredentialsProviderChain())
-                    .withRegion(region)
-                    .build();
-        }
-
-        return client;
     }
 
     public static void deleteObject(String key) {
@@ -290,6 +269,7 @@ public class S3 {
     public static String listObjectsByLastModified(String bucketName, String path) {
         long kickOut = System.currentTimeMillis() + 5000;
         while (System.currentTimeMillis() < kickOut) {
+            //do nothing
         }
         ObjectListing objectListing = client().listObjects(bucketName, path);
         S3ObjectSummary latestObject = null;
@@ -313,5 +293,13 @@ public class S3 {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static Regions getRegion() {
+        return region;
+    }
+
+    public static void setRegion(Regions region) {
+        S3.region = region;
     }
 }

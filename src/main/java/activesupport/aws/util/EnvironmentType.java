@@ -1,4 +1,4 @@
-package activesupport.aws.s3.util;
+package activesupport.aws.util;
 
 public enum EnvironmentType {
     QUALITY_ASSURANCE,

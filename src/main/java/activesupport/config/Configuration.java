@@ -22,7 +22,6 @@ public class Configuration {
         } else {
             this.config = ConfigFactory.defaultApplication();
         }
-
     }
 
     public void setConfig(String configName) {

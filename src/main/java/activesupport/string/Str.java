@@ -59,5 +59,4 @@ public class Str {
 
         return matcher.find() ? Optional.of(matcher.group()) : Optional.empty();
     }
-
 }

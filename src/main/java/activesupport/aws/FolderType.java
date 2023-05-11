@@ -1,4 +1,4 @@
-package activesupport.aws.s3;
+package activesupport.aws;
 
 public enum FolderType {
     NI_EXPORT("data-gov-ni-export/"),
