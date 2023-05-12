@@ -118,7 +118,7 @@ public class Browser {
                 driver = chrome.driver();
                 break;
             case "chrome-proxy":
-                chrome.getChromeOptions().addArguments(String.valueOf(ProxyConfig.dvsaProxy().setSslProxy(getIpAddress().concat(":"+getPortNumber()))));
+                chrome.getChromeOptions().setProxy(ProxyConfig.dvsaProxy().setHttpProxy(getIpAddress().concat(":"+getPortNumber())));
                 driver = chrome.driver();
                 break;
             case "firefox-proxy":

@@ -16,10 +16,7 @@ public class ProxyConfig {
 
     public static Proxy dvsaProxy() {
         Proxy proxy = new Proxy();
-        proxy.setAutodetect(false);
-        proxy.setSslProxy(System.getProperty("httpsProxy"));
         proxy.setHttpProxy(System.getProperty("httpProxy"));
-        proxy.setNoProxy(System.getProperty("noProxy"));
         return proxy;
     }
 }

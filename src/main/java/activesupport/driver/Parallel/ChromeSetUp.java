@@ -32,7 +32,6 @@ public class ChromeSetUp {
         if (getBrowserVersion() == null) {
             driver = new ChromeDriver(getChromeOptions());
         } else {
-            chromeOptions.setCapability("proxy",ProxyConfig.dvsaProxy());
             chromeOptions.setPlatformName(getPlatform());
             chromeOptions.setCapability("browser_version", getBrowserVersion());
             driver = new RemoteWebDriver(new URL(hubURL()), getChromeOptions());
