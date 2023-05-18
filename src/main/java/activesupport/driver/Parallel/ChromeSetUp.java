@@ -1,6 +1,5 @@
 package activesupport.driver.Parallel;
 
-import activesupport.proxy.ProxyConfig;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -9,6 +8,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import static activesupport.driver.Browser.*;
 
@@ -25,10 +26,19 @@ public class ChromeSetUp {
     }
 
     public static WebDriver driver;
+
+    public static List<String> arguments() {
+        List<String> chromeSwitches = new ArrayList<>();
+        chromeSwitches.add("--ignore-certificate-errors");
+        chromeSwitches.add("--allow-running-insecure-content");
+        chromeSwitches.add("--disable-gpu");
+        chromeSwitches.add("--disable-dev-shm-usage");
+        return chromeSwitches;
+    }
     public WebDriver driver() throws MalformedURLException {
         WebDriverManager.chromedriver().setup();
-        chromeOptions.addArguments(ProxyConfig.ignoreCertErrors());
-        chromeOptions.addArguments("--disable-dev-shm-usage");
+        chromeOptions.setAcceptInsecureCerts(true);
+        chromeOptions.addArguments(arguments());
         if (getBrowserVersion() == null) {
             driver = new ChromeDriver(getChromeOptions());
         } else {
