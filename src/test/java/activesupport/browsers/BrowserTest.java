@@ -32,7 +32,6 @@ public class BrowserTest {
 
     @Test
     public void chromeTest(){
-        System.out.println(mockServer.isRunning());
         System.setProperty("browser", "chrome");
         Browser.navigate().get(baseURL.concat(resource));
         assertEquals("Browser Test", Browser.navigate().getTitle());
