@@ -7,7 +7,7 @@ import org.mockserver.integration.ClientAndServer;
 import org.mockserver.model.HttpRequest;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
-import org.openqa.selenium.devtools.v110.network.Network;
+import org.openqa.selenium.devtools.v85.network.Network;
 
 import java.util.Optional;
 
@@ -32,6 +32,7 @@ public class BrowserTest {
 
     @Test
     public void chromeTest(){
+        System.out.println(mockServer.isRunning());
         System.setProperty("browser", "chrome");
         Browser.navigate().get(baseURL.concat(resource));
         assertEquals("Browser Test", Browser.navigate().getTitle());
@@ -75,6 +76,7 @@ public class BrowserTest {
                 .respond(
                         response()
                                 .withBody(htmlBody())
+
                 );
     }
 
