@@ -92,7 +92,6 @@ public class Browser {
         return gridURL;
     }
 
-
     private static void whichBrowser(String browserName) throws IllegalBrowserException, MalformedURLException {
         browserName = browserName.toLowerCase().trim();
         ChromeSetUp chrome = new ChromeSetUp();
@@ -118,7 +117,7 @@ public class Browser {
                 driver = chrome.driver();
                 break;
             case "chrome-proxy":
-                chrome.getChromeOptions().addArguments(String.valueOf(ProxyConfig.dvsaProxy().setSslProxy(getIpAddress().concat(":"+getPortNumber()))));
+                chrome.getChromeOptions().setProxy(ProxyConfig.dvsaProxy().setSslProxy(getIpAddress().concat(":"+getPortNumber())));
                 driver = chrome.driver();
                 break;
             case "firefox-proxy":
