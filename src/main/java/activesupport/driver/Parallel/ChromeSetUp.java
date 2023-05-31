@@ -34,7 +34,6 @@ public class ChromeSetUp {
         chromeOptions.setAcceptInsecureCerts(true);
         chromeOptions.addArguments("--disable-gpu");
         chromeOptions.addArguments("--disable-dev-shm-usage");
-        chromeOptions.setExperimentalOption("detach", false);
         if (getBrowserVersion() == null) {
             driver = new ChromeDriver(getChromeOptions());
         } else {
