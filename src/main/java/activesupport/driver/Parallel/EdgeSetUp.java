@@ -33,11 +33,13 @@ public class EdgeSetUp {
     public WebDriver driver() throws MalformedURLException {
         WebDriverManager.edgedriver().setup();
         edgeOptions.setCapability("proxy",ProxyConfig.dvsaProxy());
+        edgeOptions.setAcceptInsecureCerts(true);
+        edgeOptions.addArguments("--disable-gpu");
+        edgeOptions.addArguments("--disable-dev-shm-usage");
         if (getBrowserVersion() == null) {
             driver = new EdgeDriver(edgeOptions);
         } else {
             edgeOptions.setPlatformName(getPlatform());
-            edgeOptions.setCapability("browser_version", getBrowserVersion());
             driver = new RemoteWebDriver(new URL(hubURL()), edgeOptions);
         }
         return driver;
