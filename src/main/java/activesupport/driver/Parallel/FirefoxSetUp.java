@@ -29,7 +29,6 @@ public class FirefoxSetUp {
 
     public WebDriver driver() throws MalformedURLException {
         WebDriverManager.firefoxdriver().setup();
-        options.setCapability("marionette", true);
         options.setAcceptInsecureCerts(true);
         if (getPlatform() == null) {
             driver = new FirefoxDriver(getOptions());
