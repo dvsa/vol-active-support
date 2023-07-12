@@ -12,8 +12,8 @@
         <nexus.releases>https://nexus.olcs.dev-dvsacloud.uk/repository/maven-releases</nexus.releases>
         <annotations.version>24.0.1</annotations.version>
         <autoIt.version>0.2.44</autoIt.version>
-        <aws-java-sdk-s3.version>1.12.429</aws-java-sdk-s3.version>
-        <aws-secrets-manager>1.12.429</aws-secrets-manager>
+        <aws-java-sdk-s3.version>1.12.470</aws-java-sdk-s3.version>
+        <aws-secrets-manager>1.12.468</aws-secrets-manager>
         <aws-sdk-version>1.12.412</aws-sdk-version>
         <dbunit.version>2.7.3</dbunit.version>
         <faker.version>1.0.2</faker.version>
@@ -33,21 +33,14 @@
         <mysql-connector-java.version>8.0.32</mysql-connector-java.version>
         <java-native-access.version>5.12.1</java-native-access.version>
         <rest-assured.version>5.3.0</rest-assured.version>
-        <selenium.version>4.8.3</selenium.version>
+        <selenium.version>4.9.1</selenium.version>
         <slf4j.version>2.20.0</slf4j.version>
         <slf4j-log4j12.version>2.20.0</slf4j-log4j12.version>
         <typesafe.version>1.4.2</typesafe.version>
-        <webdriver-manager.version>5.3.2</webdriver-manager.version>
+        <webdriver-manager.version>5.3.3</webdriver-manager.version>
     </properties>
 
     <build>
-        <extensions>
-            <extension>
-                <groupId>org.springframework.build</groupId>
-                <artifactId>aws-maven</artifactId>
-                <version>5.0.0.RELEASE</version>
-            </extension>
-        </extensions>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -57,6 +50,11 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
             </plugin>
         </plugins>
     </build>

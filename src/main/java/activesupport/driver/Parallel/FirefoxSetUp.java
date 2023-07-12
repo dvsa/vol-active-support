@@ -29,13 +29,11 @@ public class FirefoxSetUp {
 
     public WebDriver driver() throws MalformedURLException {
         WebDriverManager.firefoxdriver().setup();
-        options.setCapability("marionette", true);
+        options.setAcceptInsecureCerts(true);
         if (getPlatform() == null) {
             driver = new FirefoxDriver(getOptions());
         } else {
-            options.setCapability("proxy",ProxyConfig.dvsaProxy());
             options.setPlatformName(getPlatform());
-            options.setCapability("browser_version", getBrowserVersion());
             driver = new RemoteWebDriver(new URL(hubURL()), getOptions());
         }
         return driver;

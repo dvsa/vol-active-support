@@ -1,7 +1,7 @@
 package activesupport.driver.Parallel;
 
-import activesupport.proxy.ProxyConfig;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -9,6 +9,9 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 import static activesupport.driver.Browser.*;
 
@@ -25,16 +28,16 @@ public class ChromeSetUp {
     }
 
     public static WebDriver driver;
+
     public WebDriver driver() throws MalformedURLException {
         WebDriverManager.chromedriver().setup();
-        chromeOptions.addArguments(ProxyConfig.ignoreCertErrors());
+        chromeOptions.setAcceptInsecureCerts(true);
+        chromeOptions.addArguments("--disable-gpu");
         chromeOptions.addArguments("--disable-dev-shm-usage");
         if (getBrowserVersion() == null) {
             driver = new ChromeDriver(getChromeOptions());
         } else {
-            chromeOptions.setCapability("proxy",ProxyConfig.dvsaProxy());
             chromeOptions.setPlatformName(getPlatform());
-            chromeOptions.setCapability("browser_version", getBrowserVersion());
             driver = new RemoteWebDriver(new URL(hubURL()), getChromeOptions());
         }
         return driver;
