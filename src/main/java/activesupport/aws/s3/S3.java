@@ -117,6 +117,18 @@ public class S3 {
         return getTempPassword("Reset_Your_Password", s3BucketName);
     }
 
+    public static String getTmAppLink(@NotNull String emailAddress) throws MissingRequiredArgument {
+        return getLink(emailAddress);
+    }
+
+    private static String getLink(@NotNull String emailAddress) throws MissingRequiredArgument {
+        String S3ObjectName = Util.s3RetrieveObject(emailAddress, "__A_Transport_Manager_has_submitted_their_details_for_review");
+        String stringCap = S3ObjectName.substring(0, Math.min(S3ObjectName.length(), 100));
+        String S3Path = Util.s3Path(stringCap);
+        S3Object s3Object = S3.getS3Object(s3BucketName, S3Path);
+        return (new Scanner(s3Object.getObjectContent())).useDelimiter("\\A").next();
+    }
+
     private static S3Object getTMLastLetterEmail(@NotNull String emailAddress) throws MissingRequiredArgument {
         String S3ObjectName = Util.s3RetrieveObject(emailAddress, "__Urgent_Removal_of_last_Transport_Manager");
         String stringCap = S3ObjectName.substring(0, Math.min(S3ObjectName.length(), 100));
@@ -145,6 +157,7 @@ public class S3 {
         S3Object s3Object = S3.getS3Object(s3BucketName, s3Path);
         return extractUsernameFromS3Object(s3Object);
     }
+
 
     public static boolean checkLastTMLetterAttachment(@NotNull String emailAddress, String licenceNo) throws MissingRequiredArgument {
         S3Object emailObject = getTMLastLetterEmail(emailAddress);
