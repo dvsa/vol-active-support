@@ -21,12 +21,12 @@ public class BrowserTest {
 
     private static ClientAndServer mockServer;
 
-    private final String baseURL = "http://localhost:8080";
-    private final String resource = "/vol/dummy";
+    private final static String baseURL = "http://localhost:1080";
+    private final static String resource = "/vol/dummy";
 
     @BeforeEach
     public void setMockServer() {
-        mockServer = startClientAndServer(8080);
+        mockServer = startClientAndServer(1080);
         startMockSite();
     }
 

@@ -97,7 +97,6 @@ public class Browser {
         ChromeSetUp chrome = new ChromeSetUp();
         FirefoxSetUp firefox = new FirefoxSetUp();
         EdgeSetUp edge = new EdgeSetUp();
-        SafariSetUp safari = new SafariSetUp();
 
         switch (browserName) {
             case "chrome":
@@ -110,7 +109,6 @@ public class Browser {
                 driver = firefox.driver();
                 break;
             case "safari":
-                driver = safari.driver();
                 break;
             case "headless":
                 chrome.getChromeOptions().addArguments("--headless");

@@ -1,7 +1,6 @@
 package activesupport.driver.Parallel;
 
 import activesupport.proxy.ProxyConfig;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
@@ -11,8 +10,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 import static activesupport.driver.Browser.*;
 
@@ -31,7 +28,6 @@ public class EdgeSetUp {
     public static WebDriver driver;
 
     public WebDriver driver() throws MalformedURLException {
-        WebDriverManager.edgedriver().setup();
         edgeOptions.setCapability("proxy",ProxyConfig.dvsaProxy());
         edgeOptions.setAcceptInsecureCerts(true);
         edgeOptions.addArguments("--disable-gpu");
