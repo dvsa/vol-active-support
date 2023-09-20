@@ -12,15 +12,14 @@
         <nexus.releases>https://nexus.olcs.dev-dvsacloud.uk/repository/maven-releases</nexus.releases>
         <annotations.version>24.0.1</annotations.version>
         <autoIt.version>0.2.44</autoIt.version>
-        <aws-java-sdk-s3.version>1.12.470</aws-java-sdk-s3.version>
-        <aws-secrets-manager>1.12.472</aws-secrets-manager>
-        <aws-sdk-version>1.12.412</aws-sdk-version>
+        <aws-java-sdk-s3.version>1.12.553</aws-java-sdk-s3.version>
+        <aws-secrets-manager>1.12.553</aws-secrets-manager>
         <dbunit.version>2.7.3</dbunit.version>
         <faker.version>1.0.2</faker.version>
         <httpclient.version>5.2.1</httpclient.version>
-        <jackson-annotations.version>2.15.1</jackson-annotations.version>
-        <jackson-core.version>2.14.2</jackson-core.version>
-        <jackson-databind>2.15.1</jackson-databind>
+        <jackson-annotations.version>2.15.2</jackson-annotations.version>
+        <jackson-core.version>2.15.2</jackson-core.version>
+        <jackson-databind>2.15.2</jackson-databind>
         <jacob.version>1.14.3</jacob.version>
         <jansi.version>2.4.0</jansi.version>
         <javax.mail.version>1.4.7</javax.mail.version>
