@@ -21,9 +21,10 @@ public class RestUtilsTest {
 
     private ClientAndServer mockServer;
 
+
     public RestUtilsTest() {
         try {
-            mockServer = startClientAndServer(8080);
+            mockServer = startClientAndServer(1080);
             mockGETcall();
             mockPOSTcall();
             mockPUTcall();

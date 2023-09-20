@@ -1,7 +1,5 @@
 package activesupport.driver.Parallel;
 
-import activesupport.proxy.ProxyConfig;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -28,7 +26,6 @@ public class FirefoxSetUp {
     public static WebDriver driver;
 
     public WebDriver driver() throws MalformedURLException {
-        WebDriverManager.firefoxdriver().setup();
         options.setAcceptInsecureCerts(true);
         if (getPlatform() == null) {
             driver = new FirefoxDriver(getOptions());
