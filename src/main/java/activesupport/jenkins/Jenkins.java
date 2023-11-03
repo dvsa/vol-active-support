@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class Jenkins {
 
-    public static final String Jenkins_Url = "https://jenkins.olcs.dev-dvsacloud.uk/view/Batch/job/Batch/job/Batch_Run_Cli";
+    public static final String Jenkins_Url = "https://jenkins.olcs.dev-dvsacloud.uk/";
 
     public enum Job {
         NI_EXPORT("Batch/Batch_data-gov-NI-export"),
