@@ -44,14 +44,4 @@ public class JenkinsScraper {
         HttpResponse response = httpClient.execute(host, httpPost, localContext);
         return response.getStatusLine().getStatusCode();
     }
-
-    @Test
-    public void jenkinsTest() throws IOException {
-        String node = URLEncoder.encode("qa&&api&&olcs");
-        String Jenkins_Url = String.format("https://jenkins.olcs.dev-dvsacloud.uk/view/Batch/job/Batch/job/Batch_Run_Cli/" +
-                "buildWithParameters?Run+on+Nodes=%s&COMMAND=last-tm-letter", node);
-
-        int statusCode = kickOffJenkinsJob(Jenkins_Url,"user","token");
-        //you can assert against the status code here == 201
-    }
 }
