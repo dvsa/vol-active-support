@@ -26,13 +26,13 @@
         <jenkins-client.version>0.3.8</jenkins-client.version>
         <jsch.version>0.1.55</jsch.version>
         <junit.version>5.10.0</junit.version>
-        <maven.compiler.version>3.8.0</maven.compiler.version>
+        <maven.compiler.version>3.8.1</maven.compiler.version>
         <mock-server.version>5.15.0</mock-server.version>
         <mockito.version>5.5.0</mockito.version>
         <mysql-connector-java.version>8.0.33</mysql-connector-java.version>
         <java-native-access.version>5.12.1</java-native-access.version>
         <rest-assured.version>5.3.2</rest-assured.version>
-        <selenium.version>4.15.0</selenium.version>
+        <selenium.version>4.14.1</selenium.version>
         <slf4j.version>2.20.0</slf4j.version>
         <slf4j-log4j12.version>2.20.0</slf4j-log4j12.version>
         <typesafe.version>1.4.2</typesafe.version>
@@ -49,8 +49,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven.compiler.version}</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <release>11</release>
                 </configuration>
             </plugin>
             <plugin>
