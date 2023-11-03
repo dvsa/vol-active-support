@@ -6,7 +6,7 @@
 
     <groupId>org.dvsa.testing.lib</groupId>
     <artifactId>active-support</artifactId>
-    <version>2.0.1.5</version>
+    <version>2.0.1.6</version>
 
     <properties>
         <nexus.releases>https://nexus.olcs.dev-dvsacloud.uk/repository/maven-releases</nexus.releases>
@@ -26,16 +26,20 @@
         <jenkins-client.version>0.3.8</jenkins-client.version>
         <jsch.version>0.1.55</jsch.version>
         <junit.version>5.10.0</junit.version>
-        <maven.compiler.version>3.8.0</maven.compiler.version>
+        <maven.compiler.version>3.8.1</maven.compiler.version>
         <mock-server.version>5.15.0</mock-server.version>
         <mockito.version>5.5.0</mockito.version>
         <mysql-connector-java.version>8.0.33</mysql-connector-java.version>
         <java-native-access.version>5.12.1</java-native-access.version>
         <rest-assured.version>5.3.2</rest-assured.version>
-        <selenium.version>4.12.1</selenium.version>
+        <selenium.version>4.14.1</selenium.version>
         <slf4j.version>2.20.0</slf4j.version>
         <slf4j-log4j12.version>2.20.0</slf4j-log4j12.version>
         <typesafe.version>1.4.2</typesafe.version>
+        <browserstack.version>1.0.6</browserstack.version>
+        <google-zxing.version>3.5.1</google-zxing.version>
+        <totp.version>1.0</totp.version>
+        <gson.version>2.10.1</gson.version>
     </properties>
 
     <build>
@@ -45,8 +49,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven.compiler.version}</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <release>11</release>
                 </configuration>
             </plugin>
             <plugin>
@@ -224,7 +227,7 @@
         <dependency>
             <groupId>com.browserstack</groupId>
             <artifactId>browserstack-local-java</artifactId>
-            <version>1.0.6</version>
+            <version>${browserstack.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -239,23 +242,23 @@
         <dependency>
             <groupId>com.google.zxing</groupId>
             <artifactId>core</artifactId>
-            <version>3.5.1</version>
+            <version>${google-zxing.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.zxing</groupId>
             <artifactId>javase</artifactId>
-            <version>3.5.1</version>
+            <version>${google-zxing.version}</version>
         </dependency>
         <dependency>
             <groupId>de.taimos</groupId>
             <artifactId>totp</artifactId>
-            <version>1.0</version>
+            <version>${totp.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.10.1</version>
+            <version>${gson.version}</version>
         </dependency>
 
     </dependencies>
