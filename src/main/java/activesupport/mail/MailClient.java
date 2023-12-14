@@ -2,11 +2,11 @@ package activesupport.mail;
 
 import activesupport.mail.enums.FolderPermission;
 import activesupport.mail.enums.MailProtocol;
+import jakarta.mail.*;
+import jakarta.mail.search.SearchTerm;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-import javax.mail.*;
-import javax.mail.search.SearchTerm;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -184,7 +184,5 @@ public class MailClient implements AutoCloseable {
         public MailClient build() throws MessagingException {
             return new MailClient(this);
         }
-
     }
-
 }

@@ -1,6 +1,7 @@
 package activesupport.mail.enums;
 
-import javax.mail.Folder;
+
+import jakarta.mail.Folder;
 
 public enum FolderPermission {
 
