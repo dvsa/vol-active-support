@@ -92,7 +92,8 @@ public class S3 {
     }
 
 
-    public static String getGovSignInCode(String sesBucketName, String sesBucketPath) throws MissingRequiredArgument {
+    public static String getGovSignInCode(String sesBucketName, String sesBucketPath) throws MissingRequiredArgument, InterruptedException {
+        TimeUnit.SECONDS.sleep(10L);
         String lastModified = listObjectsByLastModified(sesBucketName, sesBucketPath);
         if (client().doesObjectExist(sesBucketName, lastModified)) {
             S3Object s3Object = client().getObject(sesBucketName, lastModified);
@@ -102,7 +103,7 @@ public class S3 {
         }
     }
 
-    public static String getSignInCode() {
+    public static String getSignInCode() throws InterruptedException {
         return getGovSignInCode(sesBucketName, sesBucketPath);
     }
 
