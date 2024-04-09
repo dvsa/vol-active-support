@@ -159,15 +159,6 @@ public class S3 {
         return extractUsernameFromS3Object(s3Object);
     }
 
-    public static String getForgottenUsernameInfoLink(@NotNull String emailAddress) throws MissingRequiredArgument {
-        String S3ObjectName = Util.s3RetrieveObject(emailAddress, "__Your_account_information");
-        String stringCap = S3ObjectName.substring(0, Math.min(S3ObjectName.length(), 100));
-        String s3Path = Util.s3Path(stringCap);
-        S3Object s3Object = getS3Object(s3BucketName, s3Path);
-        return extractUsernameFromS3Object(s3Object);
-    }
-
-
 
     public static boolean checkLastTMLetterAttachment(@NotNull String emailAddress, String licenceNo) throws MissingRequiredArgument {
         S3Object emailObject = getTMLastLetterEmail(emailAddress);
