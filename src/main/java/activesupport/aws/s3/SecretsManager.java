@@ -1,36 +1,22 @@
 package activesupport.aws.s3;
 
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.secretsmanager.AWSSecretsManager;
 import com.amazonaws.services.secretsmanager.AWSSecretsManagerClientBuilder;
 import com.amazonaws.services.secretsmanager.model.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONObject;
 
 public class SecretsManager {
 
-    public String amazonResourceName;
-    public String region;
-
-    public String getAmazonResourceName(){
-        return amazonResourceName;
-    }
-
-    public String getRegion(){
-        return region;
-    }
-
-    public void setAmazonResourceName(String amazonResourceName){
-        this.amazonResourceName = amazonResourceName;
-    }
-
-    public void setRegion(String region){
-        this.region = region;
-    }
+    public static String secretsId = "OLCS-DEVAPPCI-DEVCI-BATCHTESTRUNNER-MAIN-APPLICATION";
 
     private static final Logger LOGGER = LogManager.getLogger(SecretsManager.class);
 
-    public AWSSecretsManager awsClientSetup(){
+    public static AWSSecretsManager awsClientSetup(){
+        Regions region = Regions.EU_WEST_1;
         return AWSSecretsManagerClientBuilder
                 .standard()
                 .withCredentials(new DefaultAWSCredentialsProviderChain())
@@ -38,11 +24,11 @@ public class SecretsManager {
                 .build();
     }
 
-    public String getSecretValue(String secretKey) {
+    public static String getSecretValue(String secretKey) {
         String secret = null;
 
         GetSecretValueRequest getSecretValueRequest = new GetSecretValueRequest()
-                .withSecretId(secretKey);
+                .withSecretId(secretsId);
         GetSecretValueResult getSecretValueResult = null;
 
         try {
@@ -60,11 +46,13 @@ public class SecretsManager {
 
         if (getSecretValueResult.getSecretString() != null) {
             secret = getSecretValueResult.getSecretString();
+            JSONObject jsonObject = new JSONObject(secret);
+            secret = jsonObject.getString(secretKey);
         }
         return secret;
     }
 
-    public void updateSecret(String secretId, String secretValue) {
+    public static void updateSecret(String secretId, String secretValue) {
         try {
             UpdateSecretRequest updateSecretRequest = new UpdateSecretRequest()
                     .withSecretId(secretId)
@@ -76,7 +64,7 @@ public class SecretsManager {
         }
     }
 
-    public void setSecretKey(String secretId, String secretValue) {
+    public static void setSecretKey(String secretId, String secretValue) {
         try {
             CreateSecretRequest request = new CreateSecretRequest()
                     .withDescription("password for testing")
@@ -89,4 +77,5 @@ public class SecretsManager {
                     "please use the updateSecretKey method instead or use a new key");
         }
     }
+
 }

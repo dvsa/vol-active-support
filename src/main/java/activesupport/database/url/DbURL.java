@@ -27,7 +27,7 @@ public class DbURL {
                         loadDBCredential(DatabaseCredentialType.PASSWORD));
                 break;
             default:
-                dbURL = String.format("jdbc:mysql://olcsdb-rds.olcs.%s.nonprod.dvsa.aws:3306/OLCS_RDS_OLCSDB?user=%s&password=%s&useSSL=false",env,loadDBCredential(DatabaseCredentialType.USERNAME),
+                dbURL = String.format("jdbc:mysql://olcsdb-rds.%s.olcs.dev-dvsacloud.uk:3306/OLCS_RDS_OLCSDB?user=%s&password=%s&useSSL=false",env,loadDBCredential(DatabaseCredentialType.USERNAME),
                         loadDBCredential(DatabaseCredentialType.PASSWORD));
                 break;
         }
