@@ -266,8 +266,9 @@
     <!--  Nexus Configuration  -->
     <distributionManagement>
         <repository>
-            <id>maven-releases</id>
-            <url>${nexus.releases}</url>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/dvsa/apiCalls</url>
         </repository>
     </distributionManagement>
 </project>
