@@ -266,7 +266,7 @@
         <repository>
             <id>github</id>
             <name>GitHub dvsa Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/dvsa/active-support</url>
+            <url>https://maven.pkg.github.com/dvsa/vol-active-support</url>
         </repository>
     </repositories>
 
@@ -274,7 +274,7 @@
         <repository>
             <id>github</id>
             <name>GitHub dvsa Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/dvsa/active-support</url>
+            <url>https://maven.pkg.github.com/dvsa/vol-active-support</url>
         </repository>
     </distributionManagement>
 </project>
