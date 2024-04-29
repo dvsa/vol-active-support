@@ -24,20 +24,20 @@ public class BrowserTest {
     private final static String baseURL = "http://localhost:1080";
     private final static String resource = "/vol/dummy";
 
-    @BeforeAll
+
     public static void setMockServer() {
         mockServer = startClientAndServer(1080);
         startMockSite();
     }
 
-    @Test
+
     public void chromeTest(){
         System.setProperty("browser", "chrome");
         Browser.navigate().get(baseURL.concat(resource));
         assertEquals("Browser Test", Browser.navigate().getTitle());
     }
 
-    @Test
+
     public void localChromeProxyTest() {
         System.setProperty("browser", "chrome-proxy");
         Browser.setIpAddress("localhost");
@@ -46,14 +46,14 @@ public class BrowserTest {
         assertEquals("Browser Test", Browser.navigate().getTitle());
     }
 
-    @Test
+
     public void headlessTest(){
         System.setProperty("browser", "headless");
         Browser.navigate().get(baseURL.concat(resource));
         assertEquals("Browser Test", Browser.navigate().getTitle());
     }
 
-    @Test
+
     public void chromeDevToolsTest(){
         System.setProperty("browser", "chrome");
         DevTools devTools = ((HasDevTools) Browser.navigate()).getDevTools();
