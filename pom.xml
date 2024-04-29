@@ -9,7 +9,6 @@
     <version>2.0.1.9</version>
 
     <properties>
-        <nexus.releases>https://nexus.olcs.dev-dvsacloud.uk/repository/maven-releases</nexus.releases>
         <annotations.version>24.0.1</annotations.version>
         <autoIt.version>0.2.44</autoIt.version>
         <aws-java-sdk-s3.version>1.12.610</aws-java-sdk-s3.version>
