@@ -23,13 +23,8 @@ jobs:
     scan:
         name: scan
         runs-on: ubuntu-latest
-        defaults:
-          run:
-            working-directory: ./src
         steps:
         - uses: actions/checkout@v4
-          with:
-            sparse-checkout: src
         - uses: snyk/actions/setup@master
         - uses: actions/setup-java@v4
           with:
