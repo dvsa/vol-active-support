@@ -32,10 +32,10 @@
         <java-native-access.version>5.14.0</java-native-access.version>
         <rest-assured.version>5.4.0</rest-assured.version>
         <selenium.version>4.20.0</selenium.version>
-        <log4j.version>2.22.0</log4j.version>
-        <og4j12.version>2.22.0</og4j12.version>
+        <log4j.version>2.17.1</log4j.version>
+        <og4j12.version>2.17.1</og4j12.version>
         <typesafe.version>1.4.3</typesafe.version>
-        <browserstack.version>1.0.6</browserstack.version>
+        <browserstack.version>1.1.1</browserstack.version>
         <google-zxing.version>3.5.1</google-zxing.version>
         <totp.version>1.0</totp.version>
         <gson.version>2.10.1</gson.version>
