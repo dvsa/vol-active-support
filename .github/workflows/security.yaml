@@ -18,12 +18,14 @@ on:
 
 permissions:
   contents: read
+  packages: read
 
-jobs:
+jobs:      
     scan:
         name: scan
         runs-on: ubuntu-latest
         steps:
+  
         - uses: actions/checkout@v4
         - uses: snyk/actions/setup@master
         - uses: actions/setup-java@v4
@@ -31,6 +33,10 @@ jobs:
             distribution: "corretto"
             java-version: "11"
             cache: maven
-        - run: snyk test --maven-aggregate-project --severity-threshold=${{ inputs.severity-threshold || 'high' }}
+        - uses: whelk-io/maven-settings-xml-action@v22
+          with:
+            servers: '[{ "id":"github-vol-active-support", "configuration": { "httpHeaders": { "property": { "name":"Authorization", "value":"Bearer ${{ secrets.GITHUB_TOKEN }}"} } } } ]'
+         
+        - run: snyk test --severity-threshold=${{ inputs.severity-threshold || 'high' }} -- -P github 
           env:
             SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
