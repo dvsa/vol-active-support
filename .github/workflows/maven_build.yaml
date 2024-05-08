@@ -1,0 +1,25 @@
+name: Maven Build
+
+on:
+  workflow_call:
+    inputs:
+      file:
+        description: "pom file"
+        required: false
+        default: "pom.xml"
+        type: string
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+    build:
+      name: build
+      runs-on: ubuntu-latest
+      steps:
+       - uses: actions/checkout@v4
+        
+       - run: mvn -B -P github package -file ${{inputs.file}}
+
+    
