@@ -12,4 +12,19 @@ ignore:
         reason: None Given
         expires: 2024-06-07T13:49:35.026Z
         created: 2024-05-08T13:49:35.034Z
+  SNYK-JAVA-DOM4J-2812975:
+    - '*':
+        reason: None Given
+        expires: 2024-06-07T13:52:40.223Z
+        created: 2024-05-08T13:52:40.231Z
+  SNYK-JAVA-ORGYAML-6056527:
+    - '*':
+        reason: None Given
+        expires: 2024-06-07T13:53:08.534Z
+        created: 2024-05-08T13:53:08.541Z
+  SNYK-JAVA-SOFTWAREAMAZONION-6153869:
+    - '*':
+        reason: None Given
+        expires: 2024-06-07T13:53:47.241Z
+        created: 2024-05-08T13:53:47.250Z
 patch: {}
