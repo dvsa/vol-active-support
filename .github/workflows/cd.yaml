@@ -24,7 +24,7 @@ jobs:
   call-build-maven:
     needs: release-please
     name: build with Maven
-    uses: ./.github/workflows/maven_build.yml
+    uses: ./.github/workflows/maven_build.yaml
   
   publish:
     runs-on: ubuntu-latest
