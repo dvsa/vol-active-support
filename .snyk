@@ -2,7 +2,7 @@
 version: v1.25.0
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
-  'SNYK-JAVA-DOM4J-174153 dom4j:dom4j@1.6.1':
+  SNYK-JAVA-DOM4J-174153:
     - '*':
         reason: None Given
         expires: 2024-06-07T13:36:08.904Z
