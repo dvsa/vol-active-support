@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.2.0](https://github.com/dvsa/vol-active-support/compare/2.1.10...v2.2.0) (2024-05-09)
+
+
+### Features
+
+* bump up pom ([fd17988](https://github.com/dvsa/vol-active-support/commit/fd1798822a9faa2c7136a0df5c1493047dda202a))
+* version test ([482267a](https://github.com/dvsa/vol-active-support/commit/482267ad33769de589738d7ea6083c291a6b839f))
+
 ## 1.0.0 (2024-05-08)
 
 
