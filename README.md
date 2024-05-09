@@ -17,5 +17,5 @@ Add the following Maven dependency to your project's `pom.xml` file:
 </dependency>
 ```
 
-This repository will create a release PR on merge to main and deploy a package to GH on merge of that package.
+This repository will create a release PR on merge to main and deploy a package to GH on merge of that.
 
