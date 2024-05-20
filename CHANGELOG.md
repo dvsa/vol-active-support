@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.2.1](https://github.com/dvsa/vol-active-support/compare/v2.2.0...v2.2.1) (2024-05-20)
+
+
+### Bug Fixes
+
+* Update cd.yaml ([11ab4a4](https://github.com/dvsa/vol-active-support/commit/11ab4a48f43c4451e00b1eb58321802445c11087))
+* Update maven.yaml ([1f57825](https://github.com/dvsa/vol-active-support/commit/1f57825cae8f531f3ac759565b5ad8c2e304f443))
+
 ## [2.2.0](https://github.com/dvsa/vol-active-support/compare/2.1.10...v2.2.0) (2024-05-09)
 
 
