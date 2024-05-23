@@ -1,3 +1,4 @@
+
 package activesupport.aws.s3;
 
 import activesupport.MissingRequiredArgument;
@@ -24,11 +25,8 @@ public class S3 {
 
     private static AmazonS3 client = null;
     private static String s3BucketName = "devapp-olcs-pri-olcs-autotest-s3";
-
     private static String sesBucketName = "gov-uk-testing-ses-emails";
-
     private static String sesBucketPath = "gov_uk_testing_dev-dvsacloud_uk";
-
 
     public static String getLatestNIGVExportContents() throws IllegalAccessException, MissingRequiredArgument {
         String latestObjectName = getLatestNIExportName();
@@ -50,8 +48,7 @@ public class S3 {
     }
 
     private static List<S3ObjectSummary> getS3ObjectSummaries(ObjectListing objectListing) {
-        ObjectListing objectList = objectListing;
-        return objectList.getObjectSummaries();
+        return objectListing.getObjectSummaries();
     }
 
     private static ObjectListing getObjectListing(@NotNull String prefix) {
@@ -77,20 +74,9 @@ public class S3 {
         return Str.inputStreamContents(s3Object.getObjectContent());
     }
 
-    /**
-     * This extracts the temporary password out the emails stored in the S3 bucket.
-     * The specific object that the password will be extracted out of if inferred from the emailAddress.
-     *
-     * @param emailAddress This is the email address used to create an account on external(self-serve).
-     * @param S3BucketName This is the name of the S3 bucket.
-     */
     public static String getTempPassword(@NotNull String emailAddress, @NotNull String S3BucketName) throws MissingRequiredArgument {
-        String S3ObjectName = Util.s3RetrieveObject(emailAddress, "__Your_temporary_password");
-        String S3Path = Util.s3Path(S3ObjectName);
-        S3Object s3Object = S3.getS3Object(S3BucketName, S3Path);
-        return extractTempPasswordFromS3Object(s3Object);
+        return getObjectContentsFromS3(Util.s3RetrieveObject(emailAddress, "__Your_temporary_password"), S3BucketName);
     }
-
 
     public static String getGovSignInCode(String sesBucketName, String sesBucketPath) throws MissingRequiredArgument {
         String lastModified = listObjectsByLastModified(sesBucketName, sesBucketPath);
@@ -106,44 +92,26 @@ public class S3 {
         return getGovSignInCode(sesBucketName, sesBucketPath);
     }
 
-
-    /**
-     * This extracts the temporary password out the emails stored in the S3 bucket.
-     * The specific object that the password will be extracted out of if inferred from the emailAddress.
-     *
-     * @param emailAddress This is the email address used to create an account on external(self-serve).
-     */
     public static String getTempPassword(@NotNull String emailAddress) throws MissingRequiredArgument {
         return getTempPassword("Reset_Your_Password", s3BucketName);
     }
 
     public static String getTmAppLink(@NotNull String emailAddress) throws MissingRequiredArgument {
-        return getLink(emailAddress);
+        return fetchLinkFromEmail(emailAddress, "__A_Transport_Manager_has_submitted_their_details_for_review");
     }
 
-    private static String getLink(@NotNull String emailAddress) throws MissingRequiredArgument {
-        String S3ObjectName = Util.s3RetrieveObject(emailAddress, "__A_Transport_Manager_has_submitted_their_details_for_review");
-        String stringCap = S3ObjectName.substring(0, Math.min(S3ObjectName.length(), 100));
-        String S3Path = Util.s3Path(stringCap);
-        S3Object s3Object = S3.getS3Object(s3BucketName, S3Path);
-        return (new Scanner(s3Object.getObjectContent())).useDelimiter("\\A").next();
+    private static String fetchLinkFromEmail(@NotNull String emailAddress, String objectName) throws MissingRequiredArgument {
+        return getObjectContentsFromS3(Util.s3RetrieveObject(emailAddress, objectName), s3BucketName);
     }
 
     private static S3Object getTMLastLetterEmail(@NotNull String emailAddress) throws MissingRequiredArgument {
-        String S3ObjectName = Util.s3RetrieveObject(emailAddress, "__Urgent_Removal_of_last_Transport_Manager");
-        String stringCap = S3ObjectName.substring(0, Math.min(S3ObjectName.length(), 100));
-        String S3Path = Util.s3Path(stringCap);
-        return S3.getS3Object(s3BucketName, S3Path);
+        return getS3Object(emailAddress, "__Urgent_Removal_of_last_Transport_Manager");
     }
 
     public static String getPasswordResetLink(@NotNull String emailAddress) throws MissingRequiredArgument {
         try {
             TimeUnit.SECONDS.sleep(10);
-            String S3ObjectName = Util.s3RetrieveObject(emailAddress, "__Reset_your_password");
-            String stringCap = S3ObjectName.substring(0, Math.min(S3ObjectName.length(), 100));
-            String S3Path = Util.s3Path(stringCap);
-            S3Object s3Object = S3.getS3Object(s3BucketName, S3Path);
-            return (new Scanner(s3Object.getObjectContent())).useDelimiter("\\A").next();
+            return fetchLinkFromEmail(emailAddress, "__Reset_your_password");
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
@@ -151,13 +119,8 @@ public class S3 {
     }
 
     public static String getUsernameInfoLink(@NotNull String emailAddress) throws MissingRequiredArgument {
-        String S3ObjectName = Util.s3RetrieveObject(emailAddress, "__Your_account_information");
-        String stringCap = S3ObjectName.substring(0, Math.min(S3ObjectName.length(), 100));
-        String s3Path = Util.s3Path(stringCap);
-        S3Object s3Object = S3.getS3Object(s3BucketName, s3Path);
-        return extractUsernameFromS3Object(s3Object);
+        return getObjectContentsFromS3(Util.s3RetrieveObject(emailAddress, "__Your_account_information"), s3BucketName);
     }
-
 
     public static boolean checkLastTMLetterAttachment(@NotNull String emailAddress, String licenceNo) throws MissingRequiredArgument {
         S3Object emailObject = getTMLastLetterEmail(emailAddress);
@@ -173,7 +136,6 @@ public class S3 {
         return matcher.group();
     }
 
-
     private static String extractEmailCodeFromS3Object(S3Object s3Object) {
         String s3ObjContents = new Scanner(s3Object.getObjectContent()).useDelimiter("\\A").next();
         Pattern pattern = Pattern.compile("[\\d]{6}(?= The code)");
@@ -182,13 +144,10 @@ public class S3 {
         return matcher.group();
     }
 
-    private static String extractUsernameFromS3Object(S3Object s3Object) {
-        String s3ObjContents = new Scanner(s3Object.getObjectContent()).useDelimiter("\\A").next();
-        Pattern pattern = Pattern.compile("[\\w\\S]{0,30}(?==0ASign)");
-        Matcher matcher = pattern.matcher(s3ObjContents);
-        matcher.find();
-        String username = matcher.group();
-        return username;
+    private static String getObjectContentsFromS3(String objectName, String s3BucketName) {
+        String S3Path = Util.s3Path(objectName);
+        S3Object s3Object = S3.getS3Object(s3BucketName, S3Path);
+        return (new Scanner(s3Object.getObjectContent())).useDelimiter("\\A").next();
     }
 
     public static S3Object getS3Object(String s3BucketName, String s3Path) {
