@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.2.2](https://github.com/dvsa/vol-active-support/compare/v2.2.1...v2.2.2) (2024-06-11)
+
+
+### Miscellaneous Chores
+
+* release 2.2.2 ([0533280](https://github.com/dvsa/vol-active-support/commit/05332800211250550d344f47ea70b5486ad29cc8))
+* release 2.2.2 ([#39](https://github.com/dvsa/vol-active-support/issues/39)) ([49eb4be](https://github.com/dvsa/vol-active-support/commit/49eb4beeff0b089897edc9d51e85889790a15117))
+
 ## [2.2.1](https://github.com/dvsa/vol-active-support/compare/v2.2.0...v2.2.1) (2024-05-20)
 
 
