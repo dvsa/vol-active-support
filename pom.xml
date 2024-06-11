@@ -347,11 +347,11 @@
         </repository>
     </repositories>
 
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub dvsa Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/dvsa/vol-active-support</url>
-        </repository>
-    </distributionManagement>
+        <distributionManagement>
+            <repository>
+                <id>github</id>
+                <name>GitHub dvsa Apache Maven Packages</name>
+                <url>https://maven.pkg.github.com/dvsa/vol-active-support</url>
+            </repository>
+        </distributionManagement>
 </project>
