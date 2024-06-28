@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://github.com/dvsa/vol-active-support/compare/v2.2.2...v2.3.0) (2024-06-28)
+
+
+### Features
+
+* caching secrets ([307b91a](https://github.com/dvsa/vol-active-support/commit/307b91a815c60b18f845da93241fb72a68da101c))
+
 ## [2.2.2](https://github.com/dvsa/vol-active-support/compare/v2.2.1...v2.2.2) (2024-06-11)
 
 
