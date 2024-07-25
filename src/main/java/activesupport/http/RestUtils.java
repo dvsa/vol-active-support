@@ -16,44 +16,41 @@ import static io.restassured.RestAssured.given;
 
 public class RestUtils {
 
-    private static ValidatableResponse response;
-
-
     public static ValidatableResponse post(@NotNull Object requestBody, @NotNull String serviceEndPoint, @NotNull Map<String, String> headers) {
-        response = given()
+        return given()
                 .urlEncodingEnabled(true)
-                .filters(new ResponseLoggingFilter(),new ErrorLoggingFilter())
+                .filters(new ResponseLoggingFilter(), new ErrorLoggingFilter())
                 .contentType(ContentType.JSON)
                 .headers(headers)
                 .body(requestBody)
-                .when().config(RestAssuredConfig.config().sslConfig(new SSLConfig().relaxedHTTPSValidation().allowAllHostnames()))
+                .when()
+                .config(RestAssuredConfig.config().sslConfig(new SSLConfig().relaxedHTTPSValidation().allowAllHostnames()))
                 .post(serviceEndPoint)
                 .then();
-        return response;
     }
 
     public static ValidatableResponse put(@NotNull Object requestBody, @NotNull String serviceEndPoint, @NotNull Map<String, String> headers) {
-        response = given()
+        return given()
                 .urlEncodingEnabled(true)
                 .filter(new ErrorLoggingFilter())
                 .contentType(ContentType.JSON)
                 .headers(headers)
                 .body(requestBody)
-                .when().config(RestAssuredConfig.config().sslConfig(new SSLConfig().relaxedHTTPSValidation().allowAllHostnames()))
+                .when()
+                .config(RestAssuredConfig.config().sslConfig(new SSLConfig().relaxedHTTPSValidation().allowAllHostnames()))
                 .put(serviceEndPoint)
                 .then();
-        return response;
     }
 
-    public static ValidatableResponse getWithQueryParams(@NotNull String serviceEndPoint, @Nullable Map<String,String> queryParam, @NotNull Map<String, String> headers) {
-        response = given().queryParams(queryParam)
+    public static ValidatableResponse getWithQueryParams(@NotNull String serviceEndPoint, @Nullable Map<String, String> queryParam, @NotNull Map<String, String> headers) {
+        return given().queryParams(queryParam)
                 .urlEncodingEnabled(true)
                 .filter(new ErrorLoggingFilter())
                 .headers(headers)
-                .when().config(RestAssuredConfig.config().sslConfig(new SSLConfig().relaxedHTTPSValidation().allowAllHostnames()))
+                .when()
+                .config(RestAssuredConfig.config().sslConfig(new SSLConfig().relaxedHTTPSValidation().allowAllHostnames()))
                 .get(serviceEndPoint)
                 .then();
-        return response;
     }
 
     public static ValidatableResponse get(@NotNull URL serviceEndPoint, @NotNull Map<String, String> headers) {
@@ -61,38 +58,38 @@ public class RestUtils {
     }
 
     public static ValidatableResponse get(@NotNull String serviceEndPoint, @NotNull Map<String, String> headers) {
-        response = given()
+        return given()
                 .urlEncodingEnabled(true)
                 .filter(new ErrorLoggingFilter())
                 .headers(headers)
-                .when().config(RestAssuredConfig.config().sslConfig(new SSLConfig().relaxedHTTPSValidation().allowAllHostnames()))
+                .when()
+                .config(RestAssuredConfig.config().sslConfig(new SSLConfig().relaxedHTTPSValidation().allowAllHostnames()))
                 .get(serviceEndPoint)
                 .then();
-        return response;
     }
 
     public static ValidatableResponse delete(@NotNull Object requestBody, @NotNull String serviceEndPoint, @NotNull Map<String, String> headers) {
-        response = given()
+        return given()
                 .urlEncodingEnabled(true)
                 .filter(new ErrorLoggingFilter())
                 .contentType(ContentType.JSON)
                 .headers(headers)
                 .body(requestBody)
-                .when().config(RestAssuredConfig.config().sslConfig(new SSLConfig().relaxedHTTPSValidation().allowAllHostnames()))
+                .when()
+                .config(RestAssuredConfig.config().sslConfig(new SSLConfig().relaxedHTTPSValidation().allowAllHostnames()))
                 .delete(serviceEndPoint)
                 .then();
-        return response;
     }
 
     public static ValidatableResponse getThroughProxy(@NotNull String proxyURI, @NotNull int proxyPort, @NotNull String serviceEndPoint, @NotNull Map<String, String> headers) {
-        response = given()
+        return given()
                 .urlEncodingEnabled(true)
                 .filter(new ErrorLoggingFilter())
                 .headers(headers)
-                .proxy(proxyURI,proxyPort)
-                .when().config(RestAssuredConfig.config().sslConfig(new SSLConfig().relaxedHTTPSValidation().allowAllHostnames()))
+                .proxy(proxyURI, proxyPort)
+                .when()
+                .config(RestAssuredConfig.config().sslConfig(new SSLConfig().relaxedHTTPSValidation().allowAllHostnames()))
                 .get(serviceEndPoint)
                 .then();
-        return response;
     }
 }
