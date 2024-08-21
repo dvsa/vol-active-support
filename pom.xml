@@ -4,7 +4,7 @@
 
     <groupId>org.dvsa.testing.lib</groupId>
     <artifactId>active-support</artifactId>
-    <version>2.4.2-SNAPSHOT</version>
+    <version>2.4.1</version>
 
     <properties>
         <annotations.version>24.0.1</annotations.version>
@@ -43,7 +43,7 @@
         <dom4j.version>1.6.1</dom4j.version>
         <org.apache.commons.commons-text.version>1.10.0</org.apache.commons.commons-text.version>
         <org.postgresql.version>42.3.3</org.postgresql.version>
-        <org.yaml.snakeyaml.version>2.0</org.yaml.snakeyaml.version>
+        <org.yaml.snakeyaml.version>2.2</org.yaml.snakeyaml.version>
         <software.amazon.ion.version>1.0.2</software.amazon.ion.version>
     </properties>
 
