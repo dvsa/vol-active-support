@@ -42,7 +42,7 @@
         <commons-collections.version>3.2.2</commons-collections.version>
         <dom4j.version>1.6.1</dom4j.version>
         <org.apache.commons.commons-text.version>1.10.0</org.apache.commons.commons-text.version>
-        <org.postgresql.version>42.3.3</org.postgresql.version>
+        <org.postgresql.version>42.3.9</org.postgresql.version>
         <org.yaml.snakeyaml.version>2.2</org.yaml.snakeyaml.version>
         <software.amazon.ion.version>1.0.2</software.amazon.ion.version>
     </properties>
