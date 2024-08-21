@@ -38,7 +38,7 @@
         <totp.version>1.0</totp.version>
         <gson.version>2.10.1</gson.version>
         <browserstack.version>1.1.1</browserstack.version>
-        <commons-beanutils.version>1.9.2</commons-beanutils.version>
+        <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <commons-collections.version>3.2.2</commons-collections.version>
         <dom4j.version>1.6.1</dom4j.version>
         <org.apache.commons.commons-text.version>1.10.0</org.apache.commons.commons-text.version>
