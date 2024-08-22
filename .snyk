@@ -7,11 +7,21 @@ ignore:
         reason: None Given
         expires: 2024-12-07T13:36:08.904Z
         created: 2024-06-11T07:36:08.910Z
+  SNYK-JAVA-ORGYAML-2806360:
+    - '*':
+        reason: None Given
+        expires: 2024-12-07T13:49:35.026Z
+        created: 2024-06-11T07:49:35.034Z
   SNYK-JAVA-DOM4J-2812975:
     - '*':
         reason: None Given
         expires: 2024-12-07T13:52:40.223Z
         created: 2024-06-11T07:52:40.231Z
+  SNYK-JAVA-ORGYAML-6056527:
+    - '*':
+        reason: None Given
+        expires: 2024-12-07T13:53:08.534Z
+        created: 2024-06-11T07:53:08.541Z
   SNYK-JAVA-SOFTWAREAMAZONION-6153869:
     - '*':
         reason: None Given
