@@ -11,7 +11,7 @@ public class URL {
     }
 
     public static String extractDomain(@NotNull String URL){
-        String regex = "(?<=:\\/\\/)[A-z\\.]+\\/?";
+        String regex = "(?<=://)([^:/\\s]+)";
         String domain = Str.find(regex, URL).get();
         return domain.endsWith("/") ? domain : domain + "/";
     }
