@@ -13,7 +13,7 @@
         <aws-secrets-manager>1.12.610</aws-secrets-manager>
         <dbunit.version>2.7.3</dbunit.version>
         <faker.version>1.0.2</faker.version>
-        <httpclient.version>5.2.1</httpclient.version>m
+        <httpclient.version>5.2.1</httpclient.version>
         <jackson-annotations.version>2.16.0</jackson-annotations.version>
         <jackson-core.version>2.16.0</jackson-core.version>
         <jackson-databind>2.16.0</jackson-databind>
