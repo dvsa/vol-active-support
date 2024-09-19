@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.2](https://github.com/dvsa/vol-active-support/compare/v2.4.1...v2.4.2) (2024-09-19)
+
+
+### Miscellaneous Chores
+
+* bump to 2.4.2 ([67f9e67](https://github.com/dvsa/vol-active-support/commit/67f9e676dc1fd838411d570ba00e10fb8a48c569))
+
 ## [2.4.1](https://github.com/dvsa/vol-active-support/compare/v2.3.0...v2.4.1) (2024-07-25)
 
 
