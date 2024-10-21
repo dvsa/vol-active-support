@@ -8,6 +8,9 @@ public class ProxyConfig {
         proxy.setHttpProxy(System.getProperty("httpProxy"));
         proxy.setSslProxy(System.getProperty("httpsProxy"));
         proxy.setNoProxy(System.getProperty("noProxy"));
+        System.out.println(proxy.getHttpProxy());
+        System.out.println(proxy.getSslProxy());
+        System.out.println(proxy.getNoProxy());
         return proxy;
     }
 }
