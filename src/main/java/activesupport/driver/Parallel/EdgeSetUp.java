@@ -28,7 +28,7 @@ public class EdgeSetUp {
     public static WebDriver driver;
 
     public WebDriver driver() throws MalformedURLException {
-        edgeOptions.setCapability("proxy",ProxyConfig.dvsaProxy());
+      //  edgeOptions.setCapability("proxy",ProxyConfig.dvsaProxy());
         edgeOptions.setAcceptInsecureCerts(true);
         edgeOptions.addArguments("--disable-gpu");
         edgeOptions.addArguments("--disable-dev-shm-usage");
