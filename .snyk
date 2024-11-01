@@ -27,4 +27,96 @@ ignore:
         reason: None Given
         expires: 2024-12-07T13:53:47.241Z
         created: 2024-06-11T07:53:47.250Z
+
+  SNYK-JAVA-COMMONSIO-8161190:
+    - '*':
+        reason: No direct upgrade available
+        expires: 2024-12-07T13:53:47.241Z
+        created: 2023-10-25T07:53:47.250Z
+
+  SNYK-JAVA-IONETTY-5725787:
+    - '*':
+        reason: No direct upgrade available
+        expires: 2024-12-07T13:53:47.241Z
+        created: 2023-10-25T07:53:47.250Z
+
+  SNYK-JAVA-IONETTY-6483812:
+    - '*':
+        reason: No direct upgrade available
+        expires: 2024-12-07T13:53:47.241Z
+        created: 2023-10-25T07:53:47.250Z
+
+  SNYK-JAVA-ORGAPACHEHTTPCOMPONENTS-1048058:
+    - '*':
+        reason: No direct upgrade available
+        expires: 2024-12-07T13:53:47.241Z
+        created: 2023-10-25T07:53:47.250Z
+
+  SNYK-JAVA-ORGAPACHEHTTPCOMPONENTS-31517:
+    - '*':
+        reason: No direct upgrade available
+        expires: 2024-12-07T13:53:47.241Z
+        created: 2023-10-25T07:53:47.250Z
+
+  SNYK-JAVA-ORGYAML-3016888:
+    - '*':
+        reason: No direct upgrade available
+        expires: 2024-12-07T13:53:47.241Z
+        created: 2023-10-25T07:53:47.250Z
+
+  SNYK-JAVA-ORGYAML-3016889:
+    - '*':
+        reason: No direct upgrade available
+        expires: 2024-12-07T13:53:47.241Z
+        created: 2023-10-25T07:53:47.250Z
+
+  SNYK-JAVA-ORGYAML-3016891:
+    - '*':
+        reason: No direct upgrade available
+        expires: 2024-12-07T13:53:47.241Z
+        created: 2023-10-25T07:53:47.250Z
+
+  SNYK-JAVA-ORGYAML-3113851:
+    - '*':
+        reason: No direct upgrade available
+        expires: 2024-12-07T13:53:47.241Z
+        created: 2023-10-25T07:53:47.250Z
+
+  SNYK-JAVA-ORGYAML-3152153:
+    - '*':
+        reason: No direct upgrade available
+        expires: 2024-12-07T13:53:47.241Z
+        created: 2023-10-25T07:53:47.250Z
+
+  SNYK-JAVA-ORGYAML-537645:
+    - '*':
+        reason: No direct upgrade available
+        expires: 2024-12-07T13:53:47.241Z
+        created: 2023-10-25T07:53:47.250Z
+
+  # License ignores
+  snyk:lic:maven:org.dbunit:dbunit:LGPL-2.1:
+    - '*':
+        reason: License issue - accepted
+        expires: 2024-12-07T13:53:47.241Z
+        created: 2023-10-25T07:53:47.250Z
+
+  snyk:lic:maven:net.sf.jacob-project:jacob:LGPL-2.1:
+    - '*':
+        reason: License issue - accepted
+        expires: 2024-12-07T13:53:47.241Z
+        created: 2023-10-25T07:53:47.250Z
+
+  snyk:lic:maven:de.openkeyword:autoit:GPL-3.0:
+    - '*':
+        reason: License issue - accepted
+        expires: 2024-12-07T13:53:47.241Z
+        created: 2023-10-25T07:53:47.250Z
+
+  snyk:lic:maven:com.mysql:mysql-connector-j:GPL-2.0:
+    - '*':
+        reason: License issue - accepted
+        expires: 2024-12-07T13:53:47.241Z
+        created: 2023-10-25T07:53:47.250Z
+
 patch: {}

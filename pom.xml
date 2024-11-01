@@ -43,7 +43,6 @@
         <dom4j.version>1.6.1</dom4j.version>
         <org.apache.commons.commons-text.version>1.10.0</org.apache.commons.commons-text.version>
         <org.postgresql.version>42.3.9</org.postgresql.version>
-        <org.yaml.snakeyaml.version>2.2</org.yaml.snakeyaml.version>
         <software.amazon.ion.version>1.0.2</software.amazon.ion.version>
     </properties>
 
@@ -95,11 +94,6 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>${org.postgresql.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>${org.yaml.snakeyaml.version}</version>
         </dependency>
         <dependency>
             <groupId>software.amazon.ion</groupId>
@@ -319,11 +313,6 @@
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
             <version>1.9.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>${org.yaml.snakeyaml.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
