@@ -12,7 +12,6 @@
         <aws-java-sdk-s3.version>1.12.610</aws-java-sdk-s3.version>
         <aws-secrets-manager>1.12.610</aws-secrets-manager>
         <dbunit.version>2.7.3</dbunit.version>
-        <faker.version>1.0.2</faker.version>
         <httpclient.version>5.2.1</httpclient.version>
         <jackson-annotations.version>2.16.0</jackson-annotations.version>
         <jackson-core.version>2.16.0</jackson-core.version>
@@ -252,12 +251,6 @@
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.github.javafaker</groupId>
-            <artifactId>javafaker</artifactId>
-            <version>${faker.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>jakarta.mail</groupId>
             <artifactId>jakarta.mail-api</artifactId>
