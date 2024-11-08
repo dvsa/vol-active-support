@@ -1,145 +1,138 @@
 package activesupport.faker;
 
 import activesupport.http.RestUtils;
-import activesupport.number.Int;
-import com.github.javafaker.Faker;
-import com.github.javafaker.service.FakeValuesService;
-import com.github.javafaker.service.RandomService;
-
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Locale;
+import java.util.HashMap;
+import java.util.Random;
+import java.util.Arrays;
 
 public class FakerUtils {
+    private final Random random = new Random();
 
-    private Faker faker = new Faker();
-    private FakeValuesService fakeValuesService = new FakeValuesService(
-            new Locale("en-GB"), new RandomService());
 
+    private static final String[] FIRST_NAMES = {
+            "james", "john", "robert", "michael", "william", "david", "richard", "joseph", "thomas", "charles",
+            "mary", "patricia", "jennifer", "linda", "elizabeth", "barbara", "susan", "jessica", "sarah", "karen"
+    };
+
+    private static final String[] LAST_NAMES = {
+            "smith", "johnson", "williams", "brown", "jones", "garcia", "miller", "davis", "rodriguez", "martinez",
+            "hernandez", "lopez", "gonzalez", "wilson", "anderson", "thomas", "taylor", "moore", "jackson", "martin"
+    };
+
+    private static final String[] STREET_NAMES = {
+            "maple", "oak", "cedar", "pine", "elm", "washington", "lake", "hill", "forest", "river",
+            "highland", "madison", "park", "main", "church", "north", "south", "east", "west"
+    };
+
+    private static final String[] CITIES = {
+            "london", "manchester", "birmingham", "leeds", "glasgow", "liverpool", "bristol", "oxford", "cambridge", "cardiff",
+            "edinburgh", "belfast", "nottingham", "sheffield", "leicester", "coventry", "bath", "york", "newcastle"
+    };
+
+    private static final String[] COUNTRIES = {
+            "england", "scotland", "wales", "northern ireland", "ireland", "france", "germany", "spain", "italy", "netherlands"
+    };
+
+    private static final String[] COMPANY_TYPES = {
+            "ltd", "limited", "llc", "incorporated", "corp", "holdings", "group", "solutions", "enterprises", "international"
+    };
+
+    private static final String[] BUSINESS_ACTIVITIES = {
+            "software development", "consulting", "retail", "manufacturing", "healthcare", "education", "finance",
+            "marketing", "logistics", "real estate"
+    };
+
+    private static final String[] BUSINESS_SECTORS = {
+            "technology", "healthcare", "finance", "education", "retail", "manufacturing", "services",
+            "construction", "agriculture", "energy"
+    };
+
+    private String getRandomElement(String[] array) {
+        return array[random.nextInt(array.length)];
+    }
 
     private LinkedHashMap<String, String> generateFullName() {
-
-        int fakerLibraries = (int)(Math.floor(Math.random() * 7) + 1);
-        String fullName = null;
-
-        do {
-            switch (fakerLibraries){
-                case 1:
-                    fullName = String.format("%s %s", faker.elderScrolls().firstName().toLowerCase(), faker.elderScrolls().lastName().toLowerCase());
-                    break;
-                case 2:
-                    fullName = faker.friends().character().toLowerCase();
-                    break;
-                case 3:
-                    fullName = faker.funnyName().name().toLowerCase();
-                    break;
-                case 4:
-                    fullName = faker.harryPotter().character().toLowerCase();
-                    break;
-                case 5:
-                    fullName = faker.howIMetYourMother().character().toLowerCase();
-                    break;
-                case 6:
-                    fullName = faker.lordOfTheRings().character().toLowerCase();
-                    break;
-                case 7:
-                    fullName = faker.rickAndMorty().character().toLowerCase();
-                    break;
-                case 8:
-                    fullName = faker.witcher().character().toLowerCase();
-                    break;
-            }
-        } while ( !fullName.contains(" ") || fullName.split(" ").length > 2 || fullName.replaceAll("[.\'ìí-]", ".").contains("."));
-
-        String[] splitName = fullName.split(" ");
+        String firstName = getRandomElement(FIRST_NAMES);
+        String lastName = getRandomElement(LAST_NAMES);
 
         LinkedHashMap<String, String> hashName = new LinkedHashMap<>();
-        hashName.put("firstName", splitName[0]);
-        hashName.put("lastName", splitName[1]);
-
+        hashName.put("firstName", firstName);
+        hashName.put("lastName", lastName);
         return hashName;
     }
 
     public String generateFirstName() {
-
         return generateFullName().get("firstName");
-
     }
 
     public String generateLastName() {
-
         return generateFullName().get("lastName");
-
     }
 
-    /**
-     * Generate address generates the following address lines: Address Line 1, Address Line 2, Address Line 3, Address Line 4, Town.
-     * Function then uses a hashmap to call the values using the following keys: addressLine1, addressLine2, addressLine3, addressLine4 and town.
-     * @return hash map of addresses.
-     */
-
     public LinkedHashMap<String, String> generateAddress() {
-
         LinkedHashMap<String, String> address = new LinkedHashMap<>();
 
-        address.put("addressLine1", faker.address().streetAddressNumber());
-        address.put("addressLine2", faker.address().streetName());
-        address.put("addressLine3", faker.address().cityName());
-        address.put("addressLine4", String.format("%s %s", faker.address().cityPrefix(), faker.address().city()));
-        do {
-            address.put("town", faker.address().country());
-        } while (address.get("town").length() > 30);
+        address.put("addressLine1", String.valueOf(random.nextInt(300) + 1));
+        address.put("addressLine2", getRandomElement(STREET_NAMES) + " " +
+                (random.nextBoolean() ? "street" : "road"));
+        address.put("addressLine3", getRandomElement(CITIES));
+        address.put("addressLine4", getRandomElement(CITIES) + " district");
+        address.put("town", getRandomElement(COUNTRIES));
+
         return address;
     }
 
     public String generateCompanyName() {
-
-        return String.format("%s, %s %s", faker.funnyName().name(), faker.company().name(), faker.company().suffix());
-
+        return String.format("%s %s %s",
+                getRandomElement(LAST_NAMES),
+                getRandomElement(BUSINESS_ACTIVITIES),
+                getRandomElement(COMPANY_TYPES));
     }
 
-    /**
-     * generateUniqueId returns an id containing a random mix of lowercase and uppercase letters, numbers and special characters
-     * with a minimum id size of 16 characters for security.
-     * @param sizeMin16
-     * @return uniqueId
-     */
-
     public String generateUniqueId(int sizeMin16) {
+        String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@£#$%^&*";
+        StringBuilder id = new StringBuilder();
+        int size = Math.max(16, sizeMin16);
 
-        String lowercaseLetters = "abcdefghijklmnopqrstuvwxyz";
-        String uppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        String numbers = "0123456789";
-        String specials = "!@£#$%^&*";
-        String id = "";
-
-        for (int i = 0; i < (i < 16 ? 16 : sizeMin16); i++) {
-            int choice = Int.random(1, 62);
-            id = id.concat(String.valueOf((lowercaseLetters + uppercaseLetters + numbers + specials).charAt(choice)));
+        for (int i = 0; i < size; i++) {
+            id.append(chars.charAt(random.nextInt(chars.length())));
         }
 
-        return id;
-
+        return id.toString();
     }
 
     public String generateNatureOfBusiness() {
-        return String.format("%s in %s", faker.company().bs(), faker.job().field());
+        return String.format("%s in %s",
+                getRandomElement(BUSINESS_ACTIVITIES),
+                getRandomElement(BUSINESS_SECTORS));
     }
 
-    public String letterify(String regex){
-        return fakeValuesService.letterify(regex);
+    public String letterify(String regex) {
+        return regex.chars()
+                .mapToObj(ch -> ch == '?' ?
+                        String.valueOf((char)('a' + random.nextInt(26))) :
+                        String.valueOf((char)ch))
+                .reduce("", String::concat);
     }
 
-    public String numerify(String regex){
-        return fakeValuesService.numerify(regex);
+    public String numerify(String regex) {
+        return regex.chars()
+                .mapToObj(ch -> ch == '#' ?
+                        String.valueOf(random.nextInt(10)) :
+                        String.valueOf((char)ch))
+                .reduce("", String::concat);
     }
 
-    public String bothify(String regex){
-        return fakeValuesService.bothify(regex);
+    public String bothify(String regex) {
+        return numerify(letterify(regex));
     }
 
     public String getRandomRealUKPostcode() {
         HashMap<String, String> headers = new HashMap<>();
-        return RestUtils.get("http://api.postcodes.io/random/postcodes", headers).extract().jsonPath().get("result.postcode");
+        return RestUtils.get("http://api.postcodes.io/random/postcodes", headers)
+                .extract()
+                .jsonPath()
+                .get("result.postcode");
     }
 }
