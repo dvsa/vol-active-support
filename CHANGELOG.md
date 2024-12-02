@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.0](https://github.com/dvsa/vol-active-support/compare/v2.4.4...v2.5.0) (2024-12-02)
+
+
+### Features
+
+* pull emails from mailpit ([0b9ae76](https://github.com/dvsa/vol-active-support/commit/0b9ae7661ffcd74405b6a71ba13dd1dd36e7c043))
+
 ## [2.4.4](https://github.com/dvsa/vol-active-support/compare/v2.4.3...v2.4.4) (2024-11-08)
 
 
