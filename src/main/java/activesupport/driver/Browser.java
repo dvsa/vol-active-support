@@ -20,7 +20,8 @@ public class Browser {
     private static String portNumber;
     private static String platform;
     private static String browserVersion;
-    protected static ThreadLocal<WebDriver> threadLocalDriver = new ThreadLocal<>();
+    protected static
+    ThreadLocal<WebDriver> threadLocalDriver = new ThreadLocal<>();
     private static final Logger LOGGER = LogManager.getLogger(Browser.class);
 
     static Local bsLocal = new Local();
@@ -76,17 +77,17 @@ public class Browser {
             try {
                 whichBrowser(System.getProperty("browser"));
             } catch (IllegalBrowserException | MalformedURLException e) {
-                LOGGER.error("Error setting up browser: ", e);
+                LOGGER.info("STACK TRACE: ".concat(e.toString()));
             }
         }
         return getDriver();
     }
 
-    public static WebDriver getDriver() {
+    public static WebDriver getDriver(){
         return threadLocalDriver.get();
     }
 
-    public static String hubURL() {
+    public static String hubURL(){
         gridURL = gridURL == null ? "http://localhost:4444/wd/hub" : gridURL;
         return gridURL;
     }
@@ -96,8 +97,6 @@ public class Browser {
         ChromeSetUp chrome = new ChromeSetUp();
         FirefoxSetUp firefox = new FirefoxSetUp();
         EdgeSetUp edge = new EdgeSetUp();
-
-        LOGGER.info("Setting up browser: " + browserName);
 
         switch (browserName) {
             case "chrome":
@@ -110,40 +109,36 @@ public class Browser {
                 driver = firefox.driver();
                 break;
             case "safari":
-                // Add Safari setup if needed
                 break;
             case "headless":
                 chrome.getChromeOptions().addArguments("--headless");
                 driver = chrome.driver();
                 break;
             case "chrome-proxy":
-                chrome.getChromeOptions().setProxy(ProxyConfig.dvsaProxy().setSslProxy(getIpAddress().concat(":" + getPortNumber())));
+                chrome.getChromeOptions().setProxy(ProxyConfig.dvsaProxy().setSslProxy(getIpAddress().concat(":"+getPortNumber())));
                 driver = chrome.driver();
                 break;
             case "firefox-proxy":
-                firefox.getOptions().setProxy(ProxyConfig.dvsaProxy().setSslProxy(getIpAddress().concat(":" + getPortNumber())));
+                firefox.getOptions().setProxy(ProxyConfig.dvsaProxy().setSslProxy(getIpAddress().concat(":"+getPortNumber())));
                 driver = firefox.driver();
                 break;
             default:
                 throw new IllegalBrowserException();
         }
         threadLocalDriver.set(driver);
-        LOGGER.info("Browser setup complete: " + browserName);
+        getDriver();
     }
 
     public static void closeBrowser() throws Exception {
-        if (getDriver() != null) {
-            LOGGER.info("Closing browser");
+        if (getDriver() != null)
             getDriver().quit();
-        }
         bsLocal.stop();
         threadLocalDriver.remove();
-        LOGGER.info("Browser closed and resources cleaned up");
     }
 
     public static boolean isBrowserOpen() {
-        boolean isOpen = getDriver() != null;
-        LOGGER.info("Checking if browser is open: " + isOpen);
+        boolean isOpen;
+        isOpen = getDriver() != null;
         return isOpen;
     }
 }
