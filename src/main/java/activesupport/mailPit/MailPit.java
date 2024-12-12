@@ -6,6 +6,8 @@ import activesupport.http.RestUtils;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ValidatableResponse;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +18,8 @@ import java.util.regex.Pattern;
 
 public class MailPit {
     private static final Semaphore rateLimiter = new Semaphore(3);
+
+    private static final Logger LOGGER = LogManager.getLogger(MailPit.class);
     private static final int ACQUIRE_TIMEOUT = 30;
     private volatile ValidatableResponse response;
     private String ip;
@@ -29,43 +33,55 @@ public class MailPit {
 
     public String retrieveTempPassword(String emailAddress) {
         try {
+            LOGGER.info("Attempting to acquire rate limiter permit");
             if (!rateLimiter.tryAcquire(30L, TimeUnit.SECONDS)) {
                 throw new IllegalStateException("Timeout waiting for rate limiter permit");
-            }
-            try {
-                int attempts = 0;
-                IllegalStateException lastException = null;
-                while(attempts < MAX_RETRIES) {
-                    try {
-                        TimeUnit.SECONDS.sleep(3L);
-                        attempts++;
-                        Map<String, String> queryParams = new HashMap<>();
-                        queryParams.put("q", emailAddress + " : Your temporary password");
-                        String url = String.format("%s/api/v1/messages", this.getIp());
-                        this.response = RestUtils.getWithQueryParams(url, queryParams, this.getHeaders());
-                        String responseBody = this.response.extract().asString();
-                        if (!StringUtils.isEmpty(responseBody) && responseBody.contains("messages")) {
-                            JsonPath jsonPath = new JsonPath(responseBody);
-                            if (jsonPath.getList("messages") != null && !jsonPath.getList("messages").isEmpty()) {
-                                String snippetPath = "messages.find { msg -> msg.Subject.startsWith('" + emailAddress + "') && msg.Subject.contains('temporary password') }.Snippet";
-                                String snippet = jsonPath.getString(snippetPath);
-                                if (snippet != null) {
-                                    String rawPassword = extractRawPassword(snippet);
-                                    return prepareForQuotedPrintable(rawPassword);
+            } else {
+                try {
+                    int attempts = 0;
+                    IllegalStateException lastException = null;
+
+                    while (attempts < 10) {
+                        try {
+                            LOGGER.info("Attempt {}: Sleeping for 3 seconds before making request", attempts + 1);
+                            TimeUnit.SECONDS.sleep(3L);
+                            ++attempts;
+                            Map<String, String> queryParams = new HashMap<>();
+                            queryParams.put("q", emailAddress + " : Your temporary password");
+                            String url = String.format("%s/api/v1/messages", this.getIp());
+                            LOGGER.info("Making request to URL: {}", url);
+                            this.response = RestUtils.getWithQueryParams(url, queryParams, this.getHeaders());
+                            String responseBody = this.response.extract().asString();
+                            LOGGER.info("Response received: {}", responseBody);
+                            if (!StringUtils.isEmpty(responseBody) && responseBody.contains("messages")) {
+                                JsonPath jsonPath = new JsonPath(responseBody);
+                                if (jsonPath.getList("messages") != null && !jsonPath.getList("messages").isEmpty()) {
+                                    String snippetPath = "messages.find { msg -> msg.Subject.startsWith('" + emailAddress + "') && msg.Subject.contains('temporary password') }.Snippet";
+                                    String snippet = jsonPath.getString(snippetPath);
+                                    LOGGER.info("Snippet found: {}", snippet);
+                                    if (snippet != null) {
+                                        String rawPassword = extractRawPassword(snippet);
+                                        String var11 = prepareForQuotedPrintable(rawPassword);
+                                        LOGGER.info("Password retrieved successfully");
+                                        return var11;
+                                    }
                                 }
                             }
+                        } catch (Exception var16) {
+                            LOGGER.error("Error processing response on attempt {}: {}", attempts, var16.getMessage());
+                            lastException = new IllegalStateException("Error processing response: " + var16.getMessage(), var16);
                         }
-                    } catch (Exception e) {
-                        lastException = new IllegalStateException("Error processing response: " + e.getMessage(), e);
                     }
+
+                    throw new IllegalStateException("Failed to retrieve password after 10 attempts for " + emailAddress, lastException);
+                } finally {
+                    LOGGER.info("Releasing rate limiter permit");
+                    rateLimiter.release();
                 }
-                throw new IllegalStateException("Failed to retrieve password after " + MAX_RETRIES + " attempts for " + emailAddress, lastException);
-            } finally {
-                rateLimiter.release();
             }
-        } catch (InterruptedException e) {
+        } catch (InterruptedException var18) {
             Thread.currentThread().interrupt();
-            throw new IllegalStateException("Interrupted while waiting for rate limiter", e);
+            throw new IllegalStateException("Interrupted while waiting for rate limiter", var18);
         }
     }
 
