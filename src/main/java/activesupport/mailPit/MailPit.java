@@ -51,8 +51,8 @@ public class MailPit {
                             String url = String.format("%s/api/v1/messages", this.getIp());
                             LOGGER.info("Making request to URL: {}", url);
                             this.response = RestUtils.getWithQueryParams(url, queryParams, this.getHeaders());
+                            LOGGER.info("Response received: {}", response.extract().statusCode());
                             String responseBody = this.response.extract().asString();
-                            LOGGER.info("Response received: {}", responseBody);
                             if (!StringUtils.isEmpty(responseBody) && responseBody.contains("messages")) {
                                 JsonPath jsonPath = new JsonPath(responseBody);
                                 if (jsonPath.getList("messages") != null && !jsonPath.getList("messages").isEmpty()) {
