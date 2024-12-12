@@ -23,7 +23,7 @@ public class MailPit {
     private static final int MAX_RETRIES = 10;
 
     public MailPit() {
-        this.ip = "https://selenium-mail.olcs.dev-dvsacloud.uk:8025";
+        this.ip = "0.0.0.0:8025";
         this.port = "8025";
     }
 
