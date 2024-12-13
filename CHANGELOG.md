@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.5](https://github.com/dvsa/vol-active-support/compare/v2.5.4...v2.5.5) (2024-12-13)
+
+
+### Bug Fixes
+
+* remove logging ([a6a8776](https://github.com/dvsa/vol-active-support/commit/a6a8776feaca4bb1eafce7b5f94a21094ef48c91))
+
 ## [2.5.4](https://github.com/dvsa/vol-active-support/compare/v2.5.3...v2.5.4) (2024-12-12)
 
 
