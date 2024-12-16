@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.6](https://github.com/dvsa/vol-active-support/compare/v2.5.5...v2.5.6) (2024-12-16)
+
+
+### Bug Fixes
+
+* bump sel back up ([68540ef](https://github.com/dvsa/vol-active-support/commit/68540ef64620b75bd015f4e829f3795f04a42932))
+
 ## [2.5.5](https://github.com/dvsa/vol-active-support/compare/v2.5.4...v2.5.5) (2024-12-13)
 
 
