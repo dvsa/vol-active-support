@@ -32,6 +32,7 @@ public class EdgeSetUp {
         edgeOptions.setAcceptInsecureCerts(true);
         edgeOptions.addArguments("--disable-gpu");
         edgeOptions.addArguments("--disable-dev-shm-usage");
+        edgeOptions.setCapability("webSocketUrl", true);
         if (getBrowserVersion() == null) {
             driver = new EdgeDriver(edgeOptions);
         } else {
