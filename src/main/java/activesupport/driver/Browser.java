@@ -4,9 +4,7 @@ import activesupport.IllegalBrowserException;
 import activesupport.config.Configuration;
 import activesupport.driver.Parallel.*;
 import activesupport.proxy.ProxyConfig;
-import com.browserstack.local.Local;
 import org.openqa.selenium.WebDriver;
-
 import java.net.MalformedURLException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,7 +22,6 @@ public class Browser {
     ThreadLocal<WebDriver> threadLocalDriver = new ThreadLocal<>();
     private static final Logger LOGGER = LogManager.getLogger(Browser.class);
 
-    static Local bsLocal = new Local();
 
     public static Configuration configuration = new Configuration();
 
@@ -132,13 +129,15 @@ public class Browser {
     public static void closeBrowser() throws Exception {
         if (getDriver() != null)
             getDriver().quit();
-        bsLocal.stop();
-        threadLocalDriver.remove();
     }
 
     public static boolean isBrowserOpen() {
         boolean isOpen;
         isOpen = getDriver() != null;
         return isOpen;
+    }
+
+    public static void removeLocalDriverThread() {
+        threadLocalDriver.remove();
     }
 }

@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Optional;
 
 public class BrowserStack {
+
+    //DEPRECATED
     private static final Logger LOGGER = LogManager.getLogger(BrowserStack.class);
     static Local browserStack = new Local();
 
