@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.7](https://github.com/dvsa/vol-active-support/compare/v2.5.6...v2.5.7) (2024-12-17)
+
+
+### Bug Fixes
+
+* new teardown method ([1f2a6a4](https://github.com/dvsa/vol-active-support/commit/1f2a6a49e9e167402c323170ccb448ea1091993b))
+
 ## [2.5.6](https://github.com/dvsa/vol-active-support/compare/v2.5.5...v2.5.6) (2024-12-16)
 
 
