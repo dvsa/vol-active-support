@@ -5,30 +5,30 @@ ignore:
   SNYK-JAVA-DOM4J-174153:
     - '*':
         reason: None Given
-        expires: 2024-12-07T13:36:08.904Z
+        expires: 2025-12-07T13:36:08.904Z
         created: 2024-06-11T07:36:08.910Z
   SNYK-JAVA-DOM4J-2812975:
     - '*':
         reason: None Given
-        expires: 2024-12-07T13:52:40.223Z
+        expires: 2025-12-07T13:52:40.223Z
         created: 2024-06-11T07:52:40.231Z
 
   SNYK-JAVA-SOFTWAREAMAZONION-6153869:
     - '*':
         reason: None Given
-        expires: 2024-12-07T13:53:47.241Z
+        expires: 2025-12-07T13:53:47.241Z
         created: 2024-06-11T07:53:47.250Z
 
   SNYK-JAVA-COMMONSIO-8161190:
     - '*':
         reason: No direct upgrade available
-        expires: 2024-12-07T13:53:47.241Z
+        expires: 2025-12-07T13:53:47.241Z
         created: 2023-10-25T07:53:47.250Z
 
   SNYK-JAVA-IONETTY-5725787:
     - '*':
         reason: No direct upgrade available
-        expires: 2024-12-07T13:53:47.241Z
+        expires: 2025-12-07T13:53:47.241Z
         created: 2023-10-25T07:53:47.250Z
 
   SNYK-JAVA-IONETTY-6483812:
