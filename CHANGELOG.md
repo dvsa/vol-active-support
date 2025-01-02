@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.8](https://github.com/dvsa/vol-active-support/compare/v2.5.7...v2.5.8) (2025-01-02)
+
+
+### Miscellaneous Chores
+
+* bump to 2.5.8 ([67c0565](https://github.com/dvsa/vol-active-support/commit/67c056596d0f4b1d4a40591c32ffef6a3263cd45))
+
 ## [2.5.7](https://github.com/dvsa/vol-active-support/compare/v2.5.6...v2.5.7) (2024-12-17)
 
 
