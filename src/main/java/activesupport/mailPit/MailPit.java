@@ -9,8 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.*;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -113,6 +113,44 @@ public class MailPit {
         return result.toString();
     }
 
+    public synchronized String retrieveEmailRawContent(String emailAddress, String subjectContains) {
+        try {
+            if (!rateLimiter.tryAcquire(30L, TimeUnit.SECONDS)) {
+                throw new IllegalStateException("Timeout waiting for rate limiter permit");
+            } else {
+                try {
+                    Map<String, String> queryParams = new HashMap<>();
+                    queryParams.put("q", emailAddress + " : " + subjectContains);
+                    String searchUrl = String.format("%s/api/v1/messages?limit=2048", this.getIp());
+                    LOGGER.info("Search URL: {}", searchUrl);
+                    this.response = RestUtils.getWithQueryParams(searchUrl, queryParams, this.getHeaders());
+                    String responseBody = this.response.extract().asString();
+                    if (StringUtils.isNotEmpty(responseBody)) {
+                        JsonPath jsonPath = new JsonPath(responseBody);
+                        List<Map<String, Object>> messages = jsonPath.getList("messages");
+                        for (Map<String, Object> message : messages) {
+                            String subject = (String) message.get("Subject");
+                            if (subject != null && subject.contains(subjectContains)) {
+                                String messageId = (String) message.get("ID");
+                                LOGGER.info("Found message ID: {}", messageId);
+                                String rawUrl = String.format("%s/api/v1/message/%s/raw", this.getIp(), messageId);
+                                LOGGER.info("Raw content URL: {}", rawUrl);
+                                this.response = RestUtils.get(rawUrl, this.getHeaders());
+                                return this.response.extract().asString();
+                            }
+                        }
+                    }
+                } finally {
+                    rateLimiter.release();
+                }
+                throw new IllegalStateException("Email content not found for the specified email address and subject.");
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException("Interrupted while waiting for rate limiter", e);
+        }
+    }
+
     public String retrieveEmailContent(String emailAddress, String subjectContains) {
         try {
             if (!rateLimiter.tryAcquire(ACQUIRE_TIMEOUT, TimeUnit.SECONDS)) {
@@ -149,19 +187,17 @@ public class MailPit {
     }
 
     public String retrieveTmAppLink(String emailAddress) throws MissingRequiredArgument {
-        String emailContent = retrieveEmailContent(emailAddress, "A Transport Manager has submitted their details for review");
-        Pattern pattern = Pattern.compile("(https?://[\\w\\S]+)");
-        Matcher matcher = pattern.matcher(emailContent);
-        if (matcher.find()) {
-            return matcher.group(1);
+        String emailContent = retrieveEmailRawContent(emailAddress, "A Transport Manager has submitted their details for review");
+        if (emailContent == null) {
+            throw new IllegalStateException("Email content not found");
         }
-        throw new IllegalStateException("TM App link not found in email");
+        return new Scanner(emailContent).useDelimiter("\\A").next();
     }
 
     public String retrievePasswordResetLink(@NotNull String emailAddress) throws MissingRequiredArgument {
         try {
             TimeUnit.SECONDS.sleep(10);
-            String emailContent = retrieveEmailContent(emailAddress, "Reset your password");
+            String emailContent = retrieveEmailRawContent(emailAddress, "Reset your password");
             Pattern pattern = Pattern.compile("(https?://[\\w\\S]+)");
             Matcher matcher = pattern.matcher(emailContent);
             if (matcher.find()) {
