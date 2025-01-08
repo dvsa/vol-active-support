@@ -130,7 +130,7 @@ public class MailPit {
                         List<Map<String, Object>> messages = jsonPath.getList("messages");
                         for (Map<String, Object> message : messages) {
                             String subject = (String) message.get("Subject");
-                            if (subject != null && subject.contains(subjectContains)) {
+                            if (subject != null && subject.matches(emailAddress +" : "+ subjectContains)) {
                                 String messageId = (String) message.get("ID");
                                 LOGGER.info("Found message ID: {}", messageId);
                                 String rawUrl = String.format("%s/api/v1/message/%s/raw", this.getIp(), messageId);
