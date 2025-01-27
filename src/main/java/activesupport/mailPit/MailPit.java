@@ -212,7 +212,7 @@ public class MailPit {
 
     public String retrieveUsernameInfo(String emailAddress) throws MissingRequiredArgument {
         String emailContent = retrieveEmailContent(emailAddress, "Your account information");
-        Pattern pattern = Pattern.compile("(\\b\\w+[0-9]+[\\w0-9]*\\b)");
+        Pattern pattern = Pattern.compile("(\\b[a-zA-Z]+[0-9]+[a-zA-Z0-9]*\\b)");
         Matcher matcher = pattern.matcher(emailContent);
         if (matcher.find()) {
             return matcher.group(1);
