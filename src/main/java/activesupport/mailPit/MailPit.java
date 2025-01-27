@@ -194,11 +194,11 @@ public class MailPit {
         return new Scanner(emailContent).useDelimiter("\\A").next();
     }
 
-    public String retrievePasswordResetLink(@NotNull String emailAddress) throws MissingRequiredArgument {
+    public String retrievePasswordResetLink(@NotNull String emailAddress, long sleepTime) throws MissingRequiredArgument {
         try {
-            TimeUnit.SECONDS.sleep(10);
+            TimeUnit.SECONDS.sleep(sleepTime);
             String emailContent = retrieveEmailRawContent(emailAddress, "Reset your password");
-            Pattern pattern = Pattern.compile("(https?://[\\w\\S]+)");
+            Pattern pattern = Pattern.compile("href=3D\"([^\"]+)");
             Matcher matcher = pattern.matcher(emailContent);
             if (matcher.find()) {
                 return matcher.group(1);
@@ -212,7 +212,7 @@ public class MailPit {
 
     public String retrieveUsernameInfo(String emailAddress) throws MissingRequiredArgument {
         String emailContent = retrieveEmailContent(emailAddress, "Your account information");
-        Pattern pattern = Pattern.compile("username is: ([\\w\\S]+)");
+        Pattern pattern = Pattern.compile("(\\b\\w+[0-9]+[\\w0-9]*\\b)");
         Matcher matcher = pattern.matcher(emailContent);
         if (matcher.find()) {
             return matcher.group(1);
