@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.12](https://github.com/dvsa/vol-active-support/compare/v2.5.11...v2.5.12) (2025-01-31)
+
+
+### Bug Fixes
+
+* update regex for username ([549f7e9](https://github.com/dvsa/vol-active-support/commit/549f7e9638e07d945403128729acc4c046b19c14))
+
 ## [2.5.11](https://github.com/dvsa/vol-active-support/compare/v2.5.10...v2.5.11) (2025-01-27)
 
 
