@@ -211,8 +211,8 @@ public class MailPit {
     }
 
     public String retrieveUsernameInfo(String emailAddress) throws MissingRequiredArgument {
-        String emailContent = retrieveEmailContent(emailAddress, "Your account information");
-        Pattern pattern = Pattern.compile("(\\b[a-zA-Z]+[0-9]+[a-zA-Z0-9]*\\b)");
+        String emailContent = retrieveEmailRawContent(emailAddress, "Your account information");
+        Pattern pattern = Pattern.compile("It=E2=80=99s:\\s*([a-zA-Z0-9]+)");
         Matcher matcher = pattern.matcher(emailContent);
         if (matcher.find()) {
             return matcher.group(1);
