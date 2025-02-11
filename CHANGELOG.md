@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.5.13](https://github.com/dvsa/vol-active-support/compare/v2.5.12...v2.5.13) (2025-02-11)
+
+
+### Bug Fixes
+
+* pulling in main ([a163ad3](https://github.com/dvsa/vol-active-support/commit/a163ad305e80ed9d6a519089f80f5b2fa922405d))
+* updated dependencies for selenium and aws ([7b350c8](https://github.com/dvsa/vol-active-support/commit/7b350c80de9faec6235ca6886c5aaecc7f23daee))
+* updated dependencies for selenium,aws and dependencies with critical vulnerabilities ([6050f0e](https://github.com/dvsa/vol-active-support/commit/6050f0ed13550b679d8bae921d006800a5f3d426))
+
 ## [2.5.12](https://github.com/dvsa/vol-active-support/compare/v2.5.11...v2.5.12) (2025-01-31)
 
 
