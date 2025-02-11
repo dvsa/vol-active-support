@@ -4,13 +4,13 @@
 
     <groupId>org.dvsa.testing.lib</groupId>
     <artifactId>active-support</artifactId>
-    <version>2.5.12</version>
+    <version>2.5.13</version>
 
     <properties>
         <annotations.version>24.0.1</annotations.version>
         <autoIt.version>0.2.44</autoIt.version>
-        <aws-java-sdk-s3.version>1.12.610</aws-java-sdk-s3.version>
-        <aws-secrets-manager>1.12.610</aws-secrets-manager>
+        <aws-java-sdk-s3.version>1.12.780</aws-java-sdk-s3.version>
+        <aws-secrets-manager>1.12.780</aws-secrets-manager>
         <dbunit.version>2.7.3</dbunit.version>
         <httpclient.version>5.2.1</httpclient.version>
         <jackson-annotations.version>2.16.0</jackson-annotations.version>
@@ -28,7 +28,7 @@
         <mysql-connector-java.version>9.0.0</mysql-connector-java.version>
         <java-native-access.version>5.14.0</java-native-access.version>
         <rest-assured.version>5.4.0</rest-assured.version>
-        <selenium.version>4.27.0</selenium.version>
+        <selenium.version>4.28.1</selenium.version>
         <log4j.version>2.17.1</log4j.version>
         <og4j12.version>2.17.1</og4j12.version>
         <typesafe.version>1.4.3</typesafe.version>
@@ -39,10 +39,10 @@
         <browserstack.version>1.1.1</browserstack.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <commons-collections.version>3.2.2</commons-collections.version>
-        <dom4j.version>1.6.1</dom4j.version>
+        <dom4j.version>2.1.4</dom4j.version>
         <org.apache.commons.commons-text.version>1.10.0</org.apache.commons.commons-text.version>
         <org.postgresql.version>42.3.9</org.postgresql.version>
-        <software.amazon.ion.version>1.0.2</software.amazon.ion.version>
+        <com.amazon.ion.version>1.11.10</com.amazon.ion.version>
     </properties>
 
     <build>
@@ -80,7 +80,7 @@
             <version>${commons-collections.version}</version>
         </dependency>
         <dependency>
-            <groupId>dom4j</groupId>
+            <groupId>org.dom4j</groupId>
             <artifactId>dom4j</artifactId>
             <version>${dom4j.version}</version>
         </dependency>
@@ -95,9 +95,9 @@
             <version>${org.postgresql.version}</version>
         </dependency>
         <dependency>
-            <groupId>software.amazon.ion</groupId>
+            <groupId>com.amazon.ion</groupId>
             <artifactId>ion-java</artifactId>
-            <version>${software.amazon.ion.version}</version>
+            <version>${com.amazon.ion.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents.client5</groupId>
