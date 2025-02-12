@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.14](https://github.com/dvsa/vol-active-support/compare/v2.5.13...v2.5.14) (2025-02-12)
+
+
+### Bug Fixes
+
+* revert condition to check for email contents ([d789508](https://github.com/dvsa/vol-active-support/commit/d789508ea49199bac6ae969176dac5b230d126d7))
+
 ## [2.5.13](https://github.com/dvsa/vol-active-support/compare/v2.5.12...v2.5.13) (2025-02-11)
 
 
