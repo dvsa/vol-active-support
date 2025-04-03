@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.6.0](https://github.com/dvsa/vol-active-support/compare/v2.5.14...v2.6.0) (2025-04-03)
+
+
+### Features
+
+* bump up selenium to 4.29 ([c335532](https://github.com/dvsa/vol-active-support/commit/c335532b94384a86b0f3b86014fa72648184f159))
+* bump up selenium to 4.30 ([1bad8f1](https://github.com/dvsa/vol-active-support/commit/1bad8f16754c6daab2a5164c19d6835eb50605f4))
+* latest ([326b4b0](https://github.com/dvsa/vol-active-support/commit/326b4b03847f09c47c0677b0d864d2dd943cec5c))
+
 ## [2.5.14](https://github.com/dvsa/vol-active-support/compare/v2.5.13...v2.5.14) (2025-02-12)
 
 
