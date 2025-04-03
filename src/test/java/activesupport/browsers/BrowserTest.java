@@ -7,7 +7,7 @@ import org.mockserver.integration.ClientAndServer;
 import org.mockserver.model.HttpRequest;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
-import org.openqa.selenium.devtools.v85.network.Network;
+import org.openqa.selenium.devtools.v134.network.Network;
 
 import java.util.Optional;
 
