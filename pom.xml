@@ -28,7 +28,7 @@
         <mysql-connector-java.version>9.0.0</mysql-connector-java.version>
         <java-native-access.version>5.14.0</java-native-access.version>
         <rest-assured.version>5.4.0</rest-assured.version>
-        <selenium.version>4.28.1</selenium.version>
+        <selenium.version>4.29.0</selenium.version>
         <log4j.version>2.17.1</log4j.version>
         <og4j12.version>2.17.1</og4j12.version>
         <typesafe.version>1.4.3</typesafe.version>
