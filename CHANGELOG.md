@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.7.0](https://github.com/dvsa/vol-active-support/compare/v2.6.0...v2.7.0) (2025-04-07)
+
+
+### Features
+
+* remove jenkins client ([e09c861](https://github.com/dvsa/vol-active-support/commit/e09c861ebd55d70ca6919a7a3bbafabd6c3b0693))
+* remove jenkins client ([f555838](https://github.com/dvsa/vol-active-support/commit/f555838d36c958e0fe1bbe42f1e62ceba0a8ec7e))
+
 ## [2.6.0](https://github.com/dvsa/vol-active-support/compare/v2.5.14...v2.6.0) (2025-04-03)
 
 
