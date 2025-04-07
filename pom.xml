@@ -19,7 +19,6 @@
         <jacob.version>1.14.3</jacob.version>
         <jansi.version>2.4.1</jansi.version>
         <javax.mail.version>2.1.2</javax.mail.version>
-        <jenkins-client.version>0.3.8</jenkins-client.version>
         <jsch.version>0.1.55</jsch.version>
         <junit.version>5.10.1</junit.version>
         <maven.compiler.version>3.8.1</maven.compiler.version>
@@ -168,11 +167,6 @@
             </exclusions>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.offbytwo.jenkins/jenkins-client -->
-        <dependency>
-            <groupId>com.offbytwo.jenkins</groupId>
-            <artifactId>jenkins-client</artifactId>
-            <version>${jenkins-client.version}</version>
-        </dependency>
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
