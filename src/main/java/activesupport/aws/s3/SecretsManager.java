@@ -18,6 +18,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class SecretsManager {
 
+    private static final Logger LOGGER = LogManager.getLogger(SecretsManager.class);
+
     public static String secretsId = getSecretName();
 
     private static String getSecretName() {
@@ -38,7 +40,6 @@ public class SecretsManager {
         }
     }
 
-    private static final Logger LOGGER = LogManager.getLogger(SecretsManager.class);
     private static final Map<String, String> cache = new ConcurrentHashMap<>();
     private static final AWSSecretsManager secretsManager = awsClientSetup();
 
