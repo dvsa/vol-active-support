@@ -3,6 +3,10 @@ package activesupport.aws.s3;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.secretsmanager.AWSSecretsManager;
+import com.amazonaws.services.securitytoken.AWSSecurityTokenService;
+import com.amazonaws.services.securitytoken.AWSSecurityTokenServiceClientBuilder;
+import com.amazonaws.services.securitytoken.model.GetCallerIdentityRequest;
+import com.amazonaws.services.securitytoken.model.GetCallerIdentityResult;
 import com.amazonaws.services.secretsmanager.AWSSecretsManagerClientBuilder;
 import com.amazonaws.services.secretsmanager.model.*;
 import org.apache.logging.log4j.LogManager;
@@ -24,9 +28,9 @@ public class SecretsManager {
     private static String getAccountId() {
         try {
             GetCallerIdentityRequest request = new GetCallerIdentityRequest();
-            GetCallerIdentityResult response = AWSSecretsManagerClientBuilder
-                    .defaultClient()
-                    .getCallerIdentity(request);
+            AWSSecurityTokenService stsClient = AWSSecurityTokenServiceClientBuilder
+                    .defaultClient();
+            GetCallerIdentityResult response = stsClient.getCallerIdentity(request);
             return response.getAccount();
         } catch (Exception e) {
             LOGGER.error("Failed to retrieve AWS account ID: " + e.getMessage());
