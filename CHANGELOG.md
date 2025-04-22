@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.7.1](https://github.com/dvsa/vol-active-support/compare/v2.7.0...v2.7.1) (2025-04-22)
+
+
+### Bug Fixes
+
+* automatically pull secret based on name ending and authenticated account ([e624c62](https://github.com/dvsa/vol-active-support/commit/e624c629dffab6051fb8a11917b66ca586182ae9))
+* automatically pull secret based on name ending and authenticated… ([ec237b7](https://github.com/dvsa/vol-active-support/commit/ec237b79e97130d48709234559ddd081a1a3ab46))
+* reordering Logger static declaration ([a1d45b3](https://github.com/dvsa/vol-active-support/commit/a1d45b38aad113335898f4f7aeebf62524d3fde8))
+* resolve issues with getting accountID from aws ([bd20842](https://github.com/dvsa/vol-active-support/commit/bd2084291d743ab88991367f29c91f4f47ee85a0))
+
 ## [2.7.0](https://github.com/dvsa/vol-active-support/compare/v2.6.0...v2.7.0) (2025-04-07)
 
 
