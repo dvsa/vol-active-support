@@ -33,6 +33,7 @@ public class SecretsManager {
             throw new RuntimeException("Unable to determine AWS account ID", e);
         }
     }
+
     private static final Logger LOGGER = LogManager.getLogger(SecretsManager.class);
     private static final Map<String, String> cache = new ConcurrentHashMap<>();
     private static final AWSSecretsManager secretsManager = awsClientSetup();
@@ -83,8 +84,10 @@ public class SecretsManager {
                     .withSecretString(String.format("{password:%s}", secretValue));
             secretsManager.updateSecret(updateSecretRequest);
         } catch (AWSSecretsManagerException e) {
-            LOGGER.info(" You've either entered an Invalid name. 1) Must be a valid name containing alphanumeric characters, or any of the following: -/_+=.@!" +
-                    "or 2)The secretId '" + secretId + "' does not exist");
+            LOGGER.info(
+                    " You've either entered an Invalid name. 1) Must be a valid name containing alphanumeric characters, or any of the following: -/_+=.@!"
+                            +
+                            "or 2)The secretId '" + secretId + "' does not exist");
         }
     }
 
