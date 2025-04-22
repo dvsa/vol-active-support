@@ -14,7 +14,25 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class SecretsManager {
 
-    public static String secretsId = "OLCS-DEVAPPCI-DEVCI-BATCHTESTRUNNER-MAIN-APPLICATION";
+    public static String secretsId = getSecretName();
+
+    private static String getSecretName() {
+        String accountId = getAccountId();
+        return String.format("%sRUNNER-MAIN-APPLICATION", accountId);
+    }
+
+    private static String getAccountId() {
+        try {
+            GetCallerIdentityRequest request = new GetCallerIdentityRequest();
+            GetCallerIdentityResult response = AWSSecretsManagerClientBuilder
+                    .defaultClient()
+                    .getCallerIdentity(request);
+            return response.getAccount();
+        } catch (Exception e) {
+            LOGGER.error("Failed to retrieve AWS account ID: " + e.getMessage());
+            throw new RuntimeException("Unable to determine AWS account ID", e);
+        }
+    }
     private static final Logger LOGGER = LogManager.getLogger(SecretsManager.class);
     private static final Map<String, String> cache = new ConcurrentHashMap<>();
     private static final AWSSecretsManager secretsManager = awsClientSetup();
