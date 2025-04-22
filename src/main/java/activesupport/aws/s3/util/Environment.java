@@ -21,6 +21,14 @@ public class Environment {
             case "reg":
                 envEnum = EnvironmentType.REGRESSION;
                 break;
+            case "prep":
+            case "pp":
+            case "pre":
+                envEnum = EnvironmentType.PREPRODUCTION;
+                break;
+            case "prod":
+                envEnum = EnvironmentType.PRODUCTION;
+                break;
             default:
                 throw new IllegalArgumentException(Output.printColoredLog(String.format("[ERROR] %s does not match up to any environment")));
         }
@@ -41,6 +49,12 @@ public class Environment {
                 break;
             case REGRESSION:
                 name = "reg";
+                break;
+            case PREPRODUCTION:
+                name = "prep";
+                break;
+            case PRODUCTION:
+                name = "prod";
                 break;
             default:
                 String errorMessage = String.format(

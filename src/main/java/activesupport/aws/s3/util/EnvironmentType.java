@@ -4,5 +4,7 @@ public enum EnvironmentType {
     QUALITY_ASSURANCE,
     DAILY_ASSURANCE,
     DEVELOP,
-    REGRESSION
+    REGRESSION,
+    PREPRODUCTION,
+    PRODUCTION
 }
