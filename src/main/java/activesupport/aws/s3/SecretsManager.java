@@ -8,6 +8,9 @@ import com.amazonaws.services.secretsmanager.model.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
+import activesupport.system.Properties;
+import activesupport.aws.s3.util.Environment;
+import activesupport.aws.s3.util.EnvironmentType;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,6 +18,28 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SecretsManager {
 
     private static final Logger LOGGER = LogManager.getLogger(SecretsManager.class);
+    
+    private static String getSecretId() {
+        String env = Properties.get("env", true);
+        EnvironmentType envType;
+        
+        try {
+            envType = Environment.enumType(env);
+        } catch (IllegalArgumentException e) {
+            // Default to development environment if unknown
+            LOGGER.warn("Unknown environment: " + env + " - using default secret ID");
+            return "OLCS-DEVAPPCI-DEVCI-BATCHTESTRUNNER-MAIN-APPLICATION";
+        }
+        
+        // Use CI instead of DEVCI for preproduction and production environments
+        if (envType == EnvironmentType.PREPRODUCTION || envType == EnvironmentType.PRODUCTION) {
+            return "OLCS-DEVAPPCI-CI-BATCHTESTRUNNER-MAIN-APPLICATION";
+        } else {
+            return "OLCS-DEVAPPCI-DEVCI-BATCHTESTRUNNER-MAIN-APPLICATION";
+        }
+    }
+
+    public static final String secretsId = getSecretId();
 
     public static String secretsId = getSecretName();
 
