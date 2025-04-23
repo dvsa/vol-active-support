@@ -24,7 +24,10 @@ public class SecretsManager {
         ListSecretsResult listSecretsResult = secretsManager.listSecrets(listSecretsRequest);
 
         for (SecretListEntry secret : listSecretsResult.getSecretList()) {
-            if (secret.getName().endsWith("RUNNER-MAIN-APPLICATION")) {
+            if (secret.getName().trim().equalsIgnoreCase("RUNNER-MAIN-APPLICATION")) {
+                LOGGER.info("Secret found: " + secret.getName());
+                LOGGER.info("Secret ARN: " + secret.getARN());
+                LOGGER.info("Secret Description: " + secret.getDescription());
                 return secret.getName();
             }
         }
@@ -40,7 +43,7 @@ public class SecretsManager {
         return AWSSecretsManagerClientBuilder
                 .standard()
                 .withCredentials(new DefaultAWSCredentialsProviderChain())
-                .withRegion(region)
+                .withRegion(region.getName()) // Ensure the region is explicitly set as a string
                 .build();
     }
 
