@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.3](https://github.com/dvsa/vol-active-support/compare/v2.7.2...v2.7.3) (2025-04-23)
+
+
+### Bug Fixes
+
+* remove duplciated var ([55adcf5](https://github.com/dvsa/vol-active-support/commit/55adcf581f2bb1558af2ddeb56308e02e9407294))
+
 ## [2.7.2](https://github.com/dvsa/vol-active-support/compare/v2.7.1...v2.7.2) (2025-04-23)
 
 
