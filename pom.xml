@@ -10,7 +10,7 @@
         <annotations.version>24.0.1</annotations.version>
         <autoIt.version>0.2.44</autoIt.version>
         <aws-java-sdk-s3.version>1.12.781</aws-java-sdk-s3.version>
-        <aws-secrets-manager>1.12.780</aws-secrets-manager>
+        <aws-secrets-manager>1.12.781</aws-secrets-manager>
         <dbunit.version>2.7.3</dbunit.version>
         <httpclient.version>5.2.1</httpclient.version>
         <jackson-annotations.version>2.16.0</jackson-annotations.version>
@@ -42,7 +42,7 @@
         <org.apache.commons.commons-text.version>1.10.0</org.apache.commons.commons-text.version>
         <org.postgresql.version>42.3.9</org.postgresql.version>
         <com.amazon.ion.version>1.11.10</com.amazon.ion.version>
-        <java.sdk.core.version>1.12.530</java.sdk.core.version>
+        <java.sdk.core.version>1.12.781</java.sdk.core.version>
     </properties>
 
     <build>
