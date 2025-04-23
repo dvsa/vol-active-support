@@ -58,7 +58,7 @@ public class SecretsManager {
 
         try {
             for (SecretListEntry secret : listSecretsResult.getSecretList()) {
-                if (secret.getName().trim().equalsIgnoreCase("RUNNER-MAIN-APPLICATION")) {
+                if (secret.getName().trim().equalsIgnoreCase().endsWith("RUNNER-MAIN-APPLICATION")) {
                     LOGGER.info("Secret found: " + secret.getName());
                     LOGGER.info("Secret ARN: " + secret.getARN());
                     LOGGER.info("Secret Description: " + secret.getDescription());
