@@ -40,6 +40,23 @@ public class SecretsManager {
     }
 
     public static final String secretsId = getSecretId();
+
+    public static String secretsId = getSecretName();
+
+    private static String getSecretName() {
+        AWSSecretsManager secretsManager = awsClientSetup();
+        ListSecretsRequest listSecretsRequest = new ListSecretsRequest();
+        ListSecretsResult listSecretsResult = secretsManager.listSecrets(listSecretsRequest);
+
+        for (SecretListEntry secret : listSecretsResult.getSecretList()) {
+            if (secret.getName().endsWith("RUNNER-MAIN-APPLICATION")) {
+                return secret.getName();
+            }
+        }
+
+        throw new RuntimeException("No secret found ending with RUNNER-MAIN-APPLICATION");
+    }
+
     private static final Map<String, String> cache = new ConcurrentHashMap<>();
     private static final AWSSecretsManager secretsManager = awsClientSetup();
 
@@ -89,8 +106,10 @@ public class SecretsManager {
                     .withSecretString(String.format("{password:%s}", secretValue));
             secretsManager.updateSecret(updateSecretRequest);
         } catch (AWSSecretsManagerException e) {
-            LOGGER.info(" You've either entered an Invalid name. 1) Must be a valid name containing alphanumeric characters, or any of the following: -/_+=.@!" +
-                    "or 2)The secretId '" + secretId + "' does not exist");
+            LOGGER.info(
+                    " You've either entered an Invalid name. 1) Must be a valid name containing alphanumeric characters, or any of the following: -/_+=.@!"
+                            +
+                            "or 2)The secretId '" + secretId + "' does not exist");
         }
     }
 
