@@ -42,6 +42,7 @@
         <org.apache.commons.commons-text.version>1.10.0</org.apache.commons.commons-text.version>
         <org.postgresql.version>42.3.9</org.postgresql.version>
         <com.amazon.ion.version>1.11.10</com.amazon.ion.version>
+        <java.sdk.core.version>1.12.530</java.sdk.core.version>
     </properties>
 
     <build>
@@ -68,6 +69,13 @@
             <artifactId>browserstack-local-java</artifactId>
             <version>${browserstack.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-core</artifactId>
+            <version>${java-sdk-core.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>

@@ -4,6 +4,8 @@ import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.secretsmanager.AWSSecretsManager;
 import com.amazonaws.services.secretsmanager.AWSSecretsManagerClientBuilder;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.secretsmanager.model.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,35 +18,62 @@ public class SecretsManager {
 
     private static final Logger LOGGER = LogManager.getLogger(SecretsManager.class);
 
-    public static String secretsId = getSecretName();
+    private static volatile AWSSecretsManager secretsManager;
+    private static volatile String secretsId;
 
-    private static String getSecretName() {
-        AWSSecretsManager secretsManager = awsClientSetup();
+    private static final Map<String, String> cache = new ConcurrentHashMap<>();
+
+    private static AWSSecretsManager getSecretsManager() {
+        if (secretsManager == null) {
+            synchronized (SecretsManager.class) {
+                if (secretsManager == null) {
+                    LOGGER.info("Initializing AWSSecretsManager client...");
+                    secretsManager = AWSSecretsManagerClientBuilder
+                            .standard()
+                            .withCredentials(new DefaultAWSCredentialsProviderChain())
+                            .withRegion(Regions.EU_WEST_1.getName()) // Explicitly set the region
+                            .build();
+                }
+            }
+        }
+        return secretsManager;
+    }
+
+    private static String getSecretsId() {
+        if (secretsId == null) {
+            synchronized (SecretsManager.class) {
+                if (secretsId == null) {
+                    LOGGER.info("Fetching secretsId...");
+                    secretsId = fetchSecretName();
+                }
+            }
+        }
+        return secretsId;
+    }
+
+    private static String fetchSecretName() {
+        AWSSecretsManager secretsManager = getSecretsManager();
         ListSecretsRequest listSecretsRequest = new ListSecretsRequest();
         ListSecretsResult listSecretsResult = secretsManager.listSecrets(listSecretsRequest);
 
-        for (SecretListEntry secret : listSecretsResult.getSecretList()) {
-            if (secret.getName().trim().equalsIgnoreCase("RUNNER-MAIN-APPLICATION")) {
-                LOGGER.info("Secret found: " + secret.getName());
-                LOGGER.info("Secret ARN: " + secret.getARN());
-                LOGGER.info("Secret Description: " + secret.getDescription());
-                return secret.getName();
+        try {
+            for (SecretListEntry secret : listSecretsResult.getSecretList()) {
+                if (secret.getName().trim().equalsIgnoreCase("RUNNER-MAIN-APPLICATION")) {
+                    LOGGER.info("Secret found: " + secret.getName());
+                    LOGGER.info("Secret ARN: " + secret.getARN());
+                    LOGGER.info("Secret Description: " + secret.getDescription());
+                    return secret.getName();
+                }
             }
+        } catch (AmazonServiceException e) {
+            LOGGER.error("AWS service error occurred: " + e.getMessage());
+            throw new RuntimeException("Failed to connect to AWS Secrets Manager", e);
+        } catch (SdkClientException e) {
+            LOGGER.error("AWS SDK client error occurred: " + e.getMessage());
+            throw new RuntimeException("Failed to authenticate with AWS Secrets Manager", e);
         }
 
         throw new RuntimeException("No secret found ending with RUNNER-MAIN-APPLICATION");
-    }
-
-    private static final Map<String, String> cache = new ConcurrentHashMap<>();
-    private static final AWSSecretsManager secretsManager = awsClientSetup();
-
-    private static AWSSecretsManager awsClientSetup() {
-        Regions region = Regions.EU_WEST_1;
-        return AWSSecretsManagerClientBuilder
-                .standard()
-                .withCredentials(new DefaultAWSCredentialsProviderChain())
-                .withRegion(region.getName()) // Ensure the region is explicitly set as a string
-                .build();
     }
 
     public static String getSecretValue(String secretKey) {
@@ -55,11 +84,11 @@ public class SecretsManager {
         String secret = null;
 
         GetSecretValueRequest getSecretValueRequest = new GetSecretValueRequest()
-                .withSecretId(secretsId);
+                .withSecretId(getSecretsId());
         GetSecretValueResult getSecretValueResult = null;
 
         try {
-            getSecretValueResult = secretsManager.getSecretValue(getSecretValueRequest);
+            getSecretValueResult = getSecretsManager().getSecretValue(getSecretValueRequest);
         } catch (ResourceNotFoundException e) {
             LOGGER.info("The requested secret " + secretKey + " was not found");
         } catch (InvalidRequestException e) {
@@ -82,7 +111,7 @@ public class SecretsManager {
             UpdateSecretRequest updateSecretRequest = new UpdateSecretRequest()
                     .withSecretId(secretId)
                     .withSecretString(String.format("{password:%s}", secretValue));
-            secretsManager.updateSecret(updateSecretRequest);
+            getSecretsManager().updateSecret(updateSecretRequest);
         } catch (AWSSecretsManagerException e) {
             LOGGER.info(
                     " You've either entered an Invalid name. 1) Must be a valid name containing alphanumeric characters, or any of the following: -/_+=.@!"
@@ -97,7 +126,7 @@ public class SecretsManager {
                     .withDescription("password for testing")
                     .withName(secretId)
                     .withSecretString(String.format("{password:%s}", secretValue));
-            secretsManager.createSecret(request);
+            getSecretsManager().createSecret(request);
             LOGGER.info("Secret has been set");
         } catch (ResourceExistsException e) {
             LOGGER.info("The secret key '" + secretId + "'  already exists... " +
