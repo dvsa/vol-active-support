@@ -41,8 +41,6 @@ public class SecretsManager {
 
     public static final String secretsId = getSecretId();
 
-    public static String secretsId = getSecretName();
-
     private static String getSecretName() {
         AWSSecretsManager secretsManager = awsClientSetup();
         ListSecretsRequest listSecretsRequest = new ListSecretsRequest();
