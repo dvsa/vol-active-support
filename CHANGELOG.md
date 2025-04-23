@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.2](https://github.com/dvsa/vol-active-support/compare/v2.7.1...v2.7.2) (2025-04-23)
+
+
+### Bug Fixes
+
+* use right secrets id per account ([b3f7f5d](https://github.com/dvsa/vol-active-support/commit/b3f7f5dfcae334535229728204b4f1128e2aa29d))
+
 ## [2.7.1](https://github.com/dvsa/vol-active-support/compare/v2.7.0...v2.7.1) (2025-04-22)
 
 
