@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.7.4](https://github.com/dvsa/vol-active-support/compare/v2.7.3...v2.7.4) (2025-04-24)
+
+
+### Bug Fixes
+
+* update SecretsManager.java prod secrets id ([b31410e](https://github.com/dvsa/vol-active-support/commit/b31410eff3f6d0276cb389d6687ed20239793ac2))
+* update SecretsManager.java prod secrets id ([02f6149](https://github.com/dvsa/vol-active-support/commit/02f61497423d615393a01736e2cc9b1f2b255535))
+
 ## [2.7.3](https://github.com/dvsa/vol-active-support/compare/v2.7.2...v2.7.3) (2025-04-23)
 
 
