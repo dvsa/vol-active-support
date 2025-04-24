@@ -33,7 +33,7 @@ public class SecretsManager {
         
         // Use CI instead of DEVCI for preproduction and production environments
         if (envType == EnvironmentType.PREPRODUCTION || envType == EnvironmentType.PRODUCTION) {
-            return "OLCS-DEVAPPCI-CI-BATCHTESTRUNNER-MAIN-APPLICATION";
+            return "OLCS-APPCI-CI-BATCHTESTRUNNER-MAIN-APPLICATION";
         } else {
             return "OLCS-DEVAPPCI-DEVCI-BATCHTESTRUNNER-MAIN-APPLICATION";
         }
