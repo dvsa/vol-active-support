@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.5](https://github.com/dvsa/vol-active-support/compare/v2.7.4...v2.7.5) (2025-06-02)
+
+
+### Bug Fixes
+
+* up bean utils ([0982044](https://github.com/dvsa/vol-active-support/commit/0982044bff1be3be9b28315d26e12e72139573a7))
+
 ## [2.7.4](https://github.com/dvsa/vol-active-support/compare/v2.7.3...v2.7.4) (2025-04-24)
 
 
