@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.7.6](https://github.com/dvsa/vol-active-support/compare/v2.7.5...v2.7.6) (2025-06-09)
+
+
+### Bug Fixes
+
+* latest selenium ([b9d7bbd](https://github.com/dvsa/vol-active-support/commit/b9d7bbdc45eec24134a82d6f14903f7a25686d1d))
+* latest selenium ([b65b62f](https://github.com/dvsa/vol-active-support/commit/b65b62f722d226a31cc4958fddf443ba7805463f))
+
 ## [2.7.5](https://github.com/dvsa/vol-active-support/compare/v2.7.4...v2.7.5) (2025-06-02)
 
 
