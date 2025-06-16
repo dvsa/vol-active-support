@@ -195,19 +195,29 @@ public class MailPit {
     }
 
     public String retrievePasswordResetLink(@NotNull String emailAddress, long sleepTime) throws MissingRequiredArgument {
-        try {
-            TimeUnit.SECONDS.sleep(sleepTime);
-            String emailContent = retrieveEmailRawContent(emailAddress, "Reset your password");
-            Pattern pattern = Pattern.compile("href=3D\"([^\"]+)");
-            Matcher matcher = pattern.matcher(emailContent);
-            if (matcher.find()) {
-                return matcher.group(1);
+        int retries = 0;
+        while (retries < 2) {
+            try {
+                TimeUnit.SECONDS.sleep(sleepTime);
+                String emailContent = retrieveEmailRawContent(emailAddress, "Reset your password");
+                if (emailContent.contains(emailAddress)) {
+                    Pattern pattern = Pattern.compile("href=3D\"([^\"]+)");
+                    Matcher matcher = pattern.matcher(emailContent);
+                    if (matcher.find()) {
+                        return matcher.group(1);
+                    }
+                    throw new IllegalStateException("Password reset link not found in email");
+                } else {
+                    LOGGER.warn("Email content does not match the expected user: {}. Retrying... ({}/{})", emailAddress, retries + 1, 2);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                LOGGER.error("Thread interrupted while retrieving password reset link for user: {}", emailAddress, e);
+                return null;
             }
-            throw new IllegalStateException("Password reset link not found in email");
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            return null;
+            retries++;
         }
+        throw new IllegalStateException("Failed to retrieve password reset link after 2 retries for user: " + emailAddress);
     }
 
     public String retrieveUsernameInfo(String emailAddress) throws MissingRequiredArgument {
