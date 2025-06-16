@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.7.7](https://github.com/dvsa/vol-active-support/compare/v2.7.6...v2.7.7) (2025-06-16)
+
+
+### Bug Fixes
+
+* Validate that the email content belongs to the correct user ([a292110](https://github.com/dvsa/vol-active-support/commit/a2921103617dd41ff2177b58ab2e84d9ecba76be))
+* Validate that the email content belongs to the correct user ([7660e28](https://github.com/dvsa/vol-active-support/commit/7660e286b97a570d72143fb9b734057567aa0099))
+
 ## [2.7.6](https://github.com/dvsa/vol-active-support/compare/v2.7.5...v2.7.6) (2025-06-09)
 
 
