@@ -187,11 +187,23 @@ public class MailPit {
     }
 
     public String retrieveTmAppLink(String emailAddress) throws MissingRequiredArgument {
-        String emailContent = retrieveEmailRawContent(emailAddress, "A Transport Manager has submitted their details for review");
-        if (emailContent == null) {
-            throw new IllegalStateException("Email content not found");
+        int retries = 0;
+        while (retries < 2) {
+            try {
+                String emailContent = retrieveEmailRawContent(emailAddress, "A Transport Manager has submitted their details for review");
+                if (emailContent == null) {
+                    throw new IllegalStateException("Email content not found");
+                }
+                if (!emailContent.contains(emailAddress)) {
+                    throw new IllegalStateException("Email content does not match the expected user: " + emailAddress);
+                }
+                return new Scanner(emailContent).useDelimiter("\\A").next();
+            } catch (IllegalStateException e) {
+                LOGGER.warn("Attempt {} failed: {}. Retrying... ({}/{})", retries + 1, e.getMessage(), retries + 1, 2);
+            }
+            retries++;
         }
-        return new Scanner(emailContent).useDelimiter("\\A").next();
+        throw new IllegalStateException("Failed to retrieve TM application link after 2 retries for user: " + emailAddress);
     }
 
     public String retrievePasswordResetLink(@NotNull String emailAddress, long sleepTime) throws MissingRequiredArgument {
