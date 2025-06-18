@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.7.8](https://github.com/dvsa/vol-active-support/compare/v2.7.7...v2.7.8) (2025-06-18)
+
+
+### Bug Fixes
+
+* check content ([4ba23fa](https://github.com/dvsa/vol-active-support/commit/4ba23fac0e2ef5615cea7df48f578f57e109b329))
+* check content ([4ff627d](https://github.com/dvsa/vol-active-support/commit/4ff627d71ffd0853cedbe8a0e09057f4a633a461))
+
 ## [2.7.7](https://github.com/dvsa/vol-active-support/compare/v2.7.6...v2.7.7) (2025-06-16)
 
 
