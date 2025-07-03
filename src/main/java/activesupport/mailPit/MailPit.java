@@ -186,6 +186,18 @@ public class MailPit {
         throw new IllegalStateException("Sign-in code not found in email");
     }
 
+    public void clearMailbox() {
+        try {
+            String url = String.format("%s/api/v1/messages", this.getIp());
+            LOGGER.info("Clearing mailbox with URL: {}", url);
+            RestUtils.delete(null, url, this.getHeaders());
+            LOGGER.info("Mailbox cleared successfully");
+        } catch (Exception e) {
+            LOGGER.error("Failed to clear mailbox: {}", e.getMessage(), e);
+            throw new IllegalStateException("Error occurred while clearing the mailbox", e);
+        }
+    }
+
     public String retrieveTmAppLink(String emailAddress) throws MissingRequiredArgument {
         int retries = 0;
         while (retries < 2) {
