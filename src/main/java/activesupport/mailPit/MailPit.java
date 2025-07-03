@@ -56,15 +56,14 @@ public class MailPit {
                             if (!StringUtils.isEmpty(responseBody) && responseBody.contains("messages")) {
                                 JsonPath jsonPath = new JsonPath(responseBody);
                                 if (jsonPath.getList("messages") != null && !jsonPath.getList("messages").isEmpty()) {
-                                    String snippetPath = "messages.find { msg -> msg.Subject.contains('temporary password') }.Snippet";
+                                    String snippetPath = "messages.find { msg -> msg.Subject.startsWith('" + emailAddress + "') && msg.Subject.contains('temporary password') }.Snippet";
                                     String snippet = jsonPath.getString(snippetPath);
-                                    LOGGER.info("Snippet content: {}", snippet);
+                                    LOGGER.info("Snippet found: {}", snippet);
                                     if (snippet != null) {
                                         String rawPassword = extractRawPassword(snippet);
-                                        LOGGER.info("Extracted password: {}", rawPassword);
-                                        String decodedPassword = prepareForQuotedPrintable(rawPassword);
+                                        String var11 = prepareForQuotedPrintable(rawPassword);
                                         LOGGER.info("Password retrieved successfully");
-                                        return decodedPassword;
+                                        return var11;
                                     }
                                 }
                             }
@@ -85,6 +84,7 @@ public class MailPit {
             throw new IllegalStateException("Interrupted while waiting for rate limiter", var18);
         }
     }
+
     private static String extractRawPassword(String apiResponseBody) {
         Pattern pattern = Pattern.compile("is:\\s*([^\\s]+)");
         Matcher matcher = pattern.matcher(apiResponseBody);
