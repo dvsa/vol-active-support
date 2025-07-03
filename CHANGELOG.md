@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.10](https://github.com/dvsa/vol-active-support/compare/v2.7.9...v2.7.10) (2025-07-03)
+
+
+### Bug Fixes
+
+* Revert "fix: email snippet" ([6f8534b](https://github.com/dvsa/vol-active-support/commit/6f8534b42eaac82a7e43ee73a4837d0fc42e3f4d))
+
 ## [2.7.9](https://github.com/dvsa/vol-active-support/compare/v2.7.8...v2.7.9) (2025-07-03)
 
 
