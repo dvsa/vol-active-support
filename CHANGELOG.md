@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.7.11](https://github.com/dvsa/vol-active-support/compare/v2.7.10...v2.7.11) (2025-07-04)
+
+
+### Bug Fixes
+
+* mailpit fix ([fc3a500](https://github.com/dvsa/vol-active-support/commit/fc3a5002d2d520be3cfb08cca8b02deacb8fc017))
+* mailpit fix ([dd715df](https://github.com/dvsa/vol-active-support/commit/dd715dfadc53de96bed4bf223456eb4eab39ecb8))
+
 ## [2.7.10](https://github.com/dvsa/vol-active-support/compare/v2.7.9...v2.7.10) (2025-07-03)
 
 
