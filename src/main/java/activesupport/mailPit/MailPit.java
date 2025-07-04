@@ -53,22 +53,45 @@ public class MailPit {
                             this.response = RestUtils.getWithQueryParams(url, queryParams, this.getHeaders());
                             String responseBody = this.response.extract().asString();
                             LOGGER.info("Response received: {}", responseBody);
+
                             if (!StringUtils.isEmpty(responseBody) && responseBody.contains("messages")) {
                                 JsonPath jsonPath = new JsonPath(responseBody);
-                                if (jsonPath.getList("messages") != null && !jsonPath.getList("messages").isEmpty()) {
-                                    String snippetPath = "messages.find { msg -> msg.Subject.startsWith('" + emailAddress + "') && msg.Subject.contains('temporary password') }.Snippet";
-                                    String snippet = jsonPath.getString(snippetPath);
-                                    LOGGER.info("Snippet found: {}", snippet);
-                                    if (snippet != null) {
-                                        String rawPassword = extractRawPassword(snippet);
-                                        String var11 = prepareForQuotedPrintable(rawPassword);
-                                        LOGGER.info("Password retrieved successfully");
-                                        return var11;
+                                List<Map<String, Object>> messages = jsonPath.getList("messages");
+
+                                if (messages != null && !messages.isEmpty()) {
+                                    // Loop through messages to find the one with matching subject
+                                    for (Map<String, Object> message : messages) {
+                                        String subject = (String) message.get("Subject");
+                                        String snippet = (String) message.get("Snippet");
+
+                                        LOGGER.info("Checking message - Subject: {}", subject);
+                                        LOGGER.info("Snippet: {}", snippet);
+
+                                        if (subject != null && subject.startsWith(emailAddress) &&
+                                                subject.contains("temporary password")) {
+                                            if (snippet != null) {
+                                                LOGGER.info("Found matching message with snippet: {}", snippet);
+                                                String rawPassword = extractRawPassword(snippet);
+                                                String processedPassword = prepareForQuotedPrintable(rawPassword);
+                                                LOGGER.info("Password retrieved successfully: {}", rawPassword);
+                                                return processedPassword;
+                                            }
+                                        }
                                     }
+                                    // If no matching message found, log all subjects for debugging
+                                    LOGGER.warn("No matching message found. Available subjects:");
+                                    for (Map<String, Object> message : messages) {
+                                        String subject = (String) message.get("Subject");
+                                        LOGGER.warn("  - {}", subject);
+                                    }
+                                } else {
+                                    LOGGER.warn("No messages found in response");
                                 }
+                            } else {
+                                LOGGER.warn("Response body is empty or doesn't contain 'messages'");
                             }
                         } catch (Exception var16) {
-                            LOGGER.error("Error processing response on attempt {}: {}", attempts, var16.getMessage());
+                            LOGGER.error("Error processing response on attempt {}: {}", attempts, var16.getMessage(), var16);
                             lastException = new IllegalStateException("Error processing response: " + var16.getMessage(), var16);
                         }
                     }
@@ -86,14 +109,26 @@ public class MailPit {
     }
 
     private static String extractRawPassword(String apiResponseBody) {
-        Pattern pattern = Pattern.compile("is:\\s*([^\\s]+)");
-        Matcher matcher = pattern.matcher(apiResponseBody);
-        if (matcher.find()) {
-            return matcher.group(1);
+        String[] patterns = {
+                "is:\\s*([^\\s\\n\\r]+)",
+                "is:\\s*([^\\s,\\n\\r]+)",
+                "password.*?is:\\s*([^\\s\\n\\r]+)",
+                "account is:\\s*([^\\s\\n\\r]+)"
+        };
+
+        for (String patternStr : patterns) {
+            Pattern pattern = Pattern.compile(patternStr);
+            Matcher matcher = pattern.matcher(apiResponseBody);
+            if (matcher.find()) {
+                String password = matcher.group(1);
+                LOGGER.info("Password found using pattern '{}': {}", patternStr, password);
+                return password;
+            }
         }
+
+        LOGGER.error("Password pattern not found in email content: {}", apiResponseBody);
         throw new IllegalStateException("Password pattern not found in email content");
     }
-
     private static String prepareForQuotedPrintable(String password) {
         if (password == null || password.isEmpty()) {
             throw new IllegalStateException("Empty password");
