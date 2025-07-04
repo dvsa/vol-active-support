@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
-
+import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -32,6 +32,10 @@ public class MailPit {
     }
 
     public String retrieveTempPassword(String emailAddress) {
+        return retrieveTempPassword(emailAddress, 5); // Default 5 minutes
+    }
+
+    public String retrieveTempPassword(String emailAddress, int recentMinutes) {
         try {
             LOGGER.info("Attempting to acquire rate limiter permit");
             if (!rateLimiter.tryAcquire(30L, TimeUnit.SECONDS)) {
@@ -46,10 +50,18 @@ public class MailPit {
                             LOGGER.info("Attempt {}: Sleeping for 3 seconds before making request", attempts + 1);
                             TimeUnit.SECONDS.sleep(3L);
                             ++attempts;
+
                             Map<String, String> queryParams = new HashMap<>();
-                            queryParams.put("q", emailAddress + " : Your temporary password");
+                            queryParams.put("q", "to:" + emailAddress + " subject:\"temporary password\"");
+                            queryParams.put("limit", "10");
+                            queryParams.put("sort", "-created");
+
+                            // Only messages from last N minutes
+                            long minutesAgo = Instant.now().minusSeconds(recentMinutes * 60L).getEpochSecond();
+                            queryParams.put("since", String.valueOf(minutesAgo));
+
                             String url = String.format("%s/api/v1/messages", this.getIp());
-                            LOGGER.info("Making request to URL: {}", url);
+                            LOGGER.info("Making optimized request to URL: {} with params: {}", url, queryParams);
                             this.response = RestUtils.getWithQueryParams(url, queryParams, this.getHeaders());
                             String responseBody = this.response.extract().asString();
                             LOGGER.info("Response received: {}", responseBody);
@@ -78,7 +90,6 @@ public class MailPit {
                                             }
                                         }
                                     }
-                                    // If no matching message found, log all subjects for debugging
                                     LOGGER.warn("No matching message found. Available subjects:");
                                     for (Map<String, Object> message : messages) {
                                         String subject = (String) message.get("Subject");
@@ -107,7 +118,6 @@ public class MailPit {
             throw new IllegalStateException("Interrupted while waiting for rate limiter", var18);
         }
     }
-
     private static String extractRawPassword(String apiResponseBody) {
         String[] patterns = {
                 "is:\\s*([^\\s\\n\\r]+)",
