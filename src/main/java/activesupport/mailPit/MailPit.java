@@ -1,3 +1,4 @@
+
 package activesupport.mailPit;
 
 import activesupport.MissingRequiredArgument;
@@ -9,8 +10,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -18,14 +17,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MailPit {
-    private static final Semaphore rateLimiter = new Semaphore(20);
+    private static final Semaphore rateLimiter = new Semaphore(3);
+
     private static final Logger LOGGER = LogManager.getLogger(MailPit.class);
-    private static final int ACQUIRE_TIMEOUT = 60;
-    private static final int DEFAULT_TIME_WINDOW_MINUTES = 2;
+    private static final int ACQUIRE_TIMEOUT = 30;
     private volatile ValidatableResponse response;
     private String ip;
     private String port;
-    private static final int MAX_RETRIES = 15;
+    private static final int MAX_RETRIES = 10;
 
     public MailPit() {
         this.ip = "https://selenium-mail.olcs.dev-dvsacloud.uk:8025";
@@ -33,11 +32,6 @@ public class MailPit {
     }
 
     public String retrieveTempPassword(String emailAddress) {
-        return retrieveTempPassword(emailAddress, DEFAULT_TIME_WINDOW_MINUTES);
-    }
-
-
-    public String retrieveTempPassword(String emailAddress, int timeWindowMinutes) {
         try {
             LOGGER.info("Attempting to acquire rate limiter permit");
             if (!rateLimiter.tryAcquire(30L, TimeUnit.SECONDS)) {
@@ -50,66 +44,31 @@ public class MailPit {
                     while (attempts < 10) {
                         try {
                             LOGGER.info("Attempt {}: Sleeping for 3 seconds before making request", attempts + 1);
-                            TimeUnit.SECONDS.sleep(2L);
+                            TimeUnit.SECONDS.sleep(3L);
                             ++attempts;
-
-                            Map<String, String> queryParams = createTimeFilteredQuery(emailAddress, timeWindowMinutes);
+                            Map<String, String> queryParams = new HashMap<>();
+                            queryParams.put("q", emailAddress + " : Your temporary password");
                             String url = String.format("%s/api/v1/messages", this.getIp());
-                            LOGGER.info("Making request to URL: {} with time-filtered query", url);
-
+                            LOGGER.info("Making request to URL: {}", url);
                             this.response = RestUtils.getWithQueryParams(url, queryParams, this.getHeaders());
                             String responseBody = this.response.extract().asString();
-                            LOGGER.info("Response received with {} characters", responseBody.length());
-
+                            LOGGER.info("Response received: {}", responseBody);
                             if (!StringUtils.isEmpty(responseBody) && responseBody.contains("messages")) {
                                 JsonPath jsonPath = new JsonPath(responseBody);
-                                List<Map<String, Object>> messages = jsonPath.getList("messages");
-
-                                if (messages != null && !messages.isEmpty()) {
-                                    LOGGER.info("Found {} recent messages", messages.size());
-
-                                    // Filter messages by time and subject
-                                    List<Map<String, Object>> recentMessages = filterMessagesByTime(messages, timeWindowMinutes);
-                                    LOGGER.info("Found {} messages within {} minutes", recentMessages.size(), timeWindowMinutes);
-
-                                    for (Map<String, Object> message : recentMessages) {
-                                        String subject = (String) message.get("Subject");
-                                        String snippet = (String) message.get("Snippet");
-                                        String created = (String) message.get("Created");
-
-                                        LOGGER.info("Checking message - Subject: '{}', Created: {}", subject, created);
-
-
-                                        if (subject != null &&
-                                                subject.contains(emailAddress) &&
-                                                subject.toLowerCase().contains("temporary password")) {
-
-                                            if (snippet != null && snippet.toLowerCase().contains("temporary password")) {
-                                                LOGGER.info("Found matching message with snippet: {}", snippet);
-                                                String rawPassword = extractRawPassword(snippet);
-                                                String processedPassword = prepareForQuotedPrintable(rawPassword);
-                                                LOGGER.info("Password retrieved successfully: {}", rawPassword);
-                                                return processedPassword;
-                                            }
-                                        }
+                                if (jsonPath.getList("messages") != null && !jsonPath.getList("messages").isEmpty()) {
+                                    String snippetPath = "messages.find { msg -> msg.Subject.startsWith('" + emailAddress + "') && msg.Subject.contains('temporary password') }.Snippet";
+                                    String snippet = jsonPath.getString(snippetPath);
+                                    LOGGER.info("Snippet found: {}", snippet);
+                                    if (snippet != null) {
+                                        String rawPassword = extractRawPassword(snippet);
+                                        String var11 = prepareForQuotedPrintable(rawPassword);
+                                        LOGGER.info("Password retrieved successfully");
+                                        return var11;
                                     }
-
-
-                                    LOGGER.warn("No matching message found for email: {}", emailAddress);
-                                    LOGGER.warn("Recent subjects found:");
-                                    for (Map<String, Object> message : recentMessages) {
-                                        String subject = (String) message.get("Subject");
-                                        String created = (String) message.get("Created");
-                                        LOGGER.warn("  - '{}' ({})", subject, created);
-                                    }
-                                } else {
-                                    LOGGER.warn("No messages found in response");
                                 }
-                            } else {
-                                LOGGER.warn("Response body is empty or doesn't contain 'messages'");
                             }
                         } catch (Exception var16) {
-                            LOGGER.error("Error processing response on attempt {}: {}", attempts, var16.getMessage(), var16);
+                            LOGGER.error("Error processing response on attempt {}: {}", attempts, var16.getMessage());
                             lastException = new IllegalStateException("Error processing response: " + var16.getMessage(), var16);
                         }
                     }
@@ -126,159 +85,12 @@ public class MailPit {
         }
     }
 
-    private Map<String, String> createTimeFilteredQuery(String emailAddress, int timeWindowMinutes) {
-        Map<String, String> queryParams = new HashMap<>();
-        queryParams.put("q", emailAddress);
-        queryParams.put("limit", "50");
-        Instant cutoffTime = Instant.now().minus(timeWindowMinutes, ChronoUnit.MINUTES);
-        String since = cutoffTime.toString();
-        queryParams.put("since", since);
-        LOGGER.info("Time-filtered query: email={}, limit=50, since={}", emailAddress, since);
-        return queryParams;
-    }
-
-
-    private List<Map<String, Object>> filterMessagesByTime(List<Map<String, Object>> messages, int timeWindowMinutes) {
-        List<Map<String, Object>> filteredMessages = new ArrayList<>();
-        Instant cutoffTime = Instant.now().minus(timeWindowMinutes, ChronoUnit.MINUTES);
-
-        for (Map<String, Object> message : messages) {
-            String createdStr = (String) message.get("Created");
-            if (createdStr != null) {
-                try {
-                    Instant messageTime = Instant.parse(createdStr);
-                    if (messageTime.isAfter(cutoffTime)) {
-                        filteredMessages.add(message);
-                    }
-                } catch (Exception e) {
-                    LOGGER.warn("Failed to parse message time: {}", createdStr, e);
-                    filteredMessages.add(message);
-                }
-            }
-        }
-
-        return filteredMessages;
-    }
-
-    public String retrieveEmailContent(String emailAddress, String subjectContains, int timeWindowMinutes) {
-        try {
-            if (!rateLimiter.tryAcquire(ACQUIRE_TIMEOUT, TimeUnit.SECONDS)) {
-                throw new IllegalStateException("Timeout waiting for rate limiter permit");
-            }
-            try {
-                Map<String, String> queryParams = createTimeFilteredQuery(emailAddress, timeWindowMinutes);
-                String url = String.format("%s/api/v1/messages", this.getIp());
-                response = RestUtils.getWithQueryParams(url, queryParams, this.getHeaders());
-                String responseBody = this.response.extract().asString();
-
-                if (StringUtils.isNotEmpty(responseBody)) {
-                    JsonPath jsonPath = new JsonPath(responseBody);
-                    List<Map<String, Object>> messages = jsonPath.getList("messages");
-
-                    if (messages != null) {
-                        List<Map<String, Object>> recentMessages = filterMessagesByTime(messages, timeWindowMinutes);
-
-                        for (Map<String, Object> message : recentMessages) {
-                            String subject = (String) message.get("Subject");
-                            if (subject != null && subject.contains(subjectContains)) {
-                                return (String) message.get("Snippet");
-                            }
-                        }
-                    }
-                }
-                return null;
-            } finally {
-                rateLimiter.release();
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new IllegalStateException("Interrupted while waiting for rate limiter", e);
-        }
-    }
-
-    public String retrieveEmailContent(String emailAddress, String subjectContains) {
-        return retrieveEmailContent(emailAddress, subjectContains, DEFAULT_TIME_WINDOW_MINUTES);
-    }
-
-
-    public synchronized String retrieveEmailRawContent(String emailAddress, String subjectContains, int timeWindowMinutes) {
-        try {
-            if (!rateLimiter.tryAcquire(30L, TimeUnit.SECONDS)) {
-                throw new IllegalStateException("Timeout waiting for rate limiter permit");
-            } else {
-                try {
-                    Map<String, String> queryParams = createTimeFilteredQuery(emailAddress, timeWindowMinutes);
-                    String searchUrl = String.format("%s/api/v1/messages", this.getIp());
-                    LOGGER.info("Search URL: {}", searchUrl);
-
-                    this.response = RestUtils.getWithQueryParams(searchUrl, queryParams, this.getHeaders());
-                    String responseBody = this.response.extract().asString();
-
-                    if (StringUtils.isNotEmpty(responseBody)) {
-                        JsonPath jsonPath = new JsonPath(responseBody);
-                        List<Map<String, Object>> messages = jsonPath.getList("messages");
-                        List<Map<String, Object>> recentMessages = filterMessagesByTime(messages, timeWindowMinutes);
-
-                        for (Map<String, Object> message : recentMessages) {
-                            String subject = (String) message.get("Subject");
-                            if (subject != null && subject.contains(subjectContains)) {
-                                String messageId = (String) message.get("ID");
-                                LOGGER.info("Found message ID: {}", messageId);
-                                String rawUrl = String.format("%s/api/v1/message/%s/raw", this.getIp(), messageId);
-                                LOGGER.info("Raw content URL: {}", rawUrl);
-                                this.response = RestUtils.get(rawUrl, this.getHeaders());
-                                return this.response.extract().asString();
-                            }
-                        }
-                    }
-                } finally {
-                    rateLimiter.release();
-                }
-                throw new IllegalStateException("Email content not found for the specified email address and subject.");
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new IllegalStateException("Interrupted while waiting for rate limiter", e);
-        }
-    }
-
-    public synchronized String retrieveEmailRawContent(String emailAddress, String subjectContains) {
-        return retrieveEmailRawContent(emailAddress, subjectContains, DEFAULT_TIME_WINDOW_MINUTES);
-    }
-
-    public String retrieveSignInCode(String emailAddress, int timeWindowMinutes) {
-        String emailContent = retrieveEmailContent(emailAddress, "Your sign-in code", timeWindowMinutes);
-        Pattern pattern = Pattern.compile("([\\d]{6})(?= The code)");
-        Matcher matcher = pattern.matcher(emailContent);
+    private static String extractRawPassword(String apiResponseBody) {
+        Pattern pattern = Pattern.compile("is:\\s*([^\\s]+)");
+        Matcher matcher = pattern.matcher(apiResponseBody);
         if (matcher.find()) {
             return matcher.group(1);
         }
-        throw new IllegalStateException("Sign-in code not found in email");
-    }
-
-    public String retrieveSignInCode(String emailAddress) {
-        return retrieveSignInCode(emailAddress, DEFAULT_TIME_WINDOW_MINUTES);
-    }
-
-    private static String extractRawPassword(String apiResponseBody) {
-        String[] patterns = {
-                "is:\\s*([^\\s\\n\\r]+)",
-                "is:\\s*([^\\s,\\n\\r]+)",
-                "password.*?is:\\s*([^\\s\\n\\r]+)",
-                "account is:\\s*([^\\s\\n\\r]+)"
-        };
-
-        for (String patternStr : patterns) {
-            Pattern pattern = Pattern.compile(patternStr);
-            Matcher matcher = pattern.matcher(apiResponseBody);
-            if (matcher.find()) {
-                String password = matcher.group(1);
-                LOGGER.info("Password found using pattern '{}': {}", patternStr, password);
-                return password;
-            }
-        }
-
-        LOGGER.error("Password pattern not found in email content: {}", apiResponseBody);
         throw new IllegalStateException("Password pattern not found in email content");
     }
 
@@ -301,15 +113,84 @@ public class MailPit {
         return result.toString();
     }
 
-    public String retrieveTmAppLink(String emailAddress) throws MissingRequiredArgument {
-        return retrieveTmAppLink(emailAddress, DEFAULT_TIME_WINDOW_MINUTES);
+    public synchronized String retrieveEmailRawContent(String emailAddress, String subjectContains) {
+        try {
+            if (!rateLimiter.tryAcquire(30L, TimeUnit.SECONDS)) {
+                throw new IllegalStateException("Timeout waiting for rate limiter permit");
+            } else {
+                try {
+                    Map<String, String> queryParams = new HashMap<>();
+                    queryParams.put("q", emailAddress + " : " + subjectContains);
+                    String searchUrl = String.format("%s/api/v1/messages?limit=2048", this.getIp());
+                    LOGGER.info("Search URL: {}", searchUrl);
+                    this.response = RestUtils.getWithQueryParams(searchUrl, queryParams, this.getHeaders());
+                    String responseBody = this.response.extract().asString();
+                    if (StringUtils.isNotEmpty(responseBody)) {
+                        JsonPath jsonPath = new JsonPath(responseBody);
+                        List<Map<String, Object>> messages = jsonPath.getList("messages");
+                        for (Map<String, Object> message : messages) {
+                            String subject = (String) message.get("Subject");
+                            if (subject != null && subject.contains(subjectContains)) {
+                                String messageId = (String) message.get("ID");
+                                LOGGER.info("Found message ID: {}", messageId);
+                                String rawUrl = String.format("%s/api/v1/message/%s/raw", this.getIp(), messageId);
+                                LOGGER.info("Raw content URL: {}", rawUrl);
+                                this.response = RestUtils.get(rawUrl, this.getHeaders());
+                                return this.response.extract().asString();
+                            }
+                        }
+                    }
+                } finally {
+                    rateLimiter.release();
+                }
+                throw new IllegalStateException("Email content not found for the specified email address and subject.");
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException("Interrupted while waiting for rate limiter", e);
+        }
     }
 
-    public String retrieveTmAppLink(String emailAddress, int timeWindowMinutes) throws MissingRequiredArgument {
+    public String retrieveEmailContent(String emailAddress, String subjectContains) {
+        try {
+            if (!rateLimiter.tryAcquire(ACQUIRE_TIMEOUT, TimeUnit.SECONDS)) {
+                throw new IllegalStateException("Timeout waiting for rate limiter permit");
+            }
+            try {
+                Map<String, String> queryParams = new HashMap<>();
+                queryParams.put("q", emailAddress + " : " + subjectContains);
+                String url = String.format("%s/api/v1/messages", this.getIp());
+                response = RestUtils.getWithQueryParams(url, queryParams, this.getHeaders());
+                String responseBody = this.response.extract().asString();
+                if (StringUtils.isNotEmpty(responseBody)) {
+                    JsonPath jsonPath = new JsonPath(responseBody);
+                    return jsonPath.getString("messages[0].Snippet");
+                }
+                return null;
+            } finally {
+                rateLimiter.release();
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException("Interrupted while waiting for rate limiter", e);
+        }
+    }
+
+    public String retrieveSignInCode(String emailAddress) {
+        String emailContent = retrieveEmailContent(emailAddress, "Your sign-in code");
+        Pattern pattern = Pattern.compile("([\\d]{6})(?= The code)");
+        Matcher matcher = pattern.matcher(emailContent);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        throw new IllegalStateException("Sign-in code not found in email");
+    }
+
+    public String retrieveTmAppLink(String emailAddress) throws MissingRequiredArgument {
         int retries = 0;
         while (retries < 2) {
             try {
-                String emailContent = retrieveEmailRawContent(emailAddress, "A Transport Manager has submitted their details for review", timeWindowMinutes);
+                String emailContent = retrieveEmailRawContent(emailAddress, "A Transport Manager has submitted their details for review");
                 if (emailContent == null) {
                     throw new IllegalStateException("Email content not found");
                 }
@@ -326,15 +207,11 @@ public class MailPit {
     }
 
     public String retrievePasswordResetLink(@NotNull String emailAddress, long sleepTime) throws MissingRequiredArgument {
-        return retrievePasswordResetLink(emailAddress, sleepTime, DEFAULT_TIME_WINDOW_MINUTES);
-    }
-
-    public String retrievePasswordResetLink(@NotNull String emailAddress, long sleepTime, int timeWindowMinutes) throws MissingRequiredArgument {
         int retries = 0;
         while (retries < 2) {
             try {
                 TimeUnit.SECONDS.sleep(sleepTime);
-                String emailContent = retrieveEmailRawContent(emailAddress, "Reset your password", timeWindowMinutes);
+                String emailContent = retrieveEmailRawContent(emailAddress, "Reset your password");
                 if (emailContent.contains(emailAddress)) {
                     Pattern pattern = Pattern.compile("href=3D\"([^\"]+)");
                     Matcher matcher = pattern.matcher(emailContent);
@@ -356,11 +233,7 @@ public class MailPit {
     }
 
     public String retrieveUsernameInfo(String emailAddress) throws MissingRequiredArgument {
-        return retrieveUsernameInfo(emailAddress, DEFAULT_TIME_WINDOW_MINUTES);
-    }
-
-    public String retrieveUsernameInfo(String emailAddress, int timeWindowMinutes) throws MissingRequiredArgument {
-        String emailContent = retrieveEmailRawContent(emailAddress, "Your account information", timeWindowMinutes);
+        String emailContent = retrieveEmailRawContent(emailAddress, "Your account information");
         Pattern pattern = Pattern.compile("It=E2=80=99s:\\s*([a-zA-Z0-9]+)");
         Matcher matcher = pattern.matcher(emailContent);
         if (matcher.find()) {
@@ -370,11 +243,7 @@ public class MailPit {
     }
 
     public boolean checkLastTMLetterAttachment(@NotNull String emailAddress, String licenceNo) throws MissingRequiredArgument {
-        return checkLastTMLetterAttachment(emailAddress, licenceNo, DEFAULT_TIME_WINDOW_MINUTES);
-    }
-
-    public boolean checkLastTMLetterAttachment(@NotNull String emailAddress, String licenceNo, int timeWindowMinutes) throws MissingRequiredArgument {
-        String emailContent = retrieveEmailContent(emailAddress, "Urgent Removal of last Transport Manager", timeWindowMinutes);
+        String emailContent = retrieveEmailContent(emailAddress, "Urgent Removal of last Transport Manager");
         return emailContent.contains(String.format("%s_Last_TM_letter_Licence_%s", licenceNo, licenceNo));
     }
 
