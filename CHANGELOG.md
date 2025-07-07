@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.7.13](https://github.com/dvsa/vol-active-support/compare/v2.7.12...v2.7.13) (2025-07-07)
+
+
+### Bug Fixes
+
+* concurrency ([e9f98c4](https://github.com/dvsa/vol-active-support/commit/e9f98c4d1e77cabcff750b0326195ecd1033405c))
+* concurrency ([63bd49d](https://github.com/dvsa/vol-active-support/commit/63bd49d8b5ff5c5136fdee7b040b67c5e367335d))
+
 ## [2.7.12](https://github.com/dvsa/vol-active-support/compare/v2.7.11...v2.7.12) (2025-07-04)
 
 
