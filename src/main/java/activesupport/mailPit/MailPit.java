@@ -18,14 +18,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MailPit {
-    private static final Semaphore rateLimiter = new Semaphore(3);
+    private static final Semaphore rateLimiter = new Semaphore(20);
     private static final Logger LOGGER = LogManager.getLogger(MailPit.class);
-    private static final int ACQUIRE_TIMEOUT = 30;
+    private static final int ACQUIRE_TIMEOUT = 60;
     private static final int DEFAULT_TIME_WINDOW_MINUTES = 2;
     private volatile ValidatableResponse response;
     private String ip;
     private String port;
-    private static final int MAX_RETRIES = 10;
+    private static final int MAX_RETRIES = 15;
 
     public MailPit() {
         this.ip = "https://selenium-mail.olcs.dev-dvsacloud.uk:8025";
@@ -50,7 +50,7 @@ public class MailPit {
                     while (attempts < 10) {
                         try {
                             LOGGER.info("Attempt {}: Sleeping for 3 seconds before making request", attempts + 1);
-                            TimeUnit.SECONDS.sleep(3L);
+                            TimeUnit.SECONDS.sleep(2L);
                             ++attempts;
 
                             Map<String, String> queryParams = createTimeFilteredQuery(emailAddress, timeWindowMinutes);
