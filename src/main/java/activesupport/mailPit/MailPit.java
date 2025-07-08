@@ -93,10 +93,42 @@ public class MailPit {
                                         subject.toLowerCase().contains("temporary password")) {
 
                                     if (snippet != null && snippet.toLowerCase().contains("temporary password")) {
-                                        LOGGER.info("Found matching message with snippet: {}", snippet);
+                                        // Get message ID and fetch full message details
+                                        String messageId = (String) message.get("ID");
+                                        LOGGER.info("Found matching message ID: {} with snippet: {}", messageId, snippet);
+                                        
+                                        // Fetch full message details to get the Text property
+                                        String messageUrl = String.format("%s/api/v1/message/%s", this.getIp(), messageId);
+                                        LOGGER.info("Fetching message details from: {}", messageUrl);
+                                        
+                                        this.response = RestUtils.get(messageUrl, this.getHeaders());
+                                        String responseBody = this.response.extract().asString();
+                                        JsonPath jsonPath = new JsonPath(responseBody);
+                                        String textContent = jsonPath.getString("Text");
+                                        
+                                        if (textContent != null) {
+                                            LOGGER.debug("Text content retrieved, length: {} characters", textContent.length());
+                                            
+                                            // Extract password from clean text content
+                                            // Pattern matches: "account is: PASSWORD" followed by period+newline or just newline
+                                            Pattern pattern = Pattern.compile(
+                                                "account is: ([^\\n]+?)(?:\\.?\\n)",
+                                                Pattern.DOTALL
+                                            );
+                                            
+                                            Matcher matcher = pattern.matcher(textContent);
+                                            if (matcher.find()) {
+                                                String password = matcher.group(1).trim();
+                                                LOGGER.info("Password extracted from text content: {}", password);
+                                                return password;
+                                            }
+                                        }
+                                        
+                                        // Fallback to existing extraction method
+                                        LOGGER.warn("Failed to extract from text content, trying snippet method");
                                         String rawPassword = extractRawPassword(snippet);
                                         String processedPassword = prepareForQuotedPrintable(rawPassword);
-                                        LOGGER.info("Password retrieved successfully: {}", rawPassword);
+                                        LOGGER.info("Password retrieved using fallback method: {}", rawPassword);
                                         return processedPassword;
                                     }
                                 }
