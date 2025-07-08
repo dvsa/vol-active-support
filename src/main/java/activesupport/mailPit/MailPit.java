@@ -101,8 +101,8 @@ public class MailPit {
                                         String messageUrl = String.format("%s/api/v1/message/%s", this.getIp(), messageId);
                                         LOGGER.info("Fetching message details from: {}", messageUrl);
 
-                                        this.response = RestUtils.get(messageUrl, this.getHeaders());
-                                        String messageResponseBody = this.response.extract().asString();
+                                        ValidatableResponse localResponse = RestUtils.get(messageUrl, this.getHeaders());
+                                        String messageResponseBody = localResponse.extract().asString();
                                         JsonPath messageJsonPath = new JsonPath(messageResponseBody);
                                         String textContent = messageJsonPath.getString("Text");
                                         
