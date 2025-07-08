@@ -100,10 +100,10 @@ public class MailPit {
                                         // Fetch full message details to get the Text property
                                         String messageUrl = String.format("%s/api/v1/message/%s", this.getIp(), messageId);
                                         LOGGER.info("Fetching message details from: {}", messageUrl);
-                                        
+
                                         this.response = RestUtils.get(messageUrl, this.getHeaders());
-                                        String responseBody = this.response.extract().asString();
-                                        JsonPath jsonPath = new JsonPath(responseBody);
+                                        String messageResponseBody = this.response.extract().asString();
+                                        JsonPath messageJsonPath = new JsonPath(messageResponseBody);
                                         String textContent = jsonPath.getString("Text");
                                         
                                         if (textContent != null) {
