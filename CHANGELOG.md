@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.7.16](https://github.com/dvsa/vol-active-support/compare/v2.7.15...v2.7.16) (2025-07-08)
+
+
+### Bug Fixes
+
+* use search endpoint to return required messages ([119fc34](https://github.com/dvsa/vol-active-support/commit/119fc34515b0ce2bc1d3c91e82683324497aa519))
+* use search endpoint to return required messages ([69c9321](https://github.com/dvsa/vol-active-support/commit/69c93212495319e7d9cef364629a8bd61057455f))
+
 ## [2.7.15](https://github.com/dvsa/vol-active-support/compare/v2.7.14...v2.7.15) (2025-07-08)
 
 
