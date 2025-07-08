@@ -59,7 +59,7 @@ public class MailPit {
                         ++attempts;
 
                         Map<String, String> queryParams = createTimeFilteredQuery(emailAddress, Math.max(timeWindowMinutes, 5));
-                        String url = String.format("%s/api/v1/search", this.getIp());
+                        String url = String.format("%s/api/v1/messages", this.getIp());
                         LOGGER.info("Making request to URL: {} with time-filtered query", url);
 
                         this.response = RestUtils.getWithQueryParams(url, queryParams, this.getHeaders());
@@ -104,7 +104,7 @@ public class MailPit {
                                         this.response = RestUtils.get(messageUrl, this.getHeaders());
                                         String messageResponseBody = this.response.extract().asString();
                                         JsonPath messageJsonPath = new JsonPath(messageResponseBody);
-                                        String textContent = messageJsonPath.getString("Text");
+                                        String textContent = jsonPath.getString("Text");
                                         
                                         if (textContent != null) {
                                             LOGGER.debug("Text content retrieved, length: {} characters", textContent.length());
@@ -173,7 +173,7 @@ public class MailPit {
 }
     private Map<String, String> createTimeFilteredQuery(String emailAddress, int timeWindowMinutes) {
         Map<String, String> queryParams = new HashMap<>();
-        queryParams.put("query", "subject:\"" + emailAddress + "\"");
+        queryParams.put("q", emailAddress);
         queryParams.put("limit", "50");
         Instant cutoffTime = Instant.now().minus(timeWindowMinutes, ChronoUnit.MINUTES);
         String since = cutoffTime.toString();
@@ -212,7 +212,7 @@ public class MailPit {
             }
             try {
                 Map<String, String> queryParams = createTimeFilteredQuery(emailAddress, timeWindowMinutes);
-                String url = String.format("%s/api/v1/search", this.getIp());
+                String url = String.format("%s/api/v1/messages", this.getIp());
                 response = RestUtils.getWithQueryParams(url, queryParams, this.getHeaders());
                 String responseBody = this.response.extract().asString();
 
@@ -253,7 +253,7 @@ public class MailPit {
             } else {
                 try {
                     Map<String, String> queryParams = createTimeFilteredQuery(emailAddress, timeWindowMinutes);
-                    String searchUrl = String.format("%s/api/v1/search", this.getIp());
+                    String searchUrl = String.format("%s/api/v1/messages", this.getIp());
                     LOGGER.info("Search URL: {}", searchUrl);
 
                     this.response = RestUtils.getWithQueryParams(searchUrl, queryParams, this.getHeaders());
