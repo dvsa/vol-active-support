@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.7.15](https://github.com/dvsa/vol-active-support/compare/v2.7.14...v2.7.15) (2025-07-08)
+
+
+### Bug Fixes
+
+* extract password from Text property in mailpit email to avoid is… ([83cb9cf](https://github.com/dvsa/vol-active-support/commit/83cb9cf8b48c17d91ed1b511d27625906fe7dd3a))
+* extract password from Text property in mailpit email to avoid issues with some chrs breaking regex ([58f7995](https://github.com/dvsa/vol-active-support/commit/58f79957e71faa8e81e8fffee0521f5fd6897d44))
+* rename ([c475e64](https://github.com/dvsa/vol-active-support/commit/c475e648bea16d1e725f6c54e66b79973fc69239))
+
 ## [2.7.14](https://github.com/dvsa/vol-active-support/compare/v2.7.13...v2.7.14) (2025-07-08)
 
 
