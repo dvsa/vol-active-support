@@ -146,7 +146,7 @@ public class MailPit {
         Instant cutoffTime = Instant.now().minus(timeWindowMinutes, ChronoUnit.MINUTES);
         String since = cutoffTime.toString();
         queryParams.put("since", since);
-        LOGGER.info("Time-filtered query: email={}, limit=200, since={}", emailAddress, since);
+        LOGGER.info("Time-filtered query: email={}, limit=100, since={}", emailAddress, since);
         return queryParams;
     }
 
