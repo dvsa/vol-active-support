@@ -25,7 +25,6 @@ public class MailPit {
     private volatile ValidatableResponse response;
     private String ip;
     private String port;
-    private static final int MAX_RETRIES = 15;
 
     public MailPit() {
         this.ip = "https://selenium-mail.olcs.dev-dvsacloud.uk:8025";
@@ -48,7 +47,7 @@ public class MailPit {
                     IllegalStateException lastException = null;
                     Random random = new Random();
 
-                    while (attempts < 10) {
+                    while (attempts < 15) {
                         try {
 
                             if (attempts > 0) {
