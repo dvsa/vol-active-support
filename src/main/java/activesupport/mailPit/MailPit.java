@@ -59,7 +59,7 @@ public class MailPit {
                         ++attempts;
 
                         Map<String, String> queryParams = createTimeFilteredQuery(emailAddress, Math.max(timeWindowMinutes, 5));
-                        String url = String.format("%s/api/v1/search", this.getIp());
+                        String url = String.format("%s/api/v1/messages", this.getIp());
                         LOGGER.info("Making request to URL: {} with time-filtered query", url);
 
                         this.response = RestUtils.getWithQueryParams(url, queryParams, this.getHeaders());
@@ -93,42 +93,10 @@ public class MailPit {
                                         subject.toLowerCase().contains("temporary password")) {
 
                                     if (snippet != null && snippet.toLowerCase().contains("temporary password")) {
-                                        // Get message ID and fetch full message details
-                                        String messageId = (String) message.get("ID");
-                                        LOGGER.info("Found matching message ID: {} with snippet: {}", messageId, snippet);
-                                        
-                                        // Fetch full message details to get the Text property
-                                        String messageUrl = String.format("%s/api/v1/message/%s", this.getIp(), messageId);
-                                        LOGGER.info("Fetching message details from: {}", messageUrl);
-
-                                        this.response = RestUtils.get(messageUrl, this.getHeaders());
-                                        String messageResponseBody = this.response.extract().asString();
-                                        JsonPath messageJsonPath = new JsonPath(messageResponseBody);
-                                        String textContent = messageJsonPath.getString("Text");
-                                        
-                                        if (textContent != null) {
-                                            LOGGER.debug("Text content retrieved, length: {} characters", textContent.length());
-                                            
-                                            // Extract password from clean text content
-                                            // Pattern matches: "account is: PASSWORD" followed by period+newline or just newline
-                                            Pattern pattern = Pattern.compile(
-                                                "account is: ([^\\n]+?)(?:\\.?\\n)",
-                                                Pattern.DOTALL
-                                            );
-                                            
-                                            Matcher matcher = pattern.matcher(textContent);
-                                            if (matcher.find()) {
-                                                String password = matcher.group(1).trim();
-                                                LOGGER.info("Password extracted from text content: {}", password);
-                                                return password;
-                                            }
-                                        }
-                                        
-                                        // Fallback to existing extraction method
-                                        LOGGER.warn("Failed to extract from text content, trying snippet method");
+                                        LOGGER.info("Found matching message with snippet: {}", snippet);
                                         String rawPassword = extractRawPassword(snippet);
                                         String processedPassword = prepareForQuotedPrintable(rawPassword);
-                                        LOGGER.info("Password retrieved using fallback method: {}", rawPassword);
+                                        LOGGER.info("Password retrieved successfully: {}", rawPassword);
                                         return processedPassword;
                                     }
                                 }
@@ -173,7 +141,7 @@ public class MailPit {
 }
     private Map<String, String> createTimeFilteredQuery(String emailAddress, int timeWindowMinutes) {
         Map<String, String> queryParams = new HashMap<>();
-        queryParams.put("query", "subject:\"" + emailAddress + "\"");
+        queryParams.put("q", emailAddress);
         queryParams.put("limit", "50");
         Instant cutoffTime = Instant.now().minus(timeWindowMinutes, ChronoUnit.MINUTES);
         String since = cutoffTime.toString();
@@ -212,7 +180,7 @@ public class MailPit {
             }
             try {
                 Map<String, String> queryParams = createTimeFilteredQuery(emailAddress, timeWindowMinutes);
-                String url = String.format("%s/api/v1/search", this.getIp());
+                String url = String.format("%s/api/v1/messages", this.getIp());
                 response = RestUtils.getWithQueryParams(url, queryParams, this.getHeaders());
                 String responseBody = this.response.extract().asString();
 
@@ -253,7 +221,7 @@ public class MailPit {
             } else {
                 try {
                     Map<String, String> queryParams = createTimeFilteredQuery(emailAddress, timeWindowMinutes);
-                    String searchUrl = String.format("%s/api/v1/search", this.getIp());
+                    String searchUrl = String.format("%s/api/v1/messages", this.getIp());
                     LOGGER.info("Search URL: {}", searchUrl);
 
                     this.response = RestUtils.getWithQueryParams(searchUrl, queryParams, this.getHeaders());
