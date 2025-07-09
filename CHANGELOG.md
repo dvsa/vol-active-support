@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.7.19](https://github.com/dvsa/vol-active-support/compare/v2.7.18...v2.7.19) (2025-07-09)
+
+
+### Bug Fixes
+
+* increase limit ([4dcb4d7](https://github.com/dvsa/vol-active-support/commit/4dcb4d7f16998d0dd54b2d5a145737dc5b211e62))
+* increase limit ([b4feb5c](https://github.com/dvsa/vol-active-support/commit/b4feb5cd22cfe517313a65b5480fba5727ca46b2))
+
 ## [2.7.18](https://github.com/dvsa/vol-active-support/compare/v2.7.17...v2.7.18) (2025-07-09)
 
 
