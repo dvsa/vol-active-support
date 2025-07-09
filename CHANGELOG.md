@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.7.18](https://github.com/dvsa/vol-active-support/compare/v2.7.17...v2.7.18) (2025-07-09)
+
+
+### Bug Fixes
+
+* handle colon space pattern ([19df653](https://github.com/dvsa/vol-active-support/commit/19df65339540f9f6ae3d4a2f06580f0be483d0bb))
+* handle colon space pattern ([1958a34](https://github.com/dvsa/vol-active-support/commit/1958a34ed378b4131c1e991204af4b0e33a12f89))
+
 ## [2.7.17](https://github.com/dvsa/vol-active-support/compare/v2.7.16...v2.7.17) (2025-07-09)
 
 
