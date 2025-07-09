@@ -142,11 +142,11 @@ public class MailPit {
     private Map<String, String> createTimeFilteredQuery(String emailAddress, int timeWindowMinutes) {
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("q", emailAddress);
-        queryParams.put("limit", "50");
+        queryParams.put("limit", "100");
         Instant cutoffTime = Instant.now().minus(timeWindowMinutes, ChronoUnit.MINUTES);
         String since = cutoffTime.toString();
         queryParams.put("since", since);
-        LOGGER.info("Time-filtered query: email={}, limit=50, since={}", emailAddress, since);
+        LOGGER.info("Time-filtered query: email={}, limit=100, since={}", emailAddress, since);
         return queryParams;
     }
 
