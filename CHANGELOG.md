@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.7.17](https://github.com/dvsa/vol-active-support/compare/v2.7.16...v2.7.17) (2025-07-09)
+
+
+### Bug Fixes
+
+* revert back to /messages/ ([d5d8c49](https://github.com/dvsa/vol-active-support/commit/d5d8c49de5ac73c8889d11ce27ac2916f2d632ac))
+* revert back to /messages/ ([b64878a](https://github.com/dvsa/vol-active-support/commit/b64878ab6cd9435fd3c005c420943aa7c04f1f38))
+
 ## [2.7.16](https://github.com/dvsa/vol-active-support/compare/v2.7.15...v2.7.16) (2025-07-08)
 
 
