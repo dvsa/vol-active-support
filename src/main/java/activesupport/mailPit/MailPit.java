@@ -122,7 +122,7 @@ public class MailPit {
                         }
                     }
 
-                    throw new IllegalStateException("Failed to retrieve password after 10 attempts for " + emailAddress, lastException);
+                    throw new IllegalStateException("Failed to retrieve password after 15 attempts for " + emailAddress, lastException);
                 } finally {
                     LOGGER.info("Releasing rate limiter permit");
                     rateLimiter.release();
