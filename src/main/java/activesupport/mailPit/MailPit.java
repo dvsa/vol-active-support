@@ -276,9 +276,11 @@ public class MailPit {
     private static String extractRawPassword(String apiResponseBody) {
         String[] patterns = {
                 "is:\\s*([^\\s\\n\\r]+)",
-                "is:\\s*([^\\s,\\n\\r]+)",
+                "is:\\s+([^\\s\\n\\r]+)",
+                "account is:\\s*([^\\s\\n\\r]+)",
+                "account is:\\s+([^\\s\\n\\r]+)",
                 "password.*?is:\\s*([^\\s\\n\\r]+)",
-                "account is:\\s*([^\\s\\n\\r]+)"
+                "password.*?is:\\s+([^\\s\\n\\r]+)"
         };
 
         for (String patternStr : patterns) {
