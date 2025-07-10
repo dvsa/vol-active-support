@@ -52,6 +52,12 @@ public class MailPit {
 
                             if (attempts > 0) {
                                 long baseDelay = 1000L + (attempts * 500L);
+
+                                // Add longer wait for final attempts
+                                if (attempts >= 12) {
+                                    baseDelay = 5000L;
+                                }
+
                                 long jitter = random.nextInt(1000);
                                 long totalDelay = baseDelay + jitter;
 
@@ -62,7 +68,13 @@ public class MailPit {
                             ++attempts;
                             LOGGER.info("Attempt {}: Making request immediately", attempts);
 
-                            Map<String, String> queryParams = createTimeFilteredQuery(emailAddress, Math.max(timeWindowMinutes, 5));
+
+                            int currentTimeWindow = Math.max(timeWindowMinutes, 5);
+                            if (attempts > 3) currentTimeWindow = Math.max(timeWindowMinutes, 10);
+                            if (attempts > 6) currentTimeWindow = Math.max(timeWindowMinutes, 15);
+                            if (attempts > 8) currentTimeWindow = Math.max(timeWindowMinutes, 20);
+
+                            Map<String, String> queryParams = createTimeFilteredQuery(emailAddress, currentTimeWindow);
                             String url = String.format("%s/api/v1/messages", this.getIp());
                             LOGGER.info("Making request to URL: {} with time-filtered query", url);
 
@@ -81,8 +93,8 @@ public class MailPit {
 
                                 LOGGER.info("Found {} recent messages", messages.size());
 
-                                List<Map<String, Object>> recentMessages = filterMessagesByTime(messages, Math.max(timeWindowMinutes, 5));
-                                LOGGER.info("Found {} messages within {} minutes", recentMessages.size(), Math.max(timeWindowMinutes, 5));
+                                List<Map<String, Object>> recentMessages = filterMessagesByTime(messages, currentTimeWindow);
+                                LOGGER.info("Found {} messages within {} minutes", recentMessages.size(), currentTimeWindow);
 
                                 for (Map<String, Object> message : recentMessages) {
                                     String subject = (String) message.get("Subject");
@@ -133,7 +145,6 @@ public class MailPit {
             throw new IllegalStateException("Interrupted while waiting for rate limiter", var18);
         }
     }
-
 
     private Map<String, String> createTimeFilteredQuery(String emailAddress, int timeWindowMinutes) {
         Map<String, String> queryParams = new HashMap<>();
