@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.7.23](https://github.com/dvsa/vol-active-support/compare/v2.7.22...v2.7.23) (2025-07-10)
+
+
+### Bug Fixes
+
+* add inital wait ([8ace491](https://github.com/dvsa/vol-active-support/commit/8ace491f4f69a19b62f73397543b1016c3c2c73a))
+* add inital wait ([ff42581](https://github.com/dvsa/vol-active-support/commit/ff42581e251451a89003f96ee9c5ca31155372a4))
+
 ## [2.7.22](https://github.com/dvsa/vol-active-support/compare/v2.7.21...v2.7.22) (2025-07-10)
 
 
