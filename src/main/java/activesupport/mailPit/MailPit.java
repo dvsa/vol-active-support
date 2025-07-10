@@ -38,6 +38,12 @@ public class MailPit {
 
     public String retrieveTempPassword(String emailAddress, int timeWindowMinutes) {
         try {
+            LOGGER.info("Waiting 2 seconds for email to be processed ");
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        try {
             LOGGER.info("Attempting to acquire rate limiter permit");
             if (!rateLimiter.tryAcquire(30L, TimeUnit.SECONDS)) {
                 throw new IllegalStateException("Timeout waiting for rate limiter permit");
