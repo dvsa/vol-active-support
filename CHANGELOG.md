@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.21](https://github.com/dvsa/vol-active-support/compare/v2.7.20...v2.7.21) (2025-07-10)
+
+
+### Bug Fixes
+
+* timing ([f78b380](https://github.com/dvsa/vol-active-support/commit/f78b380c914168b7ceb3385b5865bf88ff5ad7a5))
+
 ## [2.7.20](https://github.com/dvsa/vol-active-support/compare/v2.7.19...v2.7.20) (2025-07-09)
 
 
