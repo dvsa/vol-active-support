@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.7.24](https://github.com/dvsa/vol-active-support/compare/v2.7.23...v2.7.24) (2025-07-10)
+
+
+### Bug Fixes
+
+* added wait for tm email ([9dc7081](https://github.com/dvsa/vol-active-support/commit/9dc7081fdb4982f8e6fce71f7bd66b2927a33bd7))
+* added wait for tm email ([d22432e](https://github.com/dvsa/vol-active-support/commit/d22432e68743fed02a84e7fbb04147a6395a6ac5))
+
 ## [2.7.23](https://github.com/dvsa/vol-active-support/compare/v2.7.22...v2.7.23) (2025-07-10)
 
 
