@@ -156,7 +156,9 @@ public class MailPit {
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("q", emailAddress);
         queryParams.put("limit", "100");
-        Instant cutoffTime = Instant.now().minus(timeWindowMinutes, ChronoUnit.MINUTES);
+        Instant cutoffTime = Instant.now()
+                .minus(timeWindowMinutes, ChronoUnit.MINUTES)
+                .minus(15, ChronoUnit.SECONDS);
         String since = cutoffTime.toString();
         queryParams.put("since", since);
         LOGGER.info("Time-filtered query: email={}, limit=100, since={}", emailAddress, since);
