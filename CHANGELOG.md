@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.7.26](https://github.com/dvsa/vol-active-support/compare/v2.7.25...v2.7.26) (2025-07-14)
+
+
+### Bug Fixes
+
+* cut off ([2d8a07d](https://github.com/dvsa/vol-active-support/commit/2d8a07dee4fdf260d8d9864c8e4b49482a9076db))
+* increase wait ([b99ae24](https://github.com/dvsa/vol-active-support/commit/b99ae24501339b1427d0caf3b405153a0b7a4029))
+
 ## [2.7.25](https://github.com/dvsa/vol-active-support/compare/v2.7.24...v2.7.25) (2025-07-11)
 
 
