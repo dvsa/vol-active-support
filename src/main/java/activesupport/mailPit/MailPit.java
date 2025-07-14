@@ -38,8 +38,8 @@ public class MailPit {
 
     public String retrieveTempPassword(String emailAddress, int timeWindowMinutes) {
         try {
-            LOGGER.info("Waiting 2 seconds for email to be processed ");
-            TimeUnit.SECONDS.sleep(2);
+            LOGGER.info("Waiting 4 seconds for email to be processed ");
+            TimeUnit.SECONDS.sleep(4);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
@@ -335,8 +335,8 @@ public class MailPit {
 
     public String retrieveTmAppLink(String emailAddress, int timeWindowMinutes) throws MissingRequiredArgument {
         try {
-            LOGGER.info("Waiting 2 seconds for email to be processed ");
-            TimeUnit.SECONDS.sleep(2);
+            LOGGER.info("Waiting 4 seconds for email to be processed ");
+            TimeUnit.SECONDS.sleep(4);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
