@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.7.27](https://github.com/dvsa/vol-active-support/compare/v2.7.26...v2.7.27) (2025-07-16)
+
+
+### Bug Fixes
+
+* tm app link ([8223749](https://github.com/dvsa/vol-active-support/commit/82237497a71da03937dbda300f87f2bc79f6957f))
+* tm app link ([4e86ef3](https://github.com/dvsa/vol-active-support/commit/4e86ef3255ef9efd34aecc6616cda0331bce875e))
+
 ## [2.7.26](https://github.com/dvsa/vol-active-support/compare/v2.7.25...v2.7.26) (2025-07-14)
 
 
