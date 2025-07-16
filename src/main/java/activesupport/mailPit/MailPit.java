@@ -337,7 +337,7 @@ public class MailPit {
 
     public String retrieveTmAppLink(String emailAddress, int timeWindowMinutes) throws MissingRequiredArgument {
         try {
-            LOGGER.info("Waiting 4 seconds for email to be processed ");
+            LOGGER.info("Waiting 6 seconds for email to be processed ");
             TimeUnit.SECONDS.sleep(6);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
