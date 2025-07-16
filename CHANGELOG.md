@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.7.28](https://github.com/dvsa/vol-active-support/compare/v2.7.27...v2.7.28) (2025-07-16)
+
+
+### Bug Fixes
+
+* lang3 ([aed23fa](https://github.com/dvsa/vol-active-support/commit/aed23fa52d576abfb496c47285b597668f45635a))
+* lang3 ([2702448](https://github.com/dvsa/vol-active-support/commit/27024489f695ffbc67b3b3432e83e3bfc558b3a4))
+
 ## [2.7.27](https://github.com/dvsa/vol-active-support/compare/v2.7.26...v2.7.27) (2025-07-16)
 
 
