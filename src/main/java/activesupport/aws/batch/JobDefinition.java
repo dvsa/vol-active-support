@@ -9,7 +9,7 @@ public enum JobDefinition {
     DUPLICATE_VEHICLE_WARNING("vol-app-int-duplicate-vehicle-warning"),
     EXPIRE_BUS_REGISTRATION("vol-app-int-expire-bus-registration"),
 
-    BATCH_CLI("vol-app-int-batch-cli"),
+    BATCH_CLI("vol-app-int-batch-cli");
 
 
     private final String definitionName;
