@@ -22,7 +22,6 @@
         <jsch.version>0.1.55</jsch.version>
         <junit.version>5.10.1</junit.version>
         <maven.compiler.version>3.8.1</maven.compiler.version>
-        <mock-server.version>5.15.0</mock-server.version>
         <mockito.version>5.8.0</mockito.version>
         <java-native-access.version>5.14.0</java-native-access.version>
         <rest-assured.version>5.4.0</rest-assured.version>
@@ -229,18 +228,6 @@
             <groupId>com.typesafe</groupId>
             <artifactId>config</artifactId>
             <version>${typesafe.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mock-server</groupId>
-            <artifactId>mockserver-netty</artifactId>
-            <version>${mock-server.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-core</artifactId>
-                </exclusion>
-            </exclusions>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
