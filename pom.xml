@@ -4,7 +4,7 @@
 
     <groupId>org.dvsa.testing.lib</groupId>
     <artifactId>active-support</artifactId>
-    <version>2.7.29-SNAPSHOT</version>
+    <version>2.7.28</version>
 
     <properties>
         <annotations.version>24.0.1</annotations.version>
@@ -112,7 +112,11 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.18.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>batch</artifactId>
+            <version>2.20.0</version>
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -316,6 +320,16 @@
             </snapshots>
         </repository>
     </repositories>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-codec-http2</artifactId>
+                <version>4.1.124.Final</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
         <distributionManagement>
             <repository>
