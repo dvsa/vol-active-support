@@ -8,11 +8,9 @@ public enum JobDefinition {
     CONTINUATIONS_REMINDER("vol-app-int-continuations-reminder"),
     DUPLICATE_VEHICLE_WARNING("vol-app-int-duplicate-vehicle-warning"),
     EXPIRE_BUS_REGISTRATION("vol-app-int-expire-bus-registration"),
-    PROCESS_QUEUE("vol-app-int-process-queue"),
 
     BATCH_CLI("vol-app-int-batch-cli"),
-    BATCH_PROCESS_QUEUE("vol-app-int-batch-process-queue"),
-    EBSR_QUEUE("vol-app-int-ebsr-queue");
+
 
     private final String definitionName;
 
