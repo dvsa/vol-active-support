@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.8.0](https://github.com/dvsa/vol-active-support/compare/v2.7.28...v2.8.0) (2025-09-03)
+
+
+### Features
+
+* trigger aws batch ([af981d9](https://github.com/dvsa/vol-active-support/commit/af981d9d4962be009cb3b8a1aa52954809c73254))
+* trigger aws batch ([abb13c0](https://github.com/dvsa/vol-active-support/commit/abb13c04dd24035a211d3c435f4ed4d256c06a14))
+
 ## [2.7.28](https://github.com/dvsa/vol-active-support/compare/v2.7.27...v2.7.28) (2025-07-16)
 
 
