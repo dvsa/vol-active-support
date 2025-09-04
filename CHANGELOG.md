@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.8.1](https://github.com/dvsa/vol-active-support/compare/v2.8.0...v2.8.1) (2025-09-04)
+
+
+### Bug Fixes
+
+* scheduling ([3905b4f](https://github.com/dvsa/vol-active-support/commit/3905b4f5c41820add828ea10c24e30c7c0b16e2a))
+* scheduling ([a14fa9d](https://github.com/dvsa/vol-active-support/commit/a14fa9df2d6888b1e04c051c83f62878ec1ad650))
+
 ## [2.8.0](https://github.com/dvsa/vol-active-support/compare/v2.7.28...v2.8.0) (2025-09-03)
 
 
