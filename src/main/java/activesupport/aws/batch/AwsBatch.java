@@ -70,7 +70,7 @@ public class AwsBatch {
                     .jobQueue(actualQueueName)
                     .jobDefinition(definition.toString())
                     .parameters(parameters)
-                    .schedulingPriorityOverride(100)
+                    .schedulingPriorityOverride(1)
                     .shareIdentifier("default");
 
             if (jobName != null && !jobName.isEmpty()) {
