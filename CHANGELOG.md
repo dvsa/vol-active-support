@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.8.2](https://github.com/dvsa/vol-active-support/compare/v2.8.1...v2.8.2) (2025-09-04)
+
+
+### Bug Fixes
+
+* netty ([78e62bb](https://github.com/dvsa/vol-active-support/commit/78e62bb62a8da80a7520d0c2ee4cbb74214fe0b2))
+* netty ([2529afe](https://github.com/dvsa/vol-active-support/commit/2529afe90f6b99ac02428ccad08016db880da5c3))
+* scheduling ([1d7d1f8](https://github.com/dvsa/vol-active-support/commit/1d7d1f801db5f3c164fb700e814c186cc5fc733c))
+
 ## [2.8.1](https://github.com/dvsa/vol-active-support/compare/v2.8.0...v2.8.1) (2025-09-04)
 
 
