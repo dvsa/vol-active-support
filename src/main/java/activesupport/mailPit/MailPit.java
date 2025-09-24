@@ -38,8 +38,8 @@ public class MailPit {
 
     public String retrieveTempPassword(String emailAddress, int timeWindowMinutes) {
         try {
-            LOGGER.info("Waiting 4 seconds for email to be processed ");
-            TimeUnit.SECONDS.sleep(4);
+            LOGGER.info("Waiting 6 seconds for email to be processed ");
+            TimeUnit.SECONDS.sleep(6);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
