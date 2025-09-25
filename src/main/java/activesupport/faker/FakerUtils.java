@@ -83,6 +83,33 @@ public class FakerUtils {
         return address;
     }
 
+    public LinkedHashMap<String, String> generateNorthEastEnglandAddress() {
+        LinkedHashMap<String, String> address = new LinkedHashMap<>();
+
+        HashMap<String, String[]> cityToPostcodeMap = new HashMap<>();
+        cityToPostcodeMap.put("Newcastle", new String[]{"NE1", "NE2", "NE3"});
+        cityToPostcodeMap.put("Sunderland", new String[]{"SR1", "SR2"});
+        cityToPostcodeMap.put("Durham", new String[]{"DH1", "DH2"});
+        cityToPostcodeMap.put("Gateshead", new String[]{"NE8", "NE9"});
+        cityToPostcodeMap.put("Middlesbrough", new String[]{"TS1", "TS2"});
+
+        String city = this.getRandomElement(cityToPostcodeMap.keySet().toArray(new String[0]));
+        String postcodePrefix = this.getRandomElement(cityToPostcodeMap.get(city));
+
+        address.put("addressLine1", String.valueOf(this.random.nextInt(300) + 1));
+        String streetName = this.getRandomElement(STREET_NAMES);
+        address.put("addressLine2", streetName + " " + (this.random.nextBoolean() ? "Street" : "Road"));
+        address.put("addressLine3", city);
+        address.put("addressLine4", city + " District");
+        address.put("town", "England");
+        address.put("postcode", String.format("%s %d%s",
+                postcodePrefix,
+                this.random.nextInt(10),
+                this.letterify("?U")));
+
+        return address;
+    }
+
     public String generateCompanyName() {
         return String.format("%s %s %s",
                 getRandomElement(LAST_NAMES),
