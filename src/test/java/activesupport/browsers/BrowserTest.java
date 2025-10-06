@@ -7,7 +7,7 @@ import org.mockserver.integration.ClientAndServer;
 import org.mockserver.model.HttpRequest;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
-import org.openqa.selenium.devtools.v135.network.Network;
+import org.openqa.selenium.devtools.v140.network.Network;
 
 import java.util.Optional;
 
@@ -58,7 +58,7 @@ public class BrowserTest {
         System.setProperty("browser", "chrome");
         DevTools devTools = ((HasDevTools) Browser.navigate()).getDevTools();
         devTools.createSession();
-        devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
+        devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()));
         devTools.addListener(Network.responseReceived(), responseReceived -> {
             assertNotNull(responseReceived.getResponse().getUrl(), "Response URL =>" + responseReceived.getResponse().getUrl());
             assertNotNull(responseReceived.getResponse().getHeaders().toString(), "Response Headers => " + responseReceived.getResponse().getHeaders().toString());
