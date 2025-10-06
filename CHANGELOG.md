@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.8.3](https://github.com/dvsa/vol-active-support/compare/v2.8.2...v2.8.3) (2025-09-29)
+
+
+### Bug Fixes
+
+* increase wait ([3938ac8](https://github.com/dvsa/vol-active-support/commit/3938ac802e30dd10fe41a49d957e9500cc1b834c))
+* increase wait ([0bab628](https://github.com/dvsa/vol-active-support/commit/0bab628b40f967bb664e24d74ed2190e1e058691))
+
 ## [2.8.2](https://github.com/dvsa/vol-active-support/compare/v2.8.1...v2.8.2) (2025-09-04)
 
 
