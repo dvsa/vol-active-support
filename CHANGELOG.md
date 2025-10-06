@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.9.0](https://github.com/dvsa/vol-active-support/compare/v2.8.3...v2.9.0) (2025-10-06)
+
+
+### Features
+
+* selenium 4.36.0 ([b9e5882](https://github.com/dvsa/vol-active-support/commit/b9e58822472a8fd47639c59a74500681c2217e68))
+
 ## [2.8.3](https://github.com/dvsa/vol-active-support/compare/v2.8.2...v2.8.3) (2025-09-29)
 
 
