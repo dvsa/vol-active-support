@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.10.1](https://github.com/dvsa/vol-active-support/compare/v2.10.0...v2.10.1) (2025-10-07)
+
+
+### Bug Fixes
+
+* add process queue ([90910bb](https://github.com/dvsa/vol-active-support/commit/90910bb92e823a4f97c28d7690338d71ee5b69ef))
+* add process queue ([fd74f20](https://github.com/dvsa/vol-active-support/commit/fd74f209c09b664b375971ca347d3e0cd3f09339))
+
 ## [2.10.0](https://github.com/dvsa/vol-active-support/compare/v2.9.1...v2.10.0) (2025-10-07)
 
 
