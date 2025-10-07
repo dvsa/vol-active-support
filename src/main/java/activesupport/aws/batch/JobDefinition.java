@@ -4,9 +4,10 @@ public enum JobDefinition {
 
     LAST_TM_LETTER("vol-app-int-last-tm-letter"),
 
-    CONTINUATIONS_REMINDER("vol-app-int-continuations-reminder"),
+    CONTINUATIONS_REMINDER("vol-app-int-digital-continuation-reminders"),
     DUPLICATE_VEHICLE_WARNING("vol-app-int-duplicate-vehicle-warning"),
-    EXPIRE_BUS_REGISTRATION("vol-app-int-expire-bus-registration");
+    EXPIRE_BUS_REGISTRATION("vol-app-int-expire-bus-registration"),
+    PROCESS_QUEUE("vol-app-int-process-queue-general");
 
     private final String definitionName;
 
