@@ -42,39 +42,42 @@ public class AwsBatch {
     }
 
     public boolean triggerAwsBatchJob(String jobDefinition) throws Exception {
+        String jobId = triggerAwsBatchJobWithId(jobDefinition);
+        return jobId != null && !jobId.isEmpty();
+    }
+
+    public String triggerAwsBatchJobWithId(String jobDefinition) throws Exception {
         HashMap<String, String> parameters = new HashMap<>();
         String env = System.getProperty("env", "default").toLowerCase();
         parameters.put("ENVIRONMENT_NAME", env);
+
         try {
             String jobName = jobDefinition + "-" + System.currentTimeMillis();
-            String jobId = AwsBatch.submitJob(
-                    AwsBatch.JobQueue.DEFAULT,
-                    JobDefinition.valueOf(jobDefinition),
-                    parameters,
-                    jobName
-            );
+            String jobId = submitJob(AwsBatch.JobQueue.DEFAULT, JobDefinition.valueOf(jobDefinition), parameters, jobName);
             Output.printColoredLog("[INFO] AWS Batch job triggered successfully. Job ID: " + jobId);
+            long timeout = System.currentTimeMillis() + 100000L;
+
             String jobStatus;
-            long timeout = System.currentTimeMillis() + 100000;
             do {
-                jobStatus = String.valueOf(AwsBatch.getJobStatus(jobId));
+                jobStatus = String.valueOf(getJobStatus(jobId));
                 Output.printColoredLog("[INFO] Job " + jobId + " status: " + jobStatus);
                 if ("FAILED".equalsIgnoreCase(jobStatus)) {
                     throw new RuntimeException("Job failed. Status: " + jobStatus);
                 }
-                Thread.sleep(5000);
+
+                Thread.sleep(5000L);
             } while (!"SUCCEEDED".equalsIgnoreCase(jobStatus) && System.currentTimeMillis() < timeout);
 
             if (!"SUCCEEDED".equalsIgnoreCase(jobStatus)) {
                 throw new RuntimeException("Job did not complete successfully within the timeout period.");
             }
-            return true;
+
+            return jobId; // Return the job ID
         } catch (Exception e) {
             Output.printColoredLog("[ERROR] Failed to trigger AWS Batch job: " + e.getMessage());
-            return false;
+            throw e;
         }
     }
-
     public static String submitJob(JobQueue jobQueue, JobDefinition jobDef, Map<String, String> params) throws Exception {
         String env = System.getProperty("env", "default").toLowerCase();
         String actualQueueName = jobQueue.resolve(env);
