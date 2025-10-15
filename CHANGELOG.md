@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.10.2](https://github.com/dvsa/vol-active-support/compare/v2.10.1...v2.10.2) (2025-10-15)
+
+
+### Bug Fixes
+
+* increase query ([aebfd7a](https://github.com/dvsa/vol-active-support/commit/aebfd7a5a7a7f2cb436c0b2796d08434babf4f1c))
+* increase query ([4fdfe90](https://github.com/dvsa/vol-active-support/commit/4fdfe90e1cdfcbd578710c9dfbbfb3ba0c7146fb))
+
 ## [2.10.1](https://github.com/dvsa/vol-active-support/compare/v2.10.0...v2.10.1) (2025-10-07)
 
 
