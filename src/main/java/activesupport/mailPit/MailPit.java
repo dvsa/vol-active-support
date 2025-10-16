@@ -36,120 +36,138 @@ public class MailPit {
     }
 
 
-    public String retrieveTempPassword(String emailAddress, int timeWindowMinutes) {
+public String retrieveTempPassword(String emailAddress, int timeWindowMinutes) {
         try {
             LOGGER.info("Waiting 8 seconds for email to be processed ");
             TimeUnit.SECONDS.sleep(8);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
+
         try {
             LOGGER.info("Attempting to acquire rate limiter permit");
             if (!rateLimiter.tryAcquire(30L, TimeUnit.SECONDS)) {
                 throw new IllegalStateException("Timeout waiting for rate limiter permit");
-            } else {
-                try {
-                    int attempts = 0;
-                    IllegalStateException lastException = null;
-                    Random random = new Random();
+            }
 
-                    while (attempts < 15) {
-                        try {
+            try {
+                int attempts = 0;
+                IllegalStateException lastException = null;
+                Random random = new Random();
 
-                            if (attempts > 0) {
-                                long baseDelay = 1000L + (attempts * 500L);
+                while (attempts < 15) {
+                    try {
+                        if (attempts > 0) {
+                            long baseDelay = 1000L + (attempts * 500L);
+                            if (attempts >= 12) {
+                                baseDelay = 5000L;
+                            }
+                            long jitter = random.nextInt(1000);
+                            long totalDelay = baseDelay + jitter;
+                            LOGGER.info("Attempt {}: Sleeping for {} ms before retry", attempts + 1, totalDelay);
+                            TimeUnit.MILLISECONDS.sleep(totalDelay);
+                        }
 
-                                // Add longer wait for final attempts
-                                if (attempts >= 12) {
-                                    baseDelay = 5000L;
-                                }
+                        attempts++;
+                        LOGGER.info("Attempt {}: Making request immediately", attempts);
 
-                                long jitter = random.nextInt(1000);
-                                long totalDelay = baseDelay + jitter;
+                        int currentTimeWindow = Math.max(timeWindowMinutes, 5);
+                        if (attempts > 3) currentTimeWindow = Math.max(timeWindowMinutes, 10);
+                        if (attempts > 6) currentTimeWindow = Math.max(timeWindowMinutes, 15);
+                        if (attempts > 8) currentTimeWindow = Math.max(timeWindowMinutes, 20);
 
-                                LOGGER.info("Attempt {}: Sleeping for {} ms before retry", attempts + 1, totalDelay);
-                                TimeUnit.MILLISECONDS.sleep(totalDelay);
+
+                        Map<String, String> queryParams = new HashMap<>();
+                        queryParams.put("query", emailAddress);
+
+                        String url = String.format("%s/api/v1/search", this.getIp());
+                        LOGGER.info("Making request to URL: {} with search query: {}", url, emailAddress);
+
+                        this.response = RestUtils.getWithQueryParams(url, queryParams, this.getHeaders());
+                        String responseBody = this.response.extract().asString();
+                        LOGGER.info("Response received with {} characters", responseBody.length());
+
+                        if (!StringUtils.isEmpty(responseBody) && responseBody.contains("messages")) {
+                            JsonPath jsonPath = new JsonPath(responseBody);
+                            List<Map<String, Object>> messages = jsonPath.getList("messages");
+
+                            if (messages == null || messages.isEmpty()) {
+                                LOGGER.warn("No messages found on attempt {}", attempts);
+                                continue;
                             }
 
-                            ++attempts;
-                            LOGGER.info("Attempt {}: Making request immediately", attempts);
+                            LOGGER.info("Found {} messages from search", messages.size());
 
 
-                            int currentTimeWindow = Math.max(timeWindowMinutes, 5);
-                            if (attempts > 3) currentTimeWindow = Math.max(timeWindowMinutes, 10);
-                            if (attempts > 6) currentTimeWindow = Math.max(timeWindowMinutes, 15);
-                            if (attempts > 8) currentTimeWindow = Math.max(timeWindowMinutes, 20);
+                            List<Map<String, Object>> recentMessages = filterMessagesByTime(messages, currentTimeWindow);
+                            LOGGER.info("Found {} messages within {} minutes", recentMessages.size(), currentTimeWindow);
 
-                            Map<String, String> queryParams = createTimeFilteredQuery(emailAddress, currentTimeWindow);
-                            String url = String.format("%s/api/v1/messages", this.getIp());
-                            LOGGER.info("Making request to URL: {} with time-filtered query", url);
+                            for (Map<String, Object> message : recentMessages) {
+                                String subject = (String) message.get("Subject");
+                                String snippet = (String) message.get("Snippet");
+                                String created = (String) message.get("Created");
 
-                            this.response = RestUtils.getWithQueryParams(url, queryParams, this.getHeaders());
-                            String responseBody = this.response.extract().asString();
-                            LOGGER.info("Response received with {} characters", responseBody.length());
+                                LOGGER.info("Checking message - Subject: '{}', Created: {}", subject, created);
 
-                            if (!StringUtils.isEmpty(responseBody) && responseBody.contains("messages")) {
-                                JsonPath jsonPath = new JsonPath(responseBody);
-                                List<Map<String, Object>> messages = jsonPath.getList("messages");
-
-                                if (messages == null || messages.isEmpty()) {
-                                    LOGGER.warn("No messages found on attempt {}", attempts);
-                                    continue;
-                                }
-
-                                LOGGER.info("Found {} recent messages", messages.size());
-
-                                List<Map<String, Object>> recentMessages = filterMessagesByTime(messages, currentTimeWindow);
-                                LOGGER.info("Found {} messages within {} minutes", recentMessages.size(), currentTimeWindow);
-
-                                for (Map<String, Object> message : recentMessages) {
-                                    String subject = (String) message.get("Subject");
-                                    String snippet = (String) message.get("Snippet");
-                                    String created = (String) message.get("Created");
-
-                                    LOGGER.info("Checking message - Subject: '{}', Created: {}", subject, created);
-
-                                    if (subject != null &&
-                                            subject.contains(emailAddress) &&
-                                            subject.toLowerCase().contains("temporary password")) {
-
-                                        if (snippet != null && snippet.toLowerCase().contains("temporary password")) {
-                                            LOGGER.info("Found matching message with snippet: {}", snippet);
-                                            String rawPassword = extractRawPassword(snippet);
-                                            String processedPassword = prepareForQuotedPrintable(rawPassword);
-                                            LOGGER.info("Password retrieved successfully: {}", rawPassword);
-                                            return processedPassword;
-                                        }
+                                // Check if this is a temporary password email
+                                if (subject != null && subject.toLowerCase().contains("temporary password")) {
+                                    if (snippet != null && snippet.toLowerCase().contains("temporary password")) {
+                                        LOGGER.info("Found matching message with snippet: {}", snippet);
+                                        String rawPassword = extractPasswordFromSnippet(snippet);
+                                        String processedPassword = prepareForQuotedPrintable(rawPassword);
+                                        LOGGER.info("Password retrieved successfully: {}", rawPassword);
+                                        return processedPassword;
                                     }
                                 }
-
-                                LOGGER.warn("No matching message found for email: {} on attempt {}", emailAddress, attempts);
-                                LOGGER.warn("Recent subjects found:");
-                                for (Map<String, Object> message : recentMessages) {
-                                    String subject = (String) message.get("Subject");
-                                    String created = (String) message.get("Created");
-                                    LOGGER.warn("  - '{}' ({})", subject, created);
-                                }
-                            } else {
-                                LOGGER.warn("Response body is empty or doesn't contain 'messages' on attempt {}", attempts);
                             }
-                        } catch (Exception var16) {
-                            LOGGER.error("Error processing response on attempt {}: {}", attempts, var16.getMessage(), var16);
-                            lastException = new IllegalStateException("Error processing response: " + var16.getMessage(), var16);
 
+                            LOGGER.warn("No matching message found for email: {} on attempt {}", emailAddress, attempts);
+                            LOGGER.warn("Recent subjects found:");
+                            for (Map<String, Object> message : recentMessages) {
+                                String subject = (String) message.get("Subject");
+                                String created = (String) message.get("Created");
+                                LOGGER.warn("  - '{}' ({})", subject, created);
+                            }
+                        } else {
+                            LOGGER.warn("Response body is empty or doesn't contain 'messages' on attempt {}", attempts);
                         }
+                    } catch (Exception e) {
+                        LOGGER.error("Error processing response on attempt {}: {}", attempts, e.getMessage(), e);
+                        lastException = new IllegalStateException("Error processing response: " + e.getMessage(), e);
                     }
-
-                    throw new IllegalStateException("Failed to retrieve password after 15 attempts for " + emailAddress, lastException);
-                } finally {
-                    LOGGER.info("Releasing rate limiter permit");
-                    rateLimiter.release();
                 }
+
+                throw new IllegalStateException("Failed to retrieve password after 15 attempts for " + emailAddress, lastException);
+            } finally {
+                LOGGER.info("Releasing rate limiter permit");
+                rateLimiter.release();
             }
-        } catch (InterruptedException var18) {
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new IllegalStateException("Interrupted while waiting for rate limiter", var18);
+            throw new IllegalStateException("Interrupted while waiting for rate limiter", e);
         }
+    }
+
+    private static String extractPasswordFromSnippet(String snippet) {
+        String[] patterns = {
+                "account is:\\s*([^\\s]+)",
+                "password is:\\s*([^\\s]+)",
+                "is:\\s*([^\\s]+)\\s+Sign\\s+in",
+                "is:\\s*([A-Za-z0-9!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?`~]+)\\s+"
+        };
+
+        for (String patternStr : patterns) {
+            Pattern pattern = Pattern.compile(patternStr);
+            Matcher matcher = pattern.matcher(snippet);
+            if (matcher.find()) {
+                String password = matcher.group(1);
+                LOGGER.info("Password found using pattern '{}': {}", patternStr, password);
+                return password;
+            }
+        }
+
+        LOGGER.error("Password pattern not found in snippet: {}", snippet);
+        throw new IllegalStateException("Password pattern not found in email snippet");
     }
 
     private Map<String, String> createTimeFilteredQuery(String emailAddress, int timeWindowMinutes) {
