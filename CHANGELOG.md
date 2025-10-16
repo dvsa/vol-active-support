@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.10.3](https://github.com/dvsa/vol-active-support/compare/v2.10.2...v2.10.3) (2025-10-16)
+
+
+### Bug Fixes
+
+* reduce wait ([a94f77e](https://github.com/dvsa/vol-active-support/commit/a94f77e532102cf5523a7278ddee76f9a0730442))
+* reduce wait ([7e25353](https://github.com/dvsa/vol-active-support/commit/7e2535359b5f84736a0aab1c1ace4fecceeebee2))
+
 ## [2.10.2](https://github.com/dvsa/vol-active-support/compare/v2.10.1...v2.10.2) (2025-10-15)
 
 
