@@ -38,7 +38,7 @@ public class MailPit {
 
 public String retrieveTempPassword(String emailAddress, int timeWindowMinutes) {
         try {
-            LOGGER.info("Waiting 8 seconds for email to be processed");
+            LOGGER.info("Waiting 8 seconds for email to be processed ");
             TimeUnit.SECONDS.sleep(8);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
@@ -173,13 +173,13 @@ public String retrieveTempPassword(String emailAddress, int timeWindowMinutes) {
     private Map<String, String> createTimeFilteredQuery(String emailAddress, int timeWindowMinutes) {
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("q", emailAddress);
-        queryParams.put("limit", "200");
+        queryParams.put("limit", "350");
         Instant cutoffTime = Instant.now()
                 .minus(timeWindowMinutes, ChronoUnit.MINUTES)
                 .minus(15, ChronoUnit.SECONDS);
         String since = cutoffTime.toString();
         queryParams.put("since", since);
-        LOGGER.info("Time-filtered query: email={}, limit=200, since={}", emailAddress, since);
+        LOGGER.info("Time-filtered query: email={}, limit=350, since={}", emailAddress, since);
         return queryParams;
     }
 
