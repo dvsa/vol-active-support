@@ -7,7 +7,9 @@ public enum JobDefinition {
     CONTINUATIONS_REMINDER("vol-app-int-digital-continuation-reminders"),
     DUPLICATE_VEHICLE_WARNING("vol-app-int-duplicate-vehicle-warning"),
     EXPIRE_BUS_REGISTRATION("vol-app-int-expire-bus-registration"),
-    PROCESS_QUEUE("vol-app-int-process-queue-general");
+    PROCESS_QUEUE("vol-app-int-process-queue-general"),
+
+    PERMITS_RESET_TEST_DATA("vol-app-int-permits-reset-test-data ");
 
     private final String definitionName;
 
