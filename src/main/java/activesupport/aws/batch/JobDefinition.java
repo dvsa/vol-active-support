@@ -9,7 +9,7 @@ public enum JobDefinition {
     EXPIRE_BUS_REGISTRATION("vol-app-int-expire-bus-registration"),
     PROCESS_QUEUE("vol-app-int-process-queue-general"),
 
-    PERMITS_RESET_TEST_DATA("vol-app-int-permits-reset-test-data ");
+    PERMITS_RESET_TEST_DATA("vol-app-int-permits-reset-test-data");
 
     private final String definitionName;
 
