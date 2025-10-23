@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.10.5](https://github.com/dvsa/vol-active-support/compare/v2.10.4...v2.10.5) (2025-10-23)
+
+
+### Bug Fixes
+
+* whitespace ([1ed038a](https://github.com/dvsa/vol-active-support/commit/1ed038a7c43c036a358c023e279cb0c0dfa76531))
+* whitespace ([6834a94](https://github.com/dvsa/vol-active-support/commit/6834a9411b1e3d324799cbb132fe9999f62cb8db))
+
 ## [2.10.4](https://github.com/dvsa/vol-active-support/compare/v2.10.3...v2.10.4) (2025-10-22)
 
 
