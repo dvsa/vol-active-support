@@ -42,3 +42,4 @@ public class EdgeSetUp {
         }
         return driver;
     }
+}
