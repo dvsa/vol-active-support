@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.10.7](https://github.com/dvsa/vol-active-support/compare/v2.10.6...v2.10.7) (2025-10-24)
+
+
+### Bug Fixes
+
+* remove static ([94a9bc8](https://github.com/dvsa/vol-active-support/commit/94a9bc8fc362e36afab9503e8abf34ea87f22c03))
+* remove static ([577c2e7](https://github.com/dvsa/vol-active-support/commit/577c2e7b0ab54ceeea44a6c1a7f4f02acb98101c))
+* revert tests ([b1e7795](https://github.com/dvsa/vol-active-support/commit/b1e779524827473c09ae77fe501fdc88c470c764))
+* revert tests ([93ce1cd](https://github.com/dvsa/vol-active-support/commit/93ce1cdb176cc66c20769594e3a4b8b902f0d73d))
+
 ## [2.10.6](https://github.com/dvsa/vol-active-support/compare/v2.10.5...v2.10.6) (2025-10-24)
 
 
