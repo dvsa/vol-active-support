@@ -7,10 +7,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
-
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import static activesupport.driver.Browser.*;
 
 public class EdgeSetUp {
@@ -25,15 +23,18 @@ public class EdgeSetUp {
         this.edgeOptions = edgeOptions;
     }
 
-    public static WebDriver driver;
-
     public WebDriver driver() throws MalformedURLException {
         edgeOptions.setAcceptInsecureCerts(true);
         edgeOptions.addArguments("--headless=new");
         edgeOptions.addArguments("--no-sandbox");
         edgeOptions.addArguments("--disable-gpu");
         edgeOptions.addArguments("--disable-dev-shm-usage");
+        edgeOptions.addArguments("--window-size=1920,1080");
+        edgeOptions.addArguments("--hide-scrollbars");
+        edgeOptions.addArguments("--force-device-scale-factor=1");
         edgeOptions.setCapability("webSocketUrl", true);
+
+        WebDriver driver;
         if (getBrowserVersion() == null) {
             driver = new EdgeDriver(edgeOptions);
         } else {
