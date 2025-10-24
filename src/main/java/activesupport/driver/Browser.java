@@ -11,17 +11,13 @@ import org.apache.logging.log4j.Logger;
 
 public class Browser {
 
-    private static WebDriver driver;
-
     private static String gridURL;
     private static String ipAddress;
     private static String portNumber;
     private static String platform;
     private static String browserVersion;
-    protected static
-    ThreadLocal<WebDriver> threadLocalDriver = new ThreadLocal<>();
+    protected static ThreadLocal<WebDriver> threadLocalDriver = new ThreadLocal<>();
     private static final Logger LOGGER = LogManager.getLogger(Browser.class);
-
 
     public static Configuration configuration = new Configuration();
 
@@ -66,7 +62,6 @@ public class Browser {
     }
 
     public static WebDriver navigate() {
-        //set driver
         if (getDriver() == null) {
             setGridURL(System.getProperty("gridURL"));
             setPlatform(System.getProperty("platform"));
@@ -94,6 +89,7 @@ public class Browser {
         ChromeSetUp chrome = new ChromeSetUp();
         FirefoxSetUp firefox = new FirefoxSetUp();
         EdgeSetUp edge = new EdgeSetUp();
+        WebDriver driver;
 
         switch (browserName) {
             case "chrome":
@@ -106,6 +102,7 @@ public class Browser {
                 driver = firefox.driver();
                 break;
             case "safari":
+                driver = null;
                 break;
             case "headless":
                 chrome.getChromeOptions().addArguments("--headless");
@@ -123,18 +120,17 @@ public class Browser {
                 throw new IllegalBrowserException();
         }
         threadLocalDriver.set(driver);
-        getDriver();
     }
 
     public static void closeBrowser() throws Exception {
-        if (getDriver() != null)
+        if (getDriver() != null) {
             getDriver().quit();
+            removeLocalDriverThread();
+        }
     }
 
     public static boolean isBrowserOpen() {
-        boolean isOpen;
-        isOpen = getDriver() != null;
-        return isOpen;
+        return getDriver() != null;
     }
 
     public static void removeLocalDriverThread() {
