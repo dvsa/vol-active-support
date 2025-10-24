@@ -28,8 +28,9 @@ public class EdgeSetUp {
     public static WebDriver driver;
 
     public WebDriver driver() throws MalformedURLException {
-      //  edgeOptions.setCapability("proxy",ProxyConfig.dvsaProxy());
         edgeOptions.setAcceptInsecureCerts(true);
+        edgeOptions.addArguments("--headless=new");
+        edgeOptions.addArguments("--no-sandbox");
         edgeOptions.addArguments("--disable-gpu");
         edgeOptions.addArguments("--disable-dev-shm-usage");
         edgeOptions.setCapability("webSocketUrl", true);
