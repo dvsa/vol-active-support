@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.10.8](https://github.com/dvsa/vol-active-support/compare/v2.10.7...v2.10.8) (2025-10-24)
+
+
+### Bug Fixes
+
+* larger screenshot ([5bc6e23](https://github.com/dvsa/vol-active-support/commit/5bc6e23e318ccc0302e1587f795054d72b6df5a2))
+* larger screenshot ([74cddb7](https://github.com/dvsa/vol-active-support/commit/74cddb7fb992ac10613e50bc47792ecc310ef7ed))
+
 ## [2.10.7](https://github.com/dvsa/vol-active-support/compare/v2.10.6...v2.10.7) (2025-10-24)
 
 
