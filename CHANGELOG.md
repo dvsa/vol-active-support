@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.10.9](https://github.com/dvsa/vol-active-support/compare/v2.10.8...v2.10.9) (2025-11-05)
+
+
+### Bug Fixes
+
+* chrome options ([6178ba6](https://github.com/dvsa/vol-active-support/commit/6178ba63fa8663bb3e615a1bbc85cb7806999154))
+* chrome options ([ad24b8b](https://github.com/dvsa/vol-active-support/commit/ad24b8b3ec4a531d53cb8532567ce8547258294c))
+
 ## [2.10.8](https://github.com/dvsa/vol-active-support/compare/v2.10.7...v2.10.8) (2025-10-24)
 
 
