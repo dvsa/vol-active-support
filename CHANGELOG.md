@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.11.0](https://github.com/dvsa/vol-active-support/compare/v2.10.9...v2.11.0) (2025-11-14)
+
+
+### Features
+
+* allow use of local mailpit ([f83e61d](https://github.com/dvsa/vol-active-support/commit/f83e61dbf0b9cb9674bf05e3e68277f50bf26c5a))
+* allow use of local mailpit ([10bd739](https://github.com/dvsa/vol-active-support/commit/10bd739a58c40daadea89b67d0013b65f32fe936))
+
 ## [2.10.9](https://github.com/dvsa/vol-active-support/compare/v2.10.8...v2.10.9) (2025-11-05)
 
 
