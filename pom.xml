@@ -26,6 +26,7 @@
         <mockito.version>5.8.0</mockito.version>
         <java-native-access.version>5.14.0</java-native-access.version>
         <rest-assured.version>5.4.0</rest-assured.version>
+        <uri-constructor.version>2.3.0</uri-constructor.version>
         <selenium.version>4.36.0</selenium.version>
         <log4j.version>2.17.1</log4j.version>
         <og4j12.version>2.17.1</og4j12.version>
@@ -86,6 +87,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
             <version>${org.apache.commons.commons-text.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.dvsa.testing.lib</groupId>
+            <artifactId>vol-uri-constructor</artifactId>
+            <version>${uri-constructor.version}</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>

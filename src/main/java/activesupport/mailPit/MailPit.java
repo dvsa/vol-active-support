@@ -7,7 +7,9 @@ import io.restassured.response.ValidatableResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.dvsa.testing.lib.url.utils.EnvironmentType;
 import org.jetbrains.annotations.NotNull;
+
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -22,21 +24,35 @@ public class MailPit {
     private static final Logger LOGGER = LogManager.getLogger(MailPit.class);
     private static final int ACQUIRE_TIMEOUT = 60;
     private static final int DEFAULT_TIME_WINDOW_MINUTES = 5;
+    private static final String LOCAL_URL = "http://mailpit.local.olcs.dev-dvsacloud.uk:8025";
+    private static final String DEFAULT_URL = "https://selenium-mail.olcs.dev-dvsacloud.uk:8025";
+
     private volatile ValidatableResponse response;
-    private String ip;
+    private String baseUrl;
     private String port;
 
-    public MailPit() {
-        this.ip = "https://selenium-mail.olcs.dev-dvsacloud.uk:8025";
+
+    public MailPit(EnvironmentType env) {
+        this.baseUrl = determineBaseUrl(env);
         this.port = "8025";
+        LOGGER.info("MailPit initialized for environment '{}' with URL: {}", env, this.baseUrl);
+    }
+
+
+    private String determineBaseUrl(EnvironmentType env) {
+        if (env != null && env.toString().equalsIgnoreCase("local")) {
+            LOGGER.info("Using local MailPit grid");
+            return LOCAL_URL;
+        }
+        LOGGER.info("Using standard MailPit grid");
+        return DEFAULT_URL;
     }
 
     public String retrieveTempPassword(String emailAddress) {
         return retrieveTempPassword(emailAddress, DEFAULT_TIME_WINDOW_MINUTES);
     }
 
-
-public String retrieveTempPassword(String emailAddress, int timeWindowMinutes) {
+    public String retrieveTempPassword(String emailAddress, int timeWindowMinutes) {
         try {
             LOGGER.info("Waiting 5 seconds for email to be processed ");
             TimeUnit.SECONDS.sleep(5);
@@ -76,11 +92,10 @@ public String retrieveTempPassword(String emailAddress, int timeWindowMinutes) {
                         if (attempts > 6) currentTimeWindow = Math.max(timeWindowMinutes, 15);
                         if (attempts > 8) currentTimeWindow = Math.max(timeWindowMinutes, 20);
 
-
                         Map<String, String> queryParams = new HashMap<>();
                         queryParams.put("query", emailAddress);
 
-                        String url = String.format("%s/api/v1/search", this.getIp());
+                        String url = String.format("%s/api/v1/search", this.baseUrl);
                         LOGGER.info("Making request to URL: {} with search query: {}", url, emailAddress);
 
                         this.response = RestUtils.getWithQueryParams(url, queryParams, this.getHeaders());
@@ -98,7 +113,6 @@ public String retrieveTempPassword(String emailAddress, int timeWindowMinutes) {
 
                             LOGGER.info("Found {} messages from search", messages.size());
 
-
                             List<Map<String, Object>> recentMessages = filterMessagesByTime(messages, currentTimeWindow);
                             LOGGER.info("Found {} messages within {} minutes", recentMessages.size(), currentTimeWindow);
 
@@ -109,7 +123,6 @@ public String retrieveTempPassword(String emailAddress, int timeWindowMinutes) {
 
                                 LOGGER.info("Checking message - Subject: '{}', Created: {}", subject, created);
 
-                                // Check if this is a temporary password email
                                 if (subject != null && subject.toLowerCase().contains("temporary password")) {
                                     if (snippet != null && snippet.toLowerCase().contains("temporary password")) {
                                         LOGGER.info("Found matching message with snippet: {}", snippet);
@@ -183,7 +196,6 @@ public String retrieveTempPassword(String emailAddress, int timeWindowMinutes) {
         return queryParams;
     }
 
-
     private List<Map<String, Object>> filterMessagesByTime(List<Map<String, Object>> messages, int timeWindowMinutes) {
         List<Map<String, Object>> filteredMessages = new ArrayList<>();
         Instant cutoffTime = Instant.now().minus(timeWindowMinutes, ChronoUnit.MINUTES);
@@ -213,7 +225,7 @@ public String retrieveTempPassword(String emailAddress, int timeWindowMinutes) {
             }
             try {
                 Map<String, String> queryParams = createTimeFilteredQuery(emailAddress, timeWindowMinutes);
-                String url = String.format("%s/api/v1/messages", this.getIp());
+                String url = String.format("%s/api/v1/messages", this.baseUrl);
                 response = RestUtils.getWithQueryParams(url, queryParams, this.getHeaders());
                 String responseBody = this.response.extract().asString();
 
@@ -246,7 +258,6 @@ public String retrieveTempPassword(String emailAddress, int timeWindowMinutes) {
         return retrieveEmailContent(emailAddress, subjectContains, DEFAULT_TIME_WINDOW_MINUTES);
     }
 
-
     public synchronized String retrieveEmailRawContent(String emailAddress, String subjectContains, int timeWindowMinutes) {
         try {
             if (!rateLimiter.tryAcquire(30L, TimeUnit.SECONDS)) {
@@ -254,7 +265,7 @@ public String retrieveTempPassword(String emailAddress, int timeWindowMinutes) {
             } else {
                 try {
                     Map<String, String> queryParams = createTimeFilteredQuery(emailAddress, timeWindowMinutes);
-                    String searchUrl = String.format("%s/api/v1/messages", this.getIp());
+                    String searchUrl = String.format("%s/api/v1/messages", this.baseUrl);
                     LOGGER.info("Search URL: {}", searchUrl);
 
                     this.response = RestUtils.getWithQueryParams(searchUrl, queryParams, this.getHeaders());
@@ -270,7 +281,7 @@ public String retrieveTempPassword(String emailAddress, int timeWindowMinutes) {
                             if (subject != null && subject.contains(subjectContains)) {
                                 String messageId = (String) message.get("ID");
                                 LOGGER.info("Found message ID: {}", messageId);
-                                String rawUrl = String.format("%s/api/v1/message/%s/raw", this.getIp(), messageId);
+                                String rawUrl = String.format("%s/api/v1/message/%s/raw", this.baseUrl, messageId);
                                 LOGGER.info("Raw content URL: {}", rawUrl);
                                 this.response = RestUtils.get(rawUrl, this.getHeaders());
                                 return this.response.extract().asString();
@@ -439,19 +450,13 @@ public String retrieveTempPassword(String emailAddress, int timeWindowMinutes) {
         return headers;
     }
 
-    public String getPort() {
-        return port;
+    public String getBaseUrl() {
+        return baseUrl;
     }
 
-    public void setPort(String port) {
-        this.port = port;
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+        LOGGER.info("Base URL updated to: {}", baseUrl);
     }
 
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
 }
