@@ -29,7 +29,7 @@
         <uri-constructor.version>2.3.0</uri-constructor.version>
         <selenium.version>4.36.0</selenium.version>
         <log4j.version>2.17.1</log4j.version>
-        <og4j12.version>2.17.1</og4j12.version>
+        <og4j12.version>2.25.3</og4j12.version>
         <typesafe.version>1.4.3</typesafe.version>
         <browserstack.version>1.1.1</browserstack.version>
         <google-zxing.version>3.5.1</google-zxing.version>
