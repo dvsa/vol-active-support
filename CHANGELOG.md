@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.11.1](https://github.com/dvsa/vol-active-support/compare/v2.11.0...v2.11.1) (2025-12-31)
+
+
+### Bug Fixes
+
+* clean up repo ([8a6e579](https://github.com/dvsa/vol-active-support/commit/8a6e579bf1bf594f0b05c79e0c0e365684557096))
+* clean up repo ([673ff92](https://github.com/dvsa/vol-active-support/commit/673ff9275d288533cd4767d1b247b330421ba628))
+
 ## [2.11.0](https://github.com/dvsa/vol-active-support/compare/v2.10.9...v2.11.0) (2025-11-14)
 
 
