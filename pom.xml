@@ -1,165 +1,140 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- ========================================== -->
+    <!-- Project Coordinates                        -->
+    <!-- ========================================== -->
     <groupId>org.dvsa.testing.lib</groupId>
     <artifactId>active-support</artifactId>
     <version>2.11.1-SNAPSHOT</version>
 
+    <!-- ========================================== -->
+    <!-- Properties                                 -->
+    <!-- ========================================== -->
     <properties>
-        <annotations.version>24.0.1</annotations.version>
-        <autoIt.version>0.2.44</autoIt.version>
-        <aws-java-sdk-s3.version>1.12.781</aws-java-sdk-s3.version>
-        <aws-secrets-manager>1.12.780</aws-secrets-manager>
-        <dbunit.version>2.7.3</dbunit.version>
-        <httpclient.version>5.2.1</httpclient.version>
-        <jackson-annotations.version>2.16.0</jackson-annotations.version>
-        <jackson-core.version>2.16.0</jackson-core.version>
-        <jackson-databind>2.16.0</jackson-databind>
-        <jacob.version>1.14.3</jacob.version>
-        <jansi.version>2.4.1</jansi.version>
-        <javax.mail.version>2.1.2</javax.mail.version>
-        <jsch.version>0.1.55</jsch.version>
-        <junit.version>5.10.1</junit.version>
+        <!-- Build Configuration -->
+        <maven.compiler.release>11</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.version>3.8.1</maven.compiler.version>
-        <mock-server.version>5.15.0</mock-server.version>
-        <mockito.version>5.8.0</mockito.version>
-        <java-native-access.version>5.14.0</java-native-access.version>
-        <rest-assured.version>5.4.0</rest-assured.version>
-        <uri-constructor.version>2.3.0</uri-constructor.version>
+        <maven.surefire.version>2.22.2</maven.surefire.version>
+
+        <!-- Core Testing Framework -->
         <selenium.version>4.36.0</selenium.version>
-        <log4j.version>2.17.1</log4j.version>
-        <og4j12.version>2.25.3</og4j12.version>
-        <typesafe.version>1.4.3</typesafe.version>
-        <browserstack.version>1.1.1</browserstack.version>
-        <google-zxing.version>3.5.1</google-zxing.version>
-        <totp.version>1.0</totp.version>
-        <gson.version>2.10.1</gson.version>
-        <browserstack.version>1.1.1</browserstack.version>
+        <rest-assured.version>5.4.0</rest-assured.version>
+        <junit.version>5.10.1</junit.version>
+        <dbunit.version>2.7.3</dbunit.version>
+        <mockito.version>5.8.0</mockito.version>
+        <mock-server.version>5.15.0</mock-server.version>
+
+        <!-- AWS Dependencies -->
+        <aws-java-sdk-s3.version>1.12.781</aws-java-sdk-s3.version>
+        <aws-secrets-manager.version>1.12.780</aws-secrets-manager.version>
+        <aws-sdk-batch.version>2.20.0</aws-sdk-batch.version>
+
+        <!-- Jackson (JSON Processing) -->
+        <jackson.version>2.16.0</jackson.version>
+
+        <!-- Apache Commons -->
+        <commons-lang3.version>3.18.0</commons-lang3.version>
+        <commons-text.version>1.10.0</commons-text.version>
+        <commons-codec.version>1.17.1</commons-codec.version>
         <commons-beanutils.version>1.11.0</commons-beanutils.version>
         <commons-collections.version>3.2.2</commons-collections.version>
-        <dom4j.version>2.1.4</dom4j.version>
-        <org.apache.commons.commons-text.version>1.10.0</org.apache.commons.commons-text.version>
-        <org.postgresql.version>42.3.9</org.postgresql.version>
-        <com.amazon.ion.version>1.11.10</com.amazon.ion.version>
+
+        <!-- Logging -->
+        <log4j-api.version>2.17.1</log4j-api.version>
+        <log4j-core.version>2.25.3</log4j-core.version>
+        <jansi.version>2.4.1</jansi.version>
+
+        <!-- HTTP & Networking -->
+        <httpclient.version>5.2.1</httpclient.version>
+        <netty.version>4.1.130.Final</netty.version>
+
+        <!-- Data & File Processing -->
+        <protobuf-java.version>4.28.2</protobuf-java.version>
+        <gson.version>2.10.1</gson.version>
+
+        <!-- Database -->
+        <postgresql.version>42.3.9</postgresql.version>
+
+        <!-- Security & Authentication -->
+        <google-zxing.version>3.5.1</google-zxing.version>
+        <totp.version>1.0</totp.version>
+
+        <!-- Utilities -->
+        <guava.version>32.1.2-jre</guava.version>
+        <annotations.version>24.0.1</annotations.version>
+        <typesafe-config.version>1.4.3</typesafe-config.version>
+        <jsch.version>0.1.55</jsch.version>
+        <javax.mail.version>2.1.2</javax.mail.version>
+
+        <!-- Browser Automation Tools -->
+        <browserstack.version>1.1.1</browserstack.version>
+        <java-native-access.version>5.14.0</java-native-access.version>
+        <autoIt.version>0.2.44</autoIt.version>
+        <jacob.version>1.14.3</jacob.version>
+
+        <!-- DVSA Internal -->
+        <uri-constructor.version>2.3.0</uri-constructor.version>
     </properties>
 
+    <!-- ========================================== -->
+    <!-- Build Configuration                        -->
+    <!-- ========================================== -->
     <build>
         <plugins>
+            <!-- Java Compiler Configuration -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven.compiler.version}</version>
                 <configuration>
-                    <release>11</release>
+                    <release>${maven.compiler.release}</release>
                 </configuration>
             </plugin>
+
+            <!-- Unit Test Execution -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
+                <version>${maven.surefire.version}</version>
             </plugin>
         </plugins>
     </build>
 
+    <!-- ========================================== -->
+    <!-- Dependencies                               -->
+    <!-- ========================================== -->
     <dependencies>
-        <dependency>
-            <groupId>com.browserstack</groupId>
-            <artifactId>browserstack-local-java</artifactId>
-            <version>${browserstack.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>${commons-beanutils.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
-            <version>${commons-collections.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.dom4j</groupId>
-            <artifactId>dom4j</artifactId>
-            <version>${dom4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-text</artifactId>
-            <version>${org.apache.commons.commons-text.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.dvsa.testing.lib</groupId>
-            <artifactId>vol-uri-constructor</artifactId>
-            <version>${uri-constructor.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${org.postgresql.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.amazon.ion</groupId>
-            <artifactId>ion-java</artifactId>
-            <version>${com.amazon.ion.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents.client5</groupId>
-            <artifactId>httpclient5</artifactId>
-            <version>${httpclient.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>${jackson-core.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.18.0</version>
-        </dependency>
-        <dependency>
-            <groupId>software.amazon.awssdk</groupId>
-            <artifactId>batch</artifactId>
-            <version>2.20.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson-databind}</version>
-        </dependency>
+        <!-- ====================================== -->
+        <!-- Testing Framework                      -->
+        <!-- ====================================== -->
 
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>${jackson-annotations.version}</version>
-        </dependency>
-
+        <!-- JUnit 5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>${annotations.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.fusesource.jansi</groupId>
-            <artifactId>jansi</artifactId>
-            <version>${jansi.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-s3</artifactId>
-            <version>${aws-java-sdk-s3.version}</version>
-        </dependency>
+
+        <!-- Selenium WebDriver -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>${selenium.version}</version>
         </dependency>
+
+        <!-- REST Assured -->
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${rest-assured.version}</version>
+        </dependency>
+
+        <!-- DBUnit -->
         <dependency>
             <groupId>org.dbunit</groupId>
             <artifactId>dbunit</artifactId>
@@ -175,42 +150,278 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.offbytwo.jenkins/jenkins-client -->
+
+        <!-- Mockito (Test Scope) -->
         <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>${rest-assured.version}</version>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
         </dependency>
+
+        <!-- MockServer (Test Scope) -->
         <dependency>
-            <groupId>com.jcraft</groupId>
-            <artifactId>jsch</artifactId>
-            <version>${jsch.version}</version>
+            <groupId>org.mock-server</groupId>
+            <artifactId>mockserver-netty</artifactId>
+            <version>${mock-server.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-core</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-secretsmanager</artifactId>
-            <version>${aws-secrets-manager}</version>
-        </dependency>
+
+        <!-- ====================================== -->
+        <!-- AWS Services                           -->
+        <!-- ====================================== -->
+
+        <!-- AWS SDK for Java (v1) -->
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk</artifactId>
             <version>${aws-java-sdk-s3.version}</version>
         </dependency>
+
+        <!-- AWS S3 -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>${aws-java-sdk-s3.version}</version>
+        </dependency>
+
+        <!-- AWS Secrets Manager -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-secretsmanager</artifactId>
+            <version>${aws-secrets-manager.version}</version>
+        </dependency>
+
+        <!-- AWS Batch (v2 SDK) -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>batch</artifactId>
+            <version>${aws-sdk-batch.version}</version>
+        </dependency>
+
+        <!-- ====================================== -->
+        <!-- JSON Processing                        -->
+        <!-- ====================================== -->
+
+        <!-- Jackson Core -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- Jackson Databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- Jackson Annotations -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- Gson (Alternative JSON Library) -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
+        </dependency>
+
+        <!-- ====================================== -->
+        <!-- Apache Commons                         -->
+        <!-- ====================================== -->
+
+        <!-- Commons Lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+
+        <!-- Commons Text -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>${commons-text.version}</version>
+        </dependency>
+
+        <!-- Commons Codec -->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${commons-codec.version}</version>
+        </dependency>
+
+        <!-- Commons BeanUtils -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>${commons-beanutils.version}</version>
+        </dependency>
+
+        <!-- Commons Collections -->
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>${commons-collections.version}</version>
+        </dependency>
+
+        <!-- ====================================== -->
+        <!-- Logging                                -->
+        <!-- ====================================== -->
+
+        <!-- Log4j API -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j-api.version}</version>
+        </dependency>
+
+        <!-- Log4j Core -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j-core.version}</version>
+        </dependency>
+
+        <!-- Jansi (Console Colors) -->
+        <dependency>
+            <groupId>org.fusesource.jansi</groupId>
+            <artifactId>jansi</artifactId>
+            <version>${jansi.version}</version>
+        </dependency>
+
+        <!-- ====================================== -->
+        <!-- HTTP Client                            -->
+        <!-- ====================================== -->
+
+        <!-- Apache HTTP Client 5 -->
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+            <version>${httpclient.version}</version>
+        </dependency>
+
+        <!-- ====================================== -->
+        <!-- Data Processing                        -->
+        <!-- ====================================== -->
+
+        <!-- Protocol Buffers -->
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>${protobuf-java.version}</version>
+        </dependency>
+
+        <!-- ====================================== -->
+        <!-- Database                               -->
+        <!-- ====================================== -->
+
+        <!-- PostgreSQL JDBC Driver -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+
+        <!-- ====================================== -->
+        <!-- Security & Authentication              -->
+        <!-- ====================================== -->
+
+        <!-- Google ZXing (QR Code / Barcode) -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>${google-zxing.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>${google-zxing.version}</version>
+        </dependency>
+
+        <!-- TOTP (Two-Factor Authentication) -->
+        <dependency>
+            <groupId>de.taimos</groupId>
+            <artifactId>totp</artifactId>
+            <version>${totp.version}</version>
+        </dependency>
+
+        <!-- ====================================== -->
+        <!-- Utility Libraries                      -->
+        <!-- ====================================== -->
+
+        <!-- Google Guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>32.1.2-jre</version>
+            <version>${guava.version}</version>
         </dependency>
+
+        <!-- JetBrains Annotations -->
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>${annotations.version}</version>
+        </dependency>
+
+        <!-- Typesafe Config -->
+        <dependency>
+            <groupId>com.typesafe</groupId>
+            <artifactId>config</artifactId>
+            <version>${typesafe-config.version}</version>
+        </dependency>
+
+        <!-- JSch (SSH/SFTP) -->
+        <dependency>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch</artifactId>
+            <version>${jsch.version}</version>
+        </dependency>
+
+        <!-- Jakarta Mail API -->
+        <dependency>
+            <groupId>jakarta.mail</groupId>
+            <artifactId>jakarta.mail-api</artifactId>
+            <version>${javax.mail.version}</version>
+        </dependency>
+
+        <!-- ====================================== -->
+        <!-- Browser Automation                     -->
+        <!-- ====================================== -->
+
+        <!-- BrowserStack Local -->
+        <dependency>
+            <groupId>com.browserstack</groupId>
+            <artifactId>browserstack-local-java</artifactId>
+            <version>${browserstack.version}</version>
+        </dependency>
+
+        <!-- Java Native Access (JNA) -->
         <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
             <version>${java-native-access.version}</version>
         </dependency>
+
         <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna-platform</artifactId>
             <version>${java-native-access.version}</version>
         </dependency>
+
+        <!-- AutoIt (Windows Automation) -->
         <dependency>
             <groupId>de.openkeyword</groupId>
             <artifactId>autoit</artifactId>
@@ -226,97 +437,54 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <!-- JACOB (Java-COM Bridge) -->
         <dependency>
             <groupId>net.sf.jacob-project</groupId>
             <artifactId>jacob</artifactId>
             <version>${jacob.version}</version>
         </dependency>
+
+        <!-- ====================================== -->
+        <!-- DVSA Internal Libraries                -->
+        <!-- ====================================== -->
+
+        <!-- VOL URI Constructor -->
         <dependency>
-            <groupId>com.typesafe</groupId>
-            <artifactId>config</artifactId>
-            <version>${typesafe.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mock-server</groupId>
-            <artifactId>mockserver-netty</artifactId>
-            <version>${mock-server.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-core</artifactId>
-                </exclusion>
-            </exclusions>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>${mockito.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.mail</groupId>
-            <artifactId>jakarta.mail-api</artifactId>
-            <version>${javax.mail.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.browserstack</groupId>
-            <artifactId>browserstack-local-java</artifactId>
-            <version>${browserstack.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>${og4j12.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>${log4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.zxing</groupId>
-            <artifactId>core</artifactId>
-            <version>${google-zxing.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.zxing</groupId>
-            <artifactId>javase</artifactId>
-            <version>${google-zxing.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>de.taimos</groupId>
-            <artifactId>totp</artifactId>
-            <version>${totp.version}</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>${gson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.18.0</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.15</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.protobuf</groupId>
-            <artifactId>protobuf-java</artifactId>
-            <version>4.28.2</version>
+            <groupId>org.dvsa.testing.lib</groupId>
+            <artifactId>vol-uri-constructor</artifactId>
+            <version>${uri-constructor.version}</version>
         </dependency>
     </dependencies>
 
+    <!-- ========================================== -->
+    <!-- Dependency Management (Overrides)          -->
+    <!-- ========================================== -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- Netty HTTP/2 Codec -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-codec-http2</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
 
+            <!-- Netty HTTP Codec -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-codec-http</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- ========================================== -->
+    <!-- Repository Configuration                   -->
+    <!-- ========================================== -->
     <repositories>
         <repository>
             <id>dvsa-github-packages</id>
-            <name>GitHub dvsa Apache Maven Packages</name>
+            <name>GitHub DVSA Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/dvsa/*</url>
             <releases>
                 <enabled>true</enabled>
@@ -327,26 +495,15 @@
         </repository>
     </repositories>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-codec-http2</artifactId>
-                <version>4.1.125.Final</version>
-            </dependency>
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-codec-http</artifactId>
-                <version>4.1.129.Final</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+    <!-- ========================================== -->
+    <!-- Distribution Management                    -->
+    <!-- ========================================== -->
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub DVSA Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/dvsa/vol-active-support</url>
+        </repository>
+    </distributionManagement>
 
-        <distributionManagement>
-            <repository>
-                <id>github</id>
-                <name>GitHub dvsa Apache Maven Packages</name>
-                <url>https://maven.pkg.github.com/dvsa/vol-active-support</url>
-            </repository>
-        </distributionManagement>
 </project>

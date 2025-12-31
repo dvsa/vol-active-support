@@ -3,14 +3,13 @@ package activesupport.file;
 import com.typesafe.config.Config;
 import org.jetbrains.annotations.NotNull;
 
-import org.apache.commons.io.filefilter.RegexFileFilter;
-
 import java.io.*;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.regex.Pattern;
 
 import activesupport.config.Configuration;
 
@@ -101,14 +100,23 @@ public class Files {
         return fileContainsString;
     }
 
+
     public static File getDownloadedFile(String downloadDirectory, String filenameRegex) throws FileNotFoundException {
         Config config = new Configuration().getConfig();
         File directory = new File(config.getString(downloadDirectory));
         File[] files;
 
+        final Pattern pattern = Pattern.compile(filenameRegex);
+        FilenameFilter regexFilter = new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return pattern.matcher(name).matches();
+            }
+        };
+
         long finish = System.currentTimeMillis() + 10000;
         do {
-            files = directory.listFiles((FileFilter) new RegexFileFilter(filenameRegex));
+            files = directory.listFiles(regexFilter);
         } while (files.length == 0 && System.currentTimeMillis() < finish);
 
         if (files.length == 0) {
