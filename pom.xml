@@ -25,7 +25,7 @@
         <junit.version>5.10.1</junit.version>
         <dbunit.version>2.7.3</dbunit.version>
         <mockito.version>5.8.0</mockito.version>
-        <mock-server.version>5.15.0</mock-server.version>
+        <wiremock.version>3.13.1</wiremock.version>
 
         <!-- AWS Dependencies -->
         <aws-java-sdk-s3.version>1.12.781</aws-java-sdk-s3.version>
@@ -43,12 +43,12 @@
         <commons-collections.version>3.2.2</commons-collections.version>
 
         <!-- Logging -->
-        <log4j-api.version>2.17.1</log4j-api.version>
+        <log4j-api.version>2.25.3</log4j-api.version>
         <log4j-core.version>2.25.3</log4j-core.version>
         <jansi.version>2.4.1</jansi.version>
 
         <!-- HTTP & Networking -->
-        <httpclient.version>5.2.1</httpclient.version>
+        <httpclient.version>5.3.1</httpclient.version>
         <netty.version>4.1.130.Final</netty.version>
 
         <!-- Data & File Processing -->
@@ -70,7 +70,6 @@
         <javax.mail.version>2.1.2</javax.mail.version>
 
         <!-- Browser Automation Tools -->
-        <browserstack.version>1.1.1</browserstack.version>
         <java-native-access.version>5.14.0</java-native-access.version>
         <autoIt.version>0.2.44</autoIt.version>
         <jacob.version>1.14.3</jacob.version>
@@ -102,6 +101,82 @@
             </plugin>
         </plugins>
     </build>
+
+    <!-- ========================================== -->
+    <!-- Dependency Management (Overrides)          -->
+    <!-- ========================================== -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- ================================== -->
+            <!-- Netty Version Overrides            -->
+            <!-- ================================== -->
+            <!-- Override old Netty versions from AWS SDK v1/v2 -->
+            <!-- Fixes HIGH/MEDIUM severity vulnerabilities -->
+
+            <!-- Netty HTTP/2 Codec -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-codec-http2</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <!-- Netty HTTP Codec -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-codec-http</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <!-- Netty Common -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-common</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <!-- Netty Handler -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-handler</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.15.1</version>
+            </dependency>
+
+
+            <!-- Netty Transport -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-transport</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <!-- Netty Buffer -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-buffer</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <!-- Netty Codec -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-codec</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <!-- Netty Resolver -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-resolver</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <!-- ========================================== -->
     <!-- Dependencies                               -->
@@ -157,18 +232,26 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- MockServer (Test Scope) -->
+        <!-- WireMock (Test Scope) -->
         <dependency>
-            <groupId>org.mock-server</groupId>
-            <artifactId>mockserver-netty</artifactId>
-            <version>${mock-server.version}</version>
+            <groupId>org.wiremock</groupId>
+            <artifactId>wiremock-standalone</artifactId>
+            <version>3.0.1</version>
+            <scope>test</scope>
             <exclusions>
                 <exclusion>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-core</artifactId>
+                    <groupId>org.apache.httpcomponents</groupId>
+                    <artifactId>httpclient</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.httpcomponents.client5</groupId>
+                    <artifactId>httpclient5</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.httpcomponents.core5</groupId>
+                    <artifactId>httpcore5</artifactId>
                 </exclusion>
             </exclusions>
-            <scope>test</scope>
         </dependency>
 
         <!-- ====================================== -->
@@ -399,13 +482,6 @@
         <!-- Browser Automation                     -->
         <!-- ====================================== -->
 
-        <!-- BrowserStack Local -->
-        <dependency>
-            <groupId>com.browserstack</groupId>
-            <artifactId>browserstack-local-java</artifactId>
-            <version>${browserstack.version}</version>
-        </dependency>
-
         <!-- Java Native Access (JNA) -->
         <dependency>
             <groupId>net.java.dev.jna</groupId>
@@ -454,27 +530,6 @@
             <version>${uri-constructor.version}</version>
         </dependency>
     </dependencies>
-
-    <!-- ========================================== -->
-    <!-- Dependency Management (Overrides)          -->
-    <!-- ========================================== -->
-    <dependencyManagement>
-        <dependencies>
-            <!-- Netty HTTP/2 Codec -->
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-codec-http2</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
-
-            <!-- Netty HTTP Codec -->
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-codec-http</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <!-- ========================================== -->
     <!-- Repository Configuration                   -->

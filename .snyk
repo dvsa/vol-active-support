@@ -2,26 +2,6 @@
 version: v1.25.0
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
-  SNYK-JAVA-IONETTY-5725787:
-    - '*':
-        reason: Transitive dependency, version overridden to 4.1.130.Final in dependencyManagement
-        expires: 2026-06-29T00:00:00.000Z
-        created: 2024-12-29T00:00:00.000Z
-  SNYK-JAVA-IONETTY-6483812:
-    - '*':
-        reason: Transitive dependency, version overridden to 4.1.130.Final in dependencyManagement
-        expires: 2026-06-29T00:00:00.000Z
-        created: 2024-12-29T00:00:00.000Z
-  SNYK-JAVA-ORGAPACHEHTTPCOMPONENTS-1048058:
-    - '*':
-        reason: Transitive dependency from legacy components, httpclient5 (5.2.1) used directly
-        expires: 2026-06-29T00:00:00.000Z
-        created: 2024-12-29T00:00:00.000Z
-  SNYK-JAVA-ORGAPACHEHTTPCOMPONENTS-31517:
-    - '*':
-        reason: Transitive dependency from legacy components, httpclient5 (5.2.1) used directly
-        expires: 2026-06-29T00:00:00.000Z
-        created: 2024-12-29T00:00:00.000Z
   snyk:lic:maven:org.dbunit:dbunit:LGPL-2.1:
     - '*':
         reason: LGPL-2.1 acceptable for library usage in test framework (no distribution)
@@ -35,11 +15,6 @@ ignore:
   snyk:lic:maven:de.openkeyword:autoit:GPL-3.0:
     - '*':
         reason: GPL-3.0 acceptable for internal testing tools (not distributed to end users)
-        expires: 2026-06-29T00:00:00.000Z
-        created: 2024-12-29T00:00:00.000Z
-  snyk:lic:maven:com.mysql:mysql-connector-j:GPL-2.0:
-    - '*':
-        reason: GPL-2.0 with FOSS exception for database driver (acceptable for internal testing)
         expires: 2026-06-29T00:00:00.000Z
         created: 2024-12-29T00:00:00.000Z
 patch: {}
