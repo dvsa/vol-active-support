@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.11.2](https://github.com/dvsa/vol-active-support/compare/v2.11.1...v2.11.2) (2026-01-05)
+
+
+### Bug Fixes
+
+* use wiremock ([bea40f9](https://github.com/dvsa/vol-active-support/commit/bea40f9375f752c9a2a0b9600f152f40dd87cd74))
+* use wiremock ([943475c](https://github.com/dvsa/vol-active-support/commit/943475cdbc57a71a1c744df06839478bd1fedc3d))
+
 ## [2.11.1](https://github.com/dvsa/vol-active-support/compare/v2.11.0...v2.11.1) (2025-12-31)
 
 
