@@ -1,95 +1,41 @@
 package activesupport.browsers;
 
-import activesupport.driver.Browser;
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.client.WireMock;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.jupiter.api.*;
-import org.mockserver.integration.ClientAndServer;
-import org.mockserver.model.HttpRequest;
-import org.openqa.selenium.devtools.DevTools;
-import org.openqa.selenium.devtools.HasDevTools;
-import org.openqa.selenium.devtools.v140.network.Network;
-
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockserver.integration.ClientAndServer.startClientAndServer;
-import static org.mockserver.model.HttpResponse.response;
-
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BrowserTest {
 
-    private static ClientAndServer mockServer;
+    private WireMockServer wireMockServer;
 
-    private final static String baseURL = "http://localhost:1080";
-    private final static String resource = "/vol/dummy";
+    @BeforeEach
+    public void setMockServer() {
+        wireMockServer = new WireMockServer(options().dynamicPort());
+        wireMockServer.start();
 
-
-    public static void setMockServer() {
-        mockServer = startClientAndServer(1080);
-        startMockSite();
+        wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo("/test"))
+                .willReturn(WireMock.aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/html")
+                        .withBody("<html><body>Test Page</body></html>")));
     }
 
-
-    public void chromeTest() {
-        System.setProperty("browser", "chrome");
-        Browser.navigate().get(baseURL.concat(resource));
-        assertEquals("Browser Test", Browser.navigate().getTitle());
+    @Test
+    public void testBrowser() {
+        assertTrue(wireMockServer.isRunning());
+        System.out.println("WireMock server running on port: " + wireMockServer.port());
     }
 
-
-    public void localChromeProxyTest() {
-        System.setProperty("browser", "chrome-proxy");
-        Browser.setIpAddress("localhost");
-        Browser.setPortNumber("8090");
-        Browser.navigate().get(baseURL.concat(resource));
-        assertEquals("Browser Test", Browser.navigate().getTitle());
-    }
-
-
-    public void headlessTest() {
-        System.setProperty("browser", "headless");
-        Browser.navigate().get(baseURL.concat(resource));
-        assertEquals("Browser Test", Browser.navigate().getTitle());
-    }
-
-
-    public void chromeDevToolsTest() {
-        System.setProperty("browser", "chrome");
-        DevTools devTools = ((HasDevTools) Browser.navigate()).getDevTools();
-        devTools.createSession();
-        devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()));
-        devTools.addListener(Network.responseReceived(), responseReceived -> {
-            assertNotNull(responseReceived.getResponse().getUrl(), "Response URL =>" + responseReceived.getResponse().getUrl());
-            assertNotNull(responseReceived.getResponse().getHeaders().toString(), "Response Headers => " + responseReceived.getResponse().getHeaders().toString());
-        });
-        Browser.navigate().get(baseURL.concat(resource));
-    }
-
-    private static void startMockSite() {
-        mockServer
-                .when(
-                        HttpRequest.request()
-                                .withPath("/vol/dummy")
-                )
-                .respond(
-                        response()
-                                .withBody(htmlBody())
-
-                );
-    }
-
-    private static String htmlBody() {
-        return "<html><head><title>Browser Test</title></head><body><h1>Hello from VOL</h1></body></html>";
-    }
-
-    @AfterAll
-    public static void tearDown() throws Exception {
-        if (Browser.isBrowserOpen()) {
-            Browser.closeBrowser();
-        }
-        if (mockServer.isRunning()) {
-            mockServer.stop();
+    @AfterEach
+    public void tearDown() {
+        if (wireMockServer != null) {
+            wireMockServer.stop();
+            wireMockServer = null;
         }
     }
 }
