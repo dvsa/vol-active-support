@@ -367,27 +367,89 @@ public class MailPit {
     public String retrieveTmAppLink(String emailAddress, int timeWindowMinutes) throws MissingRequiredArgument {
         try {
             LOGGER.info("Waiting 6 seconds for email to be processed ");
-            TimeUnit.SECONDS.sleep(6);
-        } catch (InterruptedException e) {
+            TimeUnit.SECONDS.sleep(6L);
+        } catch (InterruptedException var5) {
             Thread.currentThread().interrupt();
         }
+
         int retries = 0;
-        while (retries < 4) {
+        while(retries < 4) {
             try {
-                String emailContent = retrieveEmailRawContent(emailAddress, "A Transport Manager has submitted their details for review", timeWindowMinutes);
-                if (emailContent == null) {
-                    throw new IllegalStateException("Email content not found");
+                Map<String, String> queryParams = this.createTimeFilteredQuery(emailAddress, timeWindowMinutes);
+                String searchUrl = String.format("%s/api/v1/messages", this.baseUrl);
+                LOGGER.info("Search URL: {}", searchUrl);
+
+                this.response = RestUtils.getWithQueryParams(searchUrl, queryParams, this.getHeaders());
+                String responseBody = this.response.extract().asString();
+
+                if (StringUtils.isNotEmpty(responseBody)) {
+                    JsonPath jsonPath = new JsonPath(responseBody);
+                    List<Map<String, Object>> messages = jsonPath.getList("messages");
+                    List<Map<String, Object>> recentMessages = this.filterMessagesByTime(messages, timeWindowMinutes);
+
+                    for (Map<String, Object> message : recentMessages) {
+                        String subject = (String)message.get("Subject");
+
+                        if (subject != null && subject.contains("A Transport Manager has submitted their details for review")) {
+                            String messageId = (String)message.get("ID");
+                            LOGGER.info("Found potential message ID: {}", messageId);
+
+                            String rawUrl = String.format("%s/api/v1/message/%s/raw", this.baseUrl, messageId);
+                            LOGGER.info("Raw content URL: {}", rawUrl);
+
+                            ValidatableResponse rawResponse = RestUtils.get(rawUrl, this.getHeaders());
+                            String emailContent = rawResponse.extract().asString();
+
+                            // Verify this email was actually sent TO the specified address
+                            if (isEmailSentToRecipient(emailContent, emailAddress)) {
+                                LOGGER.info("Found matching email for recipient: {}", emailAddress);
+                                return new Scanner(emailContent).useDelimiter("\\A").next();
+                            } else {
+                                LOGGER.debug("Email found but not sent to correct recipient: {}", emailAddress);
+                            }
+                        }
+                    }
                 }
-                if (!emailContent.contains(emailAddress)) {
-                    throw new IllegalStateException("Email content does not match the expected user: " + emailAddress);
+
+                throw new IllegalStateException("Email not found for recipient: " + emailAddress);
+
+            } catch (IllegalStateException var6) {
+                LOGGER.warn("Attempt {} failed: {}. Retrying... ({}/{})", retries + 1, var6.getMessage(), retries + 1, 4);
+                ++retries;
+
+                // Add exponential backoff for retries
+                try {
+                    TimeUnit.SECONDS.sleep(Math.min(2L * retries, 10L));
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                 }
-                return new Scanner(emailContent).useDelimiter("\\A").next();
-            } catch (IllegalStateException e) {
-                LOGGER.warn("Attempt {} failed: {}. Retrying... ({}/{})", retries + 1, e.getMessage(), retries + 1, 2);
             }
-            retries++;
         }
-        throw new IllegalStateException("Failed to retrieve TM application link after 2 retries for user: " + emailAddress);
+
+        throw new IllegalStateException("Failed to retrieve TM application link after 4 retries for user: " + emailAddress);
+    }
+
+    private boolean isEmailSentToRecipient(String emailContent, String expectedRecipient) {
+        Pattern toPattern = Pattern.compile("^To:\\s*(.+)$", Pattern.MULTILINE);
+        Matcher toMatcher = toPattern.matcher(emailContent);
+
+        if (toMatcher.find()) {
+            String toHeader = toMatcher.group(1).toLowerCase().trim();
+            String expectedLower = expectedRecipient.toLowerCase().trim();
+
+            LOGGER.debug("Checking To header: '{}' against expected: '{}'", toHeader, expectedLower);
+            return toHeader.contains(expectedLower);
+        }
+
+        String[] lines = emailContent.split("\n");
+        for (String line : lines) {
+            if (line.startsWith("To:") && line.toLowerCase().contains(expectedRecipient.toLowerCase())) {
+                return true;
+            }
+        }
+
+        LOGGER.warn("Could not find 'To:' header containing expected recipient: {}", expectedRecipient);
+        return false;
     }
 
     public String retrievePasswordResetLink(@NotNull String emailAddress, long sleepTime) throws MissingRequiredArgument {
