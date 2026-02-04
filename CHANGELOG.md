@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.11.3](https://github.com/dvsa/vol-active-support/compare/v2.11.2...v2.11.3) (2026-02-04)
+
+
+### Bug Fixes
+
+* fix race condition ([0665a1b](https://github.com/dvsa/vol-active-support/commit/0665a1b0e191c6f829eb93123fb3cb2173dacbd3))
+* fix race condition ([b5a8349](https://github.com/dvsa/vol-active-support/commit/b5a8349d1a66ae35331202276a64ec12ea8765b1))
+
 ## [2.11.2](https://github.com/dvsa/vol-active-support/compare/v2.11.1...v2.11.2) (2026-01-05)
 
 
