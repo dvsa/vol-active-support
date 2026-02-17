@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.11.4](https://github.com/dvsa/vol-active-support/compare/v2.11.3...v2.11.4) (2026-02-17)
+
+
+### Bug Fixes
+
+* update AWS SDK and Netty versions to address high-severity vulnerabilities ([c02de6d](https://github.com/dvsa/vol-active-support/commit/c02de6d07120794fa78d43eaf457e3388814ea67))
+* use netty-all 4.2.10.Final to resolve all security vulnerabilities ([2ca9935](https://github.com/dvsa/vol-active-support/commit/2ca9935ee17126bbc6fd7c1c4f872f2e29d2330e))
+
 ## [2.11.3](https://github.com/dvsa/vol-active-support/compare/v2.11.2...v2.11.3) (2026-02-04)
 
 
