@@ -49,7 +49,7 @@
 
         <!-- HTTP & Networking -->
         <httpclient.version>5.3.1</httpclient.version>
-        <netty.version>4.1.135.Final</netty.version>
+        <netty.version>4.2.10.Final</netty.version>
 
         <!-- Data & File Processing -->
         <protobuf-java.version>4.28.2</protobuf-java.version>
@@ -112,32 +112,12 @@
             <!-- ================================== -->
             <!-- Override old Netty versions from AWS SDK v1/v2 -->
             <!-- Fixes HIGH/MEDIUM severity vulnerabilities -->
+            <!-- Using netty-all for comprehensive coverage -->
 
-            <!-- Netty HTTP/2 Codec -->
+            <!-- Netty All-in-One -->
             <dependency>
                 <groupId>io.netty</groupId>
-                <artifactId>netty-codec-http2</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
-
-            <!-- Netty HTTP Codec -->
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-codec-http</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
-
-            <!-- Netty Common -->
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-common</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
-
-            <!-- Netty Handler -->
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-handler</artifactId>
+                <artifactId>netty-all</artifactId>
                 <version>${netty.version}</version>
             </dependency>
 
@@ -145,35 +125,6 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>2.15.1</version>
-            </dependency>
-
-
-            <!-- Netty Transport -->
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-transport</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
-
-            <!-- Netty Buffer -->
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-buffer</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
-
-            <!-- Netty Codec -->
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-codec</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
-
-            <!-- Netty Resolver -->
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-resolver</artifactId>
-                <version>${netty.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
