@@ -14,15 +14,15 @@
     <!-- ========================================== -->
     <properties>
         <!-- Build Configuration -->
-        <maven.compiler.release>11</maven.compiler.release>
+        <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.version>3.8.1</maven.compiler.version>
-        <maven.surefire.version>2.22.2</maven.surefire.version>
+        <maven.compiler.version>3.11.0</maven.compiler.version>
+        <maven.surefire.version>3.2.5</maven.surefire.version>
 
         <!-- Core Testing Framework -->
         <selenium.version>4.36.0</selenium.version>
         <rest-assured.version>5.4.0</rest-assured.version>
-        <junit.version>5.10.1</junit.version>
+        <junit.version>5.11.3</junit.version>
         <dbunit.version>2.7.3</dbunit.version>
         <mockito.version>5.8.0</mockito.version>
         <wiremock.version>3.13.1</wiremock.version>
@@ -98,6 +98,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.version}</version>
+                <configuration>
+                    <argLine>-XX:+EnableDynamicAgentLoading</argLine>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -142,6 +145,12 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <!-- Selenium WebDriver -->
