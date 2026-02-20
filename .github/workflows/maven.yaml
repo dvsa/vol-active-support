@@ -22,6 +22,13 @@ jobs:
       runs-on: ubuntu-latest
       steps:
        - uses: actions/checkout@v4
+       
+       - name: Set up Java 21
+         uses: actions/setup-java@v4
+         with:
+           java-version: '21'
+           distribution: 'corretto'
+           
        - uses: whelk-io/maven-settings-xml-action@v22
          with:
           servers: '[{ "id":"dvsa-github-packages", "configuration": { "httpHeaders": { "property": { "name":"Authorization", "value":"Bearer ${{ secrets.GITHUB_TOKEN }}"} } } },{ "id":"github", "configuration": { "httpHeaders": { "property": { "name":"Authorization", "value":"Bearer ${{ secrets.GITHUB_TOKEN }}"} } } } ]'
