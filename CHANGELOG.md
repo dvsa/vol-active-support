@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.12.0](https://github.com/dvsa/vol-active-support/compare/v2.11.4...v2.12.0) (2026-02-20)
+
+
+### Features
+
+* compile in 21 ([c813342](https://github.com/dvsa/vol-active-support/commit/c8133427223e65eeb33fd6bc4aac273dd9993a55))
+* compile in 21 ([7de9107](https://github.com/dvsa/vol-active-support/commit/7de910703bffe7e936aedd4c71beeab520c70807))
+* compile in 21 ([cfc929b](https://github.com/dvsa/vol-active-support/commit/cfc929b2130355b47b5bdc1d1bbc4dbd06be8915))
+
 ## [2.11.4](https://github.com/dvsa/vol-active-support/compare/v2.11.3...v2.11.4) (2026-02-17)
 
 
