@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.13.0](https://github.com/dvsa/vol-active-support/compare/v2.12.0...v2.13.0) (2026-02-23)
+
+
+### Features
+
+* consolidate RDS utils into active support ([c63e12c](https://github.com/dvsa/vol-active-support/commit/c63e12c4a4d47c33b01568634c2847e043a5f06b))
+
 ## [2.12.0](https://github.com/dvsa/vol-active-support/compare/v2.11.4...v2.12.0) (2026-02-20)
 
 
