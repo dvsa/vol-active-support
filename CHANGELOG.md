@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.13.1](https://github.com/dvsa/vol-active-support/compare/v2.13.0...v2.13.1) (2026-02-24)
+
+
+### Bug Fixes
+
+* allure ([6d631ca](https://github.com/dvsa/vol-active-support/commit/6d631ca0e75f764377ca61df2d4ad87fb51ccfab))
+* dbunit ([e766b1a](https://github.com/dvsa/vol-active-support/commit/e766b1ac81c15bae47fff75391801d8b7b37f128))
+* dbunit ([a06c342](https://github.com/dvsa/vol-active-support/commit/a06c342d0eb2b6d5e109ac0640c79b397a0aa52c))
+* dbunit ([cc66d60](https://github.com/dvsa/vol-active-support/commit/cc66d60e9a095ff593430e18ace71c720fe80cc6))
+* move in deps ([f74b8fa](https://github.com/dvsa/vol-active-support/commit/f74b8fad6639096a714526a6d0fcbec23e4a54b7))
+
 ## [2.13.0](https://github.com/dvsa/vol-active-support/compare/v2.12.0...v2.13.0) (2026-02-23)
 
 
