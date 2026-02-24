@@ -23,7 +23,6 @@
         <selenium.version>4.36.0</selenium.version>
         <rest-assured.version>5.4.0</rest-assured.version>
         <junit.version>5.11.3</junit.version>
-        <dbunit.version>2.7.3</dbunit.version>
         <mockito.version>5.8.0</mockito.version>
         <wiremock.version>3.13.1</wiremock.version>
 
@@ -76,6 +75,15 @@
 
         <!-- DVSA Internal -->
         <uri-constructor.version>2.3.0</uri-constructor.version>
+
+        <!-- Web Testing & BDD -->
+        <jsoup.version>1.18.3</jsoup.version>
+        <webdrivermanager.version>6.1.0</webdrivermanager.version>
+        <cucumber.version>7.20.1</cucumber.version>
+        <assertj.version>3.26.3</assertj.version>
+
+        <!-- Data Processing -->
+        <mysql-connector.version>9.5.0</mysql-connector.version>
     </properties>
 
     <!-- ========================================== -->
@@ -166,23 +174,6 @@
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>${rest-assured.version}</version>
-        </dependency>
-
-        <!-- DBUnit -->
-        <dependency>
-            <groupId>org.dbunit</groupId>
-            <artifactId>dbunit</artifactId>
-            <version>${dbunit.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- Mockito (Test Scope) -->
@@ -365,17 +356,7 @@
             <version>${protobuf-java.version}</version>
         </dependency>
 
-        <!-- ====================================== -->
-        <!-- Database                               -->
-        <!-- ====================================== -->
-
-        <!-- PostgreSQL JDBC Driver -->
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${postgresql.version}</version>
-        </dependency>
-
+        
         <!-- ====================================== -->
         <!-- Security & Authentication              -->
         <!-- ====================================== -->
@@ -489,6 +470,58 @@
             <groupId>org.dvsa.testing.lib</groupId>
             <artifactId>vol-uri-constructor</artifactId>
             <version>${uri-constructor.version}</version>
+        </dependency>
+
+        <!-- ====================================== -->
+        <!-- Web Testing & BDD Framework           -->
+        <!-- ====================================== -->
+
+        <!-- JSoup (HTML Parsing) -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
+
+        <!-- WebDriverManager (Selenium Driver Management) -->
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>${webdrivermanager.version}</version>
+        </dependency>
+
+        <!-- Cucumber BDD Framework -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit-platform-engine</artifactId>
+            <version>${cucumber.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-picocontainer</artifactId>
+            <version>${cucumber.version}</version>
+        </dependency>
+
+        <!-- Data Processing & Database             -->
+        <!-- ====================================== -->
+
+        <!-- AssertJ (Modern Assertions) -->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+        </dependency>
+
+        <!-- MySQL Connector -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>${mysql-connector.version}</version>
         </dependency>
     </dependencies>
 
