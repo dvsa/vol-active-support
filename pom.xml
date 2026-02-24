@@ -23,7 +23,7 @@
         <selenium.version>4.36.0</selenium.version>
         <rest-assured.version>5.4.0</rest-assured.version>
         <junit.version>5.11.3</junit.version>
-        <dbunit.version>2.7.3</dbunit.version>
+        <dbunit.version>3.0.0</dbunit.version>
         <mockito.version>5.8.0</mockito.version>
         <wiremock.version>3.13.1</wiremock.version>
 
@@ -183,6 +183,7 @@
             <groupId>org.dbunit</groupId>
             <artifactId>dbunit</artifactId>
             <version>${dbunit.version}</version>
+            <scope>test</scope>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
