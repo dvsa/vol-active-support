@@ -23,7 +23,6 @@
         <selenium.version>4.36.0</selenium.version>
         <rest-assured.version>5.4.0</rest-assured.version>
         <junit.version>5.11.3</junit.version>
-        <dbunit.version>3.0.0</dbunit.version>
         <mockito.version>5.8.0</mockito.version>
         <wiremock.version>3.13.1</wiremock.version>
 
@@ -176,24 +175,6 @@
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>${rest-assured.version}</version>
-        </dependency>
-
-        <!-- DBUnit -->
-        <dependency>
-            <groupId>org.dbunit</groupId>
-            <artifactId>dbunit</artifactId>
-            <version>${dbunit.version}</version>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- Mockito (Test Scope) -->
