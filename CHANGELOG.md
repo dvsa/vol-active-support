@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.13.2](https://github.com/dvsa/vol-active-support/compare/v2.13.1...v2.13.2) (2026-02-27)
+
+
+### Bug Fixes
+
+* increase wait time for tm app email ([c6c659c](https://github.com/dvsa/vol-active-support/commit/c6c659ca7404ce0d2c97e10ef75d1a0396e80762))
+* increase wait time for tm app email ([1d18b9d](https://github.com/dvsa/vol-active-support/commit/1d18b9d351b890ad9aaf6c30528e014b490a7db0))
+
 ## [2.13.1](https://github.com/dvsa/vol-active-support/compare/v2.13.0...v2.13.1) (2026-02-24)
 
 
