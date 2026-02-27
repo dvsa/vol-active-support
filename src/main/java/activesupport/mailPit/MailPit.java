@@ -366,15 +366,16 @@ public class MailPit {
 
     public String retrieveTmAppLink(String emailAddress, int timeWindowMinutes) throws MissingRequiredArgument {
         try {
-            LOGGER.info("Waiting 10 seconds for email to be processed ");
-            TimeUnit.SECONDS.sleep(10L);
+            LOGGER.info("Waiting 20 seconds for email to be processed ");
+            TimeUnit.SECONDS.sleep(20L);
         } catch (InterruptedException var5) {
             Thread.currentThread().interrupt();
         }
 
         int retries = 0;
+        final int maxRetries = 6;
 
-        while(retries < 4) {
+        while(retries < maxRetries) {
             try {
                 synchronized(this) {
                     String emailContent = this.retrieveEmailRawContent(emailAddress, "A Transport Manager has submitted their details for review", timeWindowMinutes);
@@ -382,31 +383,51 @@ public class MailPit {
                         throw new IllegalStateException("Email content not found");
                     }
 
-                    if (!emailContent.toLowerCase().contains(emailAddress.toLowerCase()) &&
-                            !emailContent.contains("To: " + emailAddress) &&
-                            !emailContent.contains("for <" + emailAddress + ">")) {
-                        LOGGER.warn("Email content does not match the expected user: {} on attempt {}", emailAddress, retries + 1);
-                        TimeUnit.MILLISECONDS.sleep(500 + (retries * 200));
+                    String emailLower = emailAddress.toLowerCase();
+                    String contentLower = emailContent.toLowerCase();
+                    
+                    boolean emailMatches = contentLower.contains(emailLower) ||
+                            emailContent.contains("To: " + emailAddress) ||
+                            emailContent.contains("for <" + emailAddress + ">") ||
+                            emailContent.contains("to:" + emailAddress.toLowerCase()) ||
+                            emailContent.contains("To:" + emailAddress) ||
+                            emailContent.matches("(?i).*to:\\s*" + Pattern.quote(emailAddress) + ".*") ||
+                            isEmailSentToRecipient(emailContent, emailAddress);
+                    
+                    if (!emailMatches) {
+                        LOGGER.warn("Email content does not match the expected user: {} on attempt {}. Content preview: {}...", 
+                                emailAddress, retries + 1, emailContent.substring(0, Math.min(200, emailContent.length())));
                         throw new IllegalStateException("Email content does not match the expected user: " + emailAddress);
                     }
 
+                    LOGGER.info("Successfully retrieved TM application link for user: {} on attempt {}", emailAddress, retries + 1);
                     return (new Scanner(emailContent)).useDelimiter("\\A").next();
                 }
             } catch (IllegalStateException var6) {
-                LOGGER.warn("Attempt {} failed: {}. Retrying... ({}/{})", retries + 1, var6.getMessage(), retries + 1, 4);
+                LOGGER.warn("Attempt {} failed: {}. Retrying... ({}/{})", retries + 1, var6.getMessage(), retries + 1, maxRetries);
                 ++retries;
 
-                if (retries > 1) {
-                    timeWindowMinutes = Math.max(timeWindowMinutes + 2, 10);
-                    LOGGER.info("Increasing time window to {} minutes for retry {}", timeWindowMinutes, retries);
+                try {
+                    long baseDelay = Math.min(2000 * (1L << Math.min(retries - 1, 4)), 30000);
+                    long jitter = (long) (Math.random() * 1000);
+                    long totalDelay = baseDelay + jitter;
+                    
+                    LOGGER.info("Waiting {} ms before retry {} (base: {}ms, jitter: {}ms)", 
+                            totalDelay, retries + 1, baseDelay, jitter);
+                    TimeUnit.MILLISECONDS.sleep(totalDelay);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new IllegalStateException("Interrupted while waiting for retry", e);
                 }
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw new IllegalStateException("Interrupted while retrying", e);
+
+                if (retries >= 2) {
+                    timeWindowMinutes = Math.max(timeWindowMinutes + 3, 15);
+                    LOGGER.info("Increasing time window to {} minutes for retry {}", timeWindowMinutes, retries + 1);
+                }
             }
         }
 
-        throw new IllegalStateException("Failed to retrieve TM application link after 4 retries for user: " + emailAddress);
+        throw new IllegalStateException("Failed to retrieve TM application link after " + maxRetries + " retries for user: " + emailAddress);
     }
 
     private boolean isEmailSentToRecipient(String emailContent, String expectedRecipient) {
