@@ -80,7 +80,7 @@
         <jsoup.version>1.18.3</jsoup.version>
         <webdrivermanager.version>6.1.0</webdrivermanager.version>
         <cucumber.version>7.20.1</cucumber.version>
-        <assertj.version>3.26.3</assertj.version>
+        <assertj.version>3.27.7</assertj.version>
 
         <!-- Data Processing -->
         <mysql-connector.version>9.5.0</mysql-connector.version>
