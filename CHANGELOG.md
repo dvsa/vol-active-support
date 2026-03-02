@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.14.0](https://github.com/dvsa/vol-active-support/compare/v2.13.2...v2.14.0) (2026-02-27)
+
+
+### Features
+
+* increase wait ([7f878c9](https://github.com/dvsa/vol-active-support/commit/7f878c91b604fd87354124196b26d64c17d8ca49))
+* increase wait for tm app mail ([b3dd54b](https://github.com/dvsa/vol-active-support/commit/b3dd54b20f2661171857e9936c002fb95d349662))
+
 ## [2.13.2](https://github.com/dvsa/vol-active-support/compare/v2.13.1...v2.13.2) (2026-02-27)
 
 
