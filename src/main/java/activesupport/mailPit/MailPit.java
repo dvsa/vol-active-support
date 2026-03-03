@@ -239,7 +239,25 @@ public class MailPit {
                         for (Map<String, Object> message : recentMessages) {
                             String subject = (String) message.get("Subject");
                             if (subject != null && subject.contains(subjectContains)) {
-                                return (String) message.get("Snippet");
+                                // Verify this email was sent to the correct recipient
+                                List<Map<String, Object>> toList = (List<Map<String, Object>>) message.get("To");
+                                boolean isCorrectRecipient = false;
+                                if (toList != null) {
+                                    for (Map<String, Object> toEntry : toList) {
+                                        String address = (String) toEntry.get("Address");
+                                        if (emailAddress.equals(address)) {
+                                            isCorrectRecipient = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                                
+                                if (isCorrectRecipient) {
+                                    return (String) message.get("Snippet");
+                                } else {
+                                    LOGGER.debug("Skipping message with correct subject but wrong recipient. Expected: {}, Found To: {}", 
+                                                emailAddress, toList);
+                                }
                             }
                         }
                     }
@@ -279,6 +297,25 @@ public class MailPit {
                         for (Map<String, Object> message : recentMessages) {
                             String subject = (String) message.get("Subject");
                             if (subject != null && subject.contains(subjectContains)) {
+                                // Verify this email was sent to the correct recipient
+                                List<Map<String, Object>> toList = (List<Map<String, Object>>) message.get("To");
+                                boolean isCorrectRecipient = false;
+                                if (toList != null) {
+                                    for (Map<String, Object> toEntry : toList) {
+                                        String address = (String) toEntry.get("Address");
+                                        if (emailAddress.equals(address)) {
+                                            isCorrectRecipient = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                                
+                                if (!isCorrectRecipient) {
+                                    LOGGER.debug("Skipping message with correct subject but wrong recipient. Expected: {}, Found To: {}", 
+                                                emailAddress, toList);
+                                    continue;
+                                }
+                                
                                 String messageId = (String) message.get("ID");
                                 LOGGER.info("Found message ID: {}", messageId);
                                 String rawUrl = String.format("%s/api/v1/message/%s/raw", this.baseUrl, messageId);
