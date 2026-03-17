@@ -234,6 +234,76 @@ public class VolSqlQueries {
         return "SELECT 1 as test_result;";
     }
 
+    // ========================================
+    // Performance Testing Data Queries  
+    // ========================================
+
+    /**
+     * Gets operator details for performance testing.
+     * 
+     * @return SQL query string
+     */
+    public static String getOperatorDetails() {
+        return """
+        SELECT 
+            o.id as operator_id, 
+            ro.description as organisation_name, 
+            l.lic_no, 
+            l.id as licence_id
+        FROM OLCS_RDS_OLCSDB.organisation o 
+        JOIN OLCS_RDS_OLCSDB.licence l ON o.id = l.organisation_id
+        JOIN OLCS_RDS_OLCSDB.ref_data ro ON o.type = ro.id
+        WHERE l.status = 'lsts_valid' 
+        AND l.deleted_date IS NULL
+        AND ro.description IS NOT NULL
+        ORDER BY RAND() 
+        LIMIT 100;
+        """;
+    }
+
+    /**
+     * Gets bus registration details for performance testing.
+     * 
+     * @return SQL query string
+     */
+    public static String getBusRegistrations() {
+        return """
+        SELECT 
+            br.reg_no, 
+            br.id, 
+            br.route_no, 
+            br.status
+        FROM OLCS_RDS_OLCSDB.bus_reg br 
+        WHERE br.status = 'breg_s_registered' 
+        AND br.deleted_date IS NULL
+        ORDER BY RAND() 
+        LIMIT 100;
+        """;
+    }
+
+    /**
+     * Gets vehicle details for performance testing.
+     * 
+     * @return SQL query string
+     */
+    public static String getVehicleDetails() {
+        return """
+        SELECT 
+            v.vrm, 
+            v.id as vehicle_id, 
+            lv.licence_id
+        FROM OLCS_RDS_OLCSDB.vehicle v 
+        JOIN OLCS_RDS_OLCSDB.licence_vehicle lv ON v.id = lv.vehicle_id 
+        JOIN OLCS_RDS_OLCSDB.licence l ON lv.licence_id = l.id 
+        WHERE v.vrm IS NOT NULL 
+        AND l.status = 'lsts_valid' 
+        AND v.deleted_date IS NULL 
+        AND lv.deleted_date IS NULL
+        ORDER BY RAND() 
+        LIMIT 100;
+        """;
+    }
+
     /**
      * Gets current timestamp from database.
      * 
