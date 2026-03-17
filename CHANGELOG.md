@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.15.0](https://github.com/dvsa/vol-active-support/compare/v2.14.2...v2.15.0) (2026-03-17)
+
+
+### Features
+
+* added queries for vol-api-perf ([936a79d](https://github.com/dvsa/vol-active-support/commit/936a79d5f300ae6ea68f622921e8700a3ac2c17b))
+* added queries for vol-api-perf ([eccc6ce](https://github.com/dvsa/vol-active-support/commit/eccc6ce1e62841ca0ef05484880aa18e1402976f))
+
 ## [2.14.2](https://github.com/dvsa/vol-active-support/compare/v2.14.1...v2.14.2) (2026-03-03)
 
 
