@@ -209,6 +209,39 @@ public class VolDatabaseUtils {
     }
     
     /**
+     * Gets operator details for performance testing.
+     * 
+     * @param environment The target environment
+     * @return List of maps containing operator data
+     * @throws SQLException if query execution fails
+     */
+    public static List<Map<String, Object>> getOperatorDetails(String environment) throws SQLException {
+        return executeQuery(environment, VolSqlQueries.getOperatorDetails());
+    }
+    
+    /**
+     * Gets bus registration details for performance testing.
+     * 
+     * @param environment The target environment
+     * @return List of maps containing bus registration data
+     * @throws SQLException if query execution fails
+     */
+    public static List<Map<String, Object>> getBusRegistrations(String environment) throws SQLException {
+        return executeQuery(environment, VolSqlQueries.getBusRegistrations());
+    }
+    
+    /**
+     * Gets vehicle details for performance testing.
+     * 
+     * @param environment The target environment
+     * @return List of maps containing vehicle data
+     * @throws SQLException if query execution fails
+     */
+    public static List<Map<String, Object>> getVehicleDetails(String environment) throws SQLException {
+        return executeQuery(environment, VolSqlQueries.getVehicleDetails());
+    }
+    
+    /**
      * Creates the temporary password table for performance testing.
      * 
      * @param environment The target environment
