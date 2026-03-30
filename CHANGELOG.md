@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.15.2](https://github.com/dvsa/vol-active-support/compare/v2.15.1...v2.15.2) (2026-03-30)
+
+
+### Bug Fixes
+
+* trigger rpi ([15713a3](https://github.com/dvsa/vol-active-support/commit/15713a3c8e5aa558b8dc4590fcd87f62ca53c0d3))
+
 ## [2.15.1](https://github.com/dvsa/vol-active-support/compare/v2.15.0...v2.15.1) (2026-03-30)
 
 
