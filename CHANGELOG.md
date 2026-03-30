@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.15.1](https://github.com/dvsa/vol-active-support/compare/v2.15.0...v2.15.1) (2026-03-30)
+
+
+### Bug Fixes
+
+* upgrade Netty to 4.2.12.Final instead of downgrading ([e638c51](https://github.com/dvsa/vol-active-support/commit/e638c51aecd3f36ac68cc799f3aca57c86de90c4))
+
 ## [2.15.0](https://github.com/dvsa/vol-active-support/compare/v2.14.2...v2.15.0) (2026-03-17)
 
 
