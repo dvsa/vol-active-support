@@ -29,7 +29,7 @@
         <!-- AWS Dependencies -->
         <aws-java-sdk-s3.version>1.12.797</aws-java-sdk-s3.version>
         <aws-secrets-manager.version>1.12.797</aws-secrets-manager.version>
-        <aws-sdk-batch.version>2.34.0</aws-sdk-batch.version>
+        <aws-sdk-batch.version>2.42.23</aws-sdk-batch.version>
 
         <!-- Jackson (JSON Processing) -->
         <jackson.version>2.18.6</jackson.version>
@@ -48,7 +48,7 @@
 
         <!-- HTTP & Networking -->
         <httpclient.version>5.3.1</httpclient.version>
-        <netty.version>4.2.10.Final</netty.version>
+        <netty.version>4.2.12.Final</netty.version>
 
         <!-- Data & File Processing -->
         <protobuf-java.version>4.28.2</protobuf-java.version>
@@ -130,6 +130,45 @@
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <!-- Netty Codec HTTP - Fix for SNYK-JAVA-IONETTY-15789756 -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-codec-http</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <!-- Netty Codec HTTP/2 - Fix for SNYK-JAVA-IONETTY-15789758 -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-codec-http2</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <!-- Additional Netty Core Modules for Complete Override -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-common</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-buffer</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-transport</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-handler</artifactId>
                 <version>${netty.version}</version>
             </dependency>
 
