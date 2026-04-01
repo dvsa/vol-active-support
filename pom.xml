@@ -47,7 +47,7 @@
         <jansi.version>2.4.1</jansi.version>
 
         <!-- HTTP & Networking -->
-        <httpclient.version>5.2.4</httpclient.version>
+        <httpclient.version>5.4.2</httpclient.version>
         <netty.version>4.2.12.Final</netty.version>
 
         <!-- Data & File Processing -->
