@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.15.3](https://github.com/dvsa/vol-active-support/compare/v2.15.2...v2.15.3) (2026-04-01)
+
+
+### Bug Fixes
+
+* httpcore5 ([eb17ccf](https://github.com/dvsa/vol-active-support/commit/eb17ccf52304d159f59ab127b214c5a6c3a8c748))
+* httpcore5 ([1c1663b](https://github.com/dvsa/vol-active-support/commit/1c1663b14695beed26112fae54d7b1e5953319cf))
+* httpcore5 ([fa69977](https://github.com/dvsa/vol-active-support/commit/fa69977b34061a708a29e420e005db2f982cc2f5))
+* httpcore5 ([4f91370](https://github.com/dvsa/vol-active-support/commit/4f913708781a197a320077af78aae5dc38dccfbe))
+
 ## [2.15.2](https://github.com/dvsa/vol-active-support/compare/v2.15.1...v2.15.2) (2026-03-30)
 
 
