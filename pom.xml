@@ -32,7 +32,8 @@
         <aws-sdk-batch.version>2.42.23</aws-sdk-batch.version>
 
         <!-- Jackson (JSON Processing) -->
-        <jackson.version>2.21.0</jackson.version>
+        <jackson.version>2.21.2</jackson.version>
+        <jackson.version.annotations>2.21</jackson.version.annotations>
 
         <!-- Apache Commons -->
         <commons-lang3.version>3.18.0</commons-lang3.version>
@@ -342,7 +343,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>${jackson.version}</version>
+            <version>${jackson.version.annotations}</version>
         </dependency>
 
         <!-- Gson (Alternative JSON Library) -->
