@@ -32,7 +32,7 @@
         <aws-sdk-batch.version>2.42.23</aws-sdk-batch.version>
 
         <!-- Jackson (JSON Processing) -->
-        <jackson.version>2.19.3</jackson.version>
+        <jackson.version>2.21.0</jackson.version>
 
         <!-- Apache Commons -->
         <commons-lang3.version>3.18.0</commons-lang3.version>
