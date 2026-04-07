@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.15.4](https://github.com/dvsa/vol-active-support/compare/v2.15.3...v2.15.4) (2026-04-07)
+
+
+### Bug Fixes
+
+* jacksoncore ([25117ca](https://github.com/dvsa/vol-active-support/commit/25117ca28679e11032b32cc2237adb9997e1eee4))
+* jacksoncore ([90ddfad](https://github.com/dvsa/vol-active-support/commit/90ddfada6e716228451f5ea116f5968faff72cb6))
+* jacksoncore ([d4d9cd7](https://github.com/dvsa/vol-active-support/commit/d4d9cd7fdf22716f342c529e0e63fddb02b28555))
+* jacksoncore ([9fda8fc](https://github.com/dvsa/vol-active-support/commit/9fda8fc62e53ebc346ba1ed24347d3acb3c56ba9))
+
 ## [2.15.3](https://github.com/dvsa/vol-active-support/compare/v2.15.2...v2.15.3) (2026-04-01)
 
 
