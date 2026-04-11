@@ -44,7 +44,7 @@
 
         <!-- Logging -->
         <log4j-api.version>2.25.3</log4j-api.version>
-        <log4j-core.version>2.25.3</log4j-core.version>
+        <log4j-core.version>2.25.4</log4j-core.version>
         <jansi.version>2.4.1</jansi.version>
 
         <!-- HTTP & Networking -->
