@@ -7,7 +7,7 @@
     <!-- ========================================== -->
     <groupId>org.dvsa.testing.lib</groupId>
     <artifactId>active-support</artifactId>
-    <version>2.15.5</version>
+    <version>2.15.6-SNAPSHOT</version>
 
     <!-- ========================================== -->
     <!-- Properties                                 -->
