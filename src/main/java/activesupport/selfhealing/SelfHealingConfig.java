@@ -1,25 +1,14 @@
 package activesupport.selfhealing;
 
-import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.secretsmanager.AWSSecretsManager;
-import com.amazonaws.services.secretsmanager.AWSSecretsManagerClientBuilder;
-import com.amazonaws.services.secretsmanager.model.GetSecretValueRequest;
-import com.amazonaws.services.secretsmanager.model.GetSecretValueResult;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import activesupport.aws.s3.SecretsManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public final class SelfHealingConfig {
 
     private static final Logger LOGGER = LogManager.getLogger(SelfHealingConfig.class);
     private static final String PREFIX = "selfHealing.";
     private static final String DEFAULT_SECRET_NAME = "vol-functional-tests/self-healing";
-    private static final Map<String, String> secretCache = new ConcurrentHashMap<>();
 
     private SelfHealingConfig() {
     }
@@ -56,36 +45,12 @@ public final class SelfHealingConfig {
         if (prop != null && !prop.isBlank()) {
             return prop;
         }
-        return getSecretValue(key);
-    }
-
-    private static String getSecretValue(String key) {
-        if (secretCache.containsKey(key)) {
-            return secretCache.get(key);
-        }
-
         try {
             String secretName = System.getProperty(PREFIX + "secretName", DEFAULT_SECRET_NAME);
-            AWSSecretsManager client = AWSSecretsManagerClientBuilder.standard()
-                    .withCredentials(new DefaultAWSCredentialsProviderChain())
-                    .withRegion(Regions.EU_WEST_1)
-                    .build();
-
-            GetSecretValueResult result = client.getSecretValue(
-                    new GetSecretValueRequest().withSecretId(secretName));
-
-            if (result.getSecretString() != null) {
-                JsonObject json = JsonParser.parseString(result.getSecretString()).getAsJsonObject();
-                if (json.has(key)) {
-                    String value = json.get(key).getAsString();
-                    secretCache.put(key, value);
-                    return value;
-                }
-            }
+            return SecretsManager.getSecretValue(secretName, key);
         } catch (Exception e) {
             LOGGER.warn("SELF-HEALING: Failed to fetch '{}' from Secrets Manager: {}", key, e.getMessage());
+            return "";
         }
-
-        return "";
     }
 }

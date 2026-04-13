@@ -69,14 +69,19 @@ public class SecretsManager {
     }
 
     public static String getSecretValue(String secretKey) {
-        if (cache.containsKey(secretKey)) {
-            return cache.get(secretKey);
+        return getSecretValue(secretsId, secretKey);
+    }
+
+    public static String getSecretValue(String secretName, String secretKey) {
+        String cacheKey = secretName + ":" + secretKey;
+        if (cache.containsKey(cacheKey)) {
+            return cache.get(cacheKey);
         }
 
         String secret = null;
 
         GetSecretValueRequest getSecretValueRequest = new GetSecretValueRequest()
-                .withSecretId(secretsId);
+                .withSecretId(secretName);
         GetSecretValueResult getSecretValueResult = null;
 
         try {
@@ -92,8 +97,10 @@ public class SecretsManager {
         if (getSecretValueResult != null && getSecretValueResult.getSecretString() != null) {
             secret = getSecretValueResult.getSecretString();
             JsonObject jsonObject = JsonParser.parseString(secret).getAsJsonObject();
-            secret = jsonObject.get(secretKey).getAsString();
-            cache.put(secretKey, secret);
+            if (jsonObject.has(secretKey)) {
+                secret = jsonObject.get(secretKey).getAsString();
+                cache.put(cacheKey, secret);
+            }
         }
         return secret;
     }
