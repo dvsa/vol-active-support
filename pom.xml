@@ -321,6 +321,13 @@
             <version>${aws-sdk-batch.version}</version>
         </dependency>
 
+        <!-- AWS Bedrock Agent Runtime (v2 SDK) -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>bedrockagentruntime</artifactId>
+            <version>${aws-sdk-batch.version}</version>
+        </dependency>
+
         <!-- ====================================== -->
         <!-- JSON Processing                        -->
         <!-- ====================================== -->
