@@ -3,6 +3,7 @@ package activesupport.aws.batch;
 public enum JobDefinition {
 
     LAST_TM_LETTER("vol-app-int-last-tm-letter"),
+    FIRST_TM_LETTER("vol-app-int-first-tm-letter"),
 
     CONTINUATIONS_REMINDER("vol-app-int-digital-continuation-reminders"),
     DUPLICATE_VEHICLE_WARNING("vol-app-int-duplicate-vehicle-warning"),
