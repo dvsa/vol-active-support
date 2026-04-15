@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.16.0](https://github.com/dvsa/vol-active-support/compare/v2.15.5...v2.16.0) (2026-04-15)
+
+
+### Features
+
+* add AI self-healing selector support using AWS Bedrock ([5a224c5](https://github.com/dvsa/vol-active-support/commit/5a224c58e0279cf7223cfa074355c1f56aa0e672))
+* add AI self-healing selector support using AWS Bedrock ([be4db4b](https://github.com/dvsa/vol-active-support/commit/be4db4b3eed5072be22622b91de2c8aa4dbb7549))
+* add AI self-healing selector support using AWS Bedrock ([c2d1f8d](https://github.com/dvsa/vol-active-support/commit/c2d1f8d9ec6d183ee6d1cf59b33987df8fe488ea))
+
+
+### Bug Fixes
+
+* use shared bedrock secret for self-healing config ([9f3b56b](https://github.com/dvsa/vol-active-support/commit/9f3b56b3fc2fdc951dccbd5d64ba9a5f116a29d9))
+
 ## [2.15.5](https://github.com/dvsa/vol-active-support/compare/v2.15.4...v2.15.5) (2026-04-13)
 
 
