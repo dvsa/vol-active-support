@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.17.0](https://github.com/dvsa/vol-active-support/compare/v2.16.0...v2.17.0) (2026-04-15)
+
+
+### Features
+
+* add FIRST_TM_LETTER job definition for new 1st TM letter batch job ([082b4da](https://github.com/dvsa/vol-active-support/commit/082b4daaa3b9c7476871c34fd362a6413dff9aba))
+* add FIRST_TM_LETTER job definition for new 1st TM letter batch job ([019c813](https://github.com/dvsa/vol-active-support/commit/019c813d355bc4ee950f64cac82e38c725929104))
+
 ## [2.16.0](https://github.com/dvsa/vol-active-support/compare/v2.15.5...v2.16.0) (2026-04-15)
 
 
