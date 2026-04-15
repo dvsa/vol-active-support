@@ -30,21 +30,21 @@ class SelfHealingConfigTest {
 
     @Test
     void agentIdCanBeSetViaSystemProperty() {
-        System.setProperty("selfHealing.agentId", "TEST_AGENT");
+        System.setProperty("selfHealing.selfHeal_agentId", "TEST_AGENT");
         try {
             assertEquals("TEST_AGENT", SelfHealingConfig.getAgentId());
         } finally {
-            System.clearProperty("selfHealing.agentId");
+            System.clearProperty("selfHealing.selfHeal_agentId");
         }
     }
 
     @Test
     void agentAliasIdCanBeSetViaSystemProperty() {
-        System.setProperty("selfHealing.agentAliasId", "TEST_ALIAS");
+        System.setProperty("selfHealing.selfHealth_agentAliasId", "TEST_ALIAS");
         try {
             assertEquals("TEST_ALIAS", SelfHealingConfig.getAgentAliasId());
         } finally {
-            System.clearProperty("selfHealing.agentAliasId");
+            System.clearProperty("selfHealing.selfHealth_agentAliasId");
         }
     }
 

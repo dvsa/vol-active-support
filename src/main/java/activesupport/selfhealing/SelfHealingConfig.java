@@ -8,7 +8,7 @@ public final class SelfHealingConfig {
 
     private static final Logger LOGGER = LogManager.getLogger(SelfHealingConfig.class);
     private static final String PREFIX = "selfHealing.";
-    private static final String DEFAULT_SECRET_NAME = "vol-functional-tests/self-healing";
+    private static final String DEFAULT_SECRET_NAME = "vol-functional-tests/bedrock";
 
     private SelfHealingConfig() {
     }
@@ -22,11 +22,11 @@ public final class SelfHealingConfig {
     }
 
     public static String getAgentId() {
-        return getConfigValue("agentId");
+        return getConfigValue("selfHeal_agentId");
     }
 
     public static String getAgentAliasId() {
-        return getConfigValue("agentAliasId");
+        return getConfigValue("selfHealth_agentAliasId");
     }
 
     public static int getMaxDomLength() {
