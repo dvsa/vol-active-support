@@ -580,6 +580,13 @@
             <version>${webdrivermanager.version}</version>
         </dependency>
 
+        <!-- Playwright (Browser Automation) -->
+        <dependency>
+            <groupId>com.microsoft.playwright</groupId>
+            <artifactId>playwright</artifactId>
+            <version>1.52.0</version>
+        </dependency>
+
         <!-- Cucumber BDD Framework -->
         <dependency>
             <groupId>io.cucumber</groupId>
