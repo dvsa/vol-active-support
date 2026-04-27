@@ -4,159 +4,95 @@ import com.microsoft.playwright.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * Playwright browser manager, parallel to the Selenium {@link Browser} class.
+ * Instance-based Playwright lifecycle manager.
  * <p>
- * Each thread gets its own Playwright instance, Browser, BrowserContext, and Page
- * (Playwright is NOT thread-safe, so nothing is shared across threads).
+ * Designed for composition — create one per test scenario (e.g. on a Cucumber World object)
+ * and call {@link #close()} in the teardown hook. No ThreadLocal or static state.
  * <p>
- * Activate by passing {@code -Dautomation.engine=playwright} to Maven.
+ * Reads {@code -Dbrowser} and {@code -Dheadless} system properties.
  */
 public class PlaywrightBrowser {
 
     private static final Logger LOGGER = LogManager.getLogger(PlaywrightBrowser.class);
 
-    private static final ThreadLocal<Playwright> threadPlaywright = new ThreadLocal<>();
-    private static final ThreadLocal<com.microsoft.playwright.Browser> threadBrowser = new ThreadLocal<>();
-    private static final ThreadLocal<BrowserContext> threadContext = new ThreadLocal<>();
-    private static final ThreadLocal<Page> threadPage = new ThreadLocal<>();
+    private Playwright playwright;
+    private com.microsoft.playwright.Browser browser;
+    private BrowserContext context;
+    private Page page;
 
-    public static boolean isPlaywright() {
-        return "playwright".equalsIgnoreCase(System.getProperty("automation.engine"));
+    /**
+     * Creates the Playwright browser, context and page.
+     * Call once at the start of a test scenario.
+     */
+    public void create() {
+        String browserName = System.getProperty("browser", "chrome");
+        boolean headless = isHeadless();
+        LOGGER.info("Creating Playwright session: browser={}, headless={}", browserName, headless);
+
+        playwright = Playwright.create();
+
+        BrowserType browserType = switch (normaliseBrowser(browserName)) {
+            case "firefox" -> playwright.firefox();
+            case "webkit" -> playwright.webkit();
+            default -> playwright.chromium();
+        };
+
+        List<String> args = Arrays.asList("--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage");
+        BrowserType.LaunchOptions opts = new BrowserType.LaunchOptions()
+                .setHeadless(headless)
+                .setArgs(args);
+        if ("edge".equalsIgnoreCase(browserName)) {
+            opts.setChannel("msedge");
+        }
+
+        browser = browserType.launch(opts);
+        context = browser.newContext(new com.microsoft.playwright.Browser.NewContextOptions()
+                .setViewportSize(1920, 1080)
+                .setIgnoreHTTPSErrors(true));
+        page = context.newPage();
+    }
+
+    /** Returns the current page, lazily creating the session if needed. */
+    public Page page() {
+        if (page == null) create();
+        return page;
+    }
+
+    public BrowserContext context() { return context; }
+
+    public boolean isOpen() { return page != null; }
+
+    /** Takes a full-page screenshot, or returns an empty byte array if no page is open. */
+    public byte[] screenshot() {
+        return page != null ? page.screenshot() : new byte[0];
     }
 
     /**
-     * Returns the current thread's Playwright {@link Page}, creating one if needed.
-     * Analogous to {@link Browser#navigate()}.
+     * Tears down page → context → browser → playwright in order.
+     * Safe to call multiple times.
      */
-    public static Page navigate() {
-        if (threadPage.get() == null) {
-            String browserName = System.getProperty("browser", "chrome");
-            boolean headless = isHeadless(browserName);
-            launchBrowser(normaliseBrowserName(browserName), headless);
-        }
-        return threadPage.get();
+    public void close() {
+        try { if (page != null) page.close(); } catch (Exception e) { LOGGER.warn("Error closing page: {}", e.getMessage()); } finally { page = null; }
+        try { if (context != null) context.close(); } catch (Exception e) { LOGGER.warn("Error closing context: {}", e.getMessage()); } finally { context = null; }
+        try { if (browser != null) browser.close(); } catch (Exception e) { LOGGER.warn("Error closing browser: {}", e.getMessage()); } finally { browser = null; }
+        try { if (playwright != null) playwright.close(); } catch (Exception e) { LOGGER.warn("Error closing playwright: {}", e.getMessage()); } finally { playwright = null; }
     }
 
-    public static Page getPage() {
-        return threadPage.get();
+    private boolean isHeadless() {
+        return "true".equalsIgnoreCase(System.getProperty("headless", "true"));
     }
 
-    public static BrowserContext getContext() {
-        return threadContext.get();
-    }
-
-    public static boolean isBrowserOpen() {
-        return threadPage.get() != null;
-    }
-
-    public static void closeBrowser() {
-        try {
-            Page page = threadPage.get();
-            if (page != null) {
-                page.close();
-            }
-        } catch (Exception e) {
-            LOGGER.warn("Error closing Playwright page: {}", e.getMessage());
-        } finally {
-            threadPage.remove();
-        }
-
-        try {
-            BrowserContext ctx = threadContext.get();
-            if (ctx != null) {
-                ctx.close();
-            }
-        } catch (Exception e) {
-            LOGGER.warn("Error closing Playwright context: {}", e.getMessage());
-        } finally {
-            threadContext.remove();
-        }
-
-        try {
-            com.microsoft.playwright.Browser browser = threadBrowser.get();
-            if (browser != null) {
-                browser.close();
-            }
-        } catch (Exception e) {
-            LOGGER.warn("Error closing Playwright browser: {}", e.getMessage());
-        } finally {
-            threadBrowser.remove();
-        }
-
-        try {
-            Playwright pw = threadPlaywright.get();
-            if (pw != null) {
-                pw.close();
-            }
-        } catch (Exception e) {
-            LOGGER.warn("Error closing Playwright instance: {}", e.getMessage());
-        } finally {
-            threadPlaywright.remove();
-        }
-    }
-
-    private static void launchBrowser(String browserType, boolean headless) {
-        LOGGER.info("Launching Playwright {} (headless={})", browserType, headless);
-
-        Playwright pw = Playwright.create();
-        threadPlaywright.set(pw);
-
-        BrowserType type = switch (browserType) {
-            case "firefox" -> pw.firefox();
-            case "webkit" -> pw.webkit();
-            default -> pw.chromium();
-        };
-
-        List<String> defaultArgs = Arrays.asList(
-                "--no-sandbox",
-                "--disable-gpu",
-                "--disable-dev-shm-usage"
-        );
-
-        BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions()
-                .setHeadless(headless)
-                .setArgs(defaultArgs);
-
-        // Edge channel support
-        if ("edge".equals(browserType)) {
-            launchOptions.setChannel("msedge");
-        }
-
-        com.microsoft.playwright.Browser browser = type.launch(launchOptions);
-        threadBrowser.set(browser);
-
-        com.microsoft.playwright.Browser.NewContextOptions contextOptions =
-                new com.microsoft.playwright.Browser.NewContextOptions()
-                        .setViewportSize(1920, 1080)
-                        .setIgnoreHTTPSErrors(true);
-
-        BrowserContext context = browser.newContext(contextOptions);
-        threadContext.set(context);
-
-        Page page = context.newPage();
-        threadPage.set(page);
-    }
-
-    private static String normaliseBrowserName(String raw) {
+    private String normaliseBrowser(String raw) {
         if (raw == null) return "chrome";
         return switch (raw.toLowerCase().trim()) {
             case "firefox", "firefox-proxy" -> "firefox";
             case "edge" -> "edge";
             case "webkit", "safari" -> "webkit";
-            default -> "chrome"; // chrome, headless, chrome-proxy
+            default -> "chrome";
         };
-    }
-
-    private static boolean isHeadless(String raw) {
-        if (raw == null) return true;
-        String name = raw.toLowerCase().trim();
-        // Default to headless unless explicitly running headed
-        String headlessProperty = System.getProperty("headless", "true");
-        return "headless".equals(name) || "true".equalsIgnoreCase(headlessProperty);
     }
 }
