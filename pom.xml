@@ -20,6 +20,7 @@
         <maven.surefire.version>3.2.5</maven.surefire.version>
 
         <!-- Core Testing Framework -->
+        <playwright.version>1.52.0</playwright.version>
         <selenium.version>4.36.0</selenium.version>
         <rest-assured.version>5.4.0</rest-assured.version>
         <junit.version>5.11.3</junit.version>
@@ -578,6 +579,13 @@
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
             <version>${webdrivermanager.version}</version>
+        </dependency>
+
+        <!-- Playwright (Browser Automation) -->
+        <dependency>
+            <groupId>com.microsoft.playwright</groupId>
+            <artifactId>playwright</artifactId>
+            <version>${playwright.version}</version>
         </dependency>
 
         <!-- Cucumber BDD Framework -->
