@@ -320,6 +320,12 @@
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>batch</artifactId>
             <version>${aws-sdk-batch.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- AWS Bedrock Agent Runtime (v2 SDK) -->
@@ -327,6 +333,12 @@
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>bedrockagentruntime</artifactId>
             <version>${aws-sdk-batch.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- ====================================== -->
