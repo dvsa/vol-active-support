@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.18.2](https://github.com/dvsa/vol-active-support/compare/v2.18.1...v2.18.2) (2026-05-07)
+
+
+### Bug Fixes
+
+* exclude transitive netty from AWS batch and bedrock dependencies ([354e8ed](https://github.com/dvsa/vol-active-support/commit/354e8ed5611113d91bd31bd98f17b703d9e0282a))
+* exclude transitive netty from AWS batch and bedrock dependencies ([b63c94f](https://github.com/dvsa/vol-active-support/commit/b63c94f8f7c6a46d47f61eb4f71f488f9d6b3b9c))
+
 ## [2.18.1](https://github.com/dvsa/vol-active-support/compare/v2.18.0...v2.18.1) (2026-05-07)
 
 
