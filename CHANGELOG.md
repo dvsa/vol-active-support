@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.18.1](https://github.com/dvsa/vol-active-support/compare/v2.18.0...v2.18.1) (2026-05-07)
+
+
+### Bug Fixes
+
+* resolve SNYK-JAVA-IONETTY-16438929 netty-codec-http2 vulnerability ([270b487](https://github.com/dvsa/vol-active-support/commit/270b48706b1661d9c7b52ede8ce95fcc62937815))
+* resolve SNYK-JAVA-IONETTY-16438929 netty-codec-http2 vulnerability ([0820e30](https://github.com/dvsa/vol-active-support/commit/0820e30853fa98ae79b30a209221aa529bb744ef))
+
 ## [2.18.0](https://github.com/dvsa/vol-active-support/compare/v2.17.0...v2.18.0) (2026-05-07)
 
 
