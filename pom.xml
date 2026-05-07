@@ -30,7 +30,7 @@
         <!-- AWS Dependencies -->
         <aws-java-sdk-s3.version>1.12.797</aws-java-sdk-s3.version>
         <aws-secrets-manager.version>1.12.797</aws-secrets-manager.version>
-        <aws-sdk-batch.version>2.42.23</aws-sdk-batch.version>
+        <aws-sdk-batch.version>2.44.3</aws-sdk-batch.version>
 
         <!-- Jackson (JSON Processing) -->
         <jackson.version>2.21.2</jackson.version>
