@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.18.0](https://github.com/dvsa/vol-active-support/compare/v2.17.0...v2.18.0) (2026-05-07)
+
+
+### Features
+
+* add Playwright browser manager alongside Selenium ([5a4ab60](https://github.com/dvsa/vol-active-support/commit/5a4ab608b68bc5c6d289d0faec61a0a209ce79a3))
+
+
+### Bug Fixes
+
+* pom.xml to reduce vulnerabilities ([b8c43f0](https://github.com/dvsa/vol-active-support/commit/b8c43f0ec216c7fe388e5d94d90e2d4e0ad7a41c))
+
 ## [2.17.0](https://github.com/dvsa/vol-active-support/compare/v2.16.0...v2.17.0) (2026-04-15)
 
 
