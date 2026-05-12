@@ -76,7 +76,7 @@
         <jacob.version>1.14.3</jacob.version>
 
         <!-- DVSA Internal -->
-        <uri-constructor.version>2.3.0</uri-constructor.version>
+        <uri-constructor.version>2.4.0</uri-constructor.version>
 
         <!-- Web Testing & BDD -->
         <jsoup.version>1.18.3</jsoup.version>
