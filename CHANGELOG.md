@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.18.4](https://github.com/dvsa/vol-active-support/compare/v2.18.3...v2.18.4) (2026-05-18)
+
+
+### Bug Fixes
+
+* exclude transitive netty from aws-java-sdk to resolve vulnerabil… ([fa9731f](https://github.com/dvsa/vol-active-support/commit/fa9731fad762a7a56e3934ec06a2dea4b66c9ce8))
+* exclude transitive netty from aws-java-sdk to resolve vulnerabilities ([b9dd651](https://github.com/dvsa/vol-active-support/commit/b9dd65154f6a4958c106440f725b7323dcff365c))
+
 ## [2.18.3](https://github.com/dvsa/vol-active-support/compare/v2.18.2...v2.18.3) (2026-05-18)
 
 
