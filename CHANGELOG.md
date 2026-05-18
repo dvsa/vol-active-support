@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.18.3](https://github.com/dvsa/vol-active-support/compare/v2.18.2...v2.18.3) (2026-05-18)
+
+
+### Bug Fixes
+
+* update vol-uri-constructor to 2.4.0 for correct local URLs ([6e8850d](https://github.com/dvsa/vol-active-support/commit/6e8850de6b1774037fd85383fd34c1569263ccb3))
+* update vol-uri-constructor to 2.4.0 for correct local URLs ([74f5eec](https://github.com/dvsa/vol-active-support/commit/74f5eec94a265875ca86b48b99a748975fb694b3))
+
 ## [2.18.2](https://github.com/dvsa/vol-active-support/compare/v2.18.1...v2.18.2) (2026-05-07)
 
 
