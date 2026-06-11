@@ -21,7 +21,7 @@
 
         <!-- Core Testing Framework -->
         <playwright.version>1.52.0</playwright.version>
-        <selenium.version>4.36.0</selenium.version>
+        <selenium.version>4.44.0</selenium.version>
         <rest-assured.version>5.4.0</rest-assured.version>
         <junit.version>5.11.3</junit.version>
         <mockito.version>5.8.0</mockito.version>
