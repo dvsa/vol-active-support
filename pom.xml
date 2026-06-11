@@ -50,7 +50,7 @@
 
         <!-- HTTP & Networking -->
         <httpclient.version>5.6.1</httpclient.version>
-        <netty.version>4.2.13.Final</netty.version>
+        <netty.version>4.2.15.Final</netty.version>
 
         <!-- Data & File Processing -->
         <protobuf-java.version>4.28.2</protobuf-java.version>
