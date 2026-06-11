@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.18.5](https://github.com/dvsa/vol-active-support/compare/v2.18.4...v2.18.5) (2026-06-11)
+
+
+### Bug Fixes
+
+* pom.xml to reduce vulnerabilities ([3a75597](https://github.com/dvsa/vol-active-support/commit/3a755970ac2049331adc0ecab00bc5246f646543))
+
 ## [2.18.4](https://github.com/dvsa/vol-active-support/compare/v2.18.3...v2.18.4) (2026-05-18)
 
 
