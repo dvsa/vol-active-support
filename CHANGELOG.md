@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.18.6](https://github.com/dvsa/vol-active-support/compare/v2.18.5...v2.18.6) (2026-06-25)
+
+
+### Bug Fixes
+
+* bump jackson-databind to 2.21.4 to resolve CVEs ([06bf16d](https://github.com/dvsa/vol-active-support/commit/06bf16d96ce7b53895416fd71af087432852d008))
+* bump jackson-databind to 2.21.4 to resolve CVEs ([8c60c31](https://github.com/dvsa/vol-active-support/commit/8c60c3153b95900afb52308d0249b654d2bd3931))
+
 ## [2.18.5](https://github.com/dvsa/vol-active-support/compare/v2.18.4...v2.18.5) (2026-06-11)
 
 
