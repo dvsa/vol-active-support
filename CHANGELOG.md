@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.18.7](https://github.com/dvsa/vol-active-support/compare/v2.18.6...v2.18.7) (2026-07-06)
+
+
+### Bug Fixes
+
+* upgrade httpclient5 from 5.6.1 to 5.6.2 to address CVE ([ae3455c](https://github.com/dvsa/vol-active-support/commit/ae3455cebeae7a609d52e351a048b9e380cde09f))
+* upgrade httpclient5 from 5.6.1 to 5.6.2 to address CVE ([7e3933a](https://github.com/dvsa/vol-active-support/commit/7e3933a19d29af3bce711dc78aa45acfcb0790cc))
+
 ## [2.18.6](https://github.com/dvsa/vol-active-support/compare/v2.18.5...v2.18.6) (2026-06-25)
 
 
