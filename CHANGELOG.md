@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.18.8](https://github.com/dvsa/vol-active-support/compare/v2.18.7...v2.18.8) (2026-07-16)
+
+
+### Bug Fixes
+
+* bump jackson ([ce9b0ff](https://github.com/dvsa/vol-active-support/commit/ce9b0ff297680318ba9ffece176c86a99d09bb47))
+* bump jackson ([cf9523c](https://github.com/dvsa/vol-active-support/commit/cf9523c4c278e456a12ecbbb91225fd4681a8341))
+
 ## [2.18.7](https://github.com/dvsa/vol-active-support/compare/v2.18.6...v2.18.7) (2026-07-06)
 
 
