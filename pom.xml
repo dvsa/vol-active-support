@@ -33,7 +33,7 @@
         <aws-sdk-batch.version>2.44.7</aws-sdk-batch.version>
 
         <!-- Jackson (JSON Processing) -->
-        <jackson.version>3.2.0</jackson.version>
+        <jackson.version>3.2.1</jackson.version>
         <jackson.version.annotations>3.0-rc5</jackson.version.annotations>
         <jackson2.version>2.21.5</jackson2.version>
 
