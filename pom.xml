@@ -34,7 +34,7 @@
 
         <!-- Jackson (JSON Processing) -->
         <jackson.version>3.2.1</jackson.version>
-        <jackson.version.annotations>3.0-rc5</jackson.version.annotations>
+        <jackson.version.annotations>2.22</jackson.version.annotations>
         <jackson2.version>2.21.5</jackson2.version>
 
         <!-- Apache Commons -->
