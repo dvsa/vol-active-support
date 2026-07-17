@@ -35,6 +35,7 @@
         <!-- Jackson (JSON Processing) -->
         <jackson.version>3.2.0</jackson.version>
         <jackson.version.annotations>3.0-rc5</jackson.version.annotations>
+        <jackson2.version>2.21.5</jackson2.version>
 
         <!-- Apache Commons -->
         <commons-lang3.version>3.18.0</commons-lang3.version>
@@ -370,6 +371,20 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>${jackson.version.annotations}</version>
+        </dependency>
+
+        <!-- Pin Jackson 2.x transitives (from AWS SDK v1) to a patched version
+             to remediate SNYK-JAVA-COMFASTERXMLJACKSONCORE-15365924/15907551
+             (jackson-core) and -17440366/-17440598 (jackson-databind). -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson2.version}</version>
         </dependency>
 
         <!-- Gson (Alternative JSON Library) -->
