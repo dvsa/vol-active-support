@@ -33,8 +33,8 @@
         <aws-sdk-batch.version>2.44.7</aws-sdk-batch.version>
 
         <!-- Jackson (JSON Processing) -->
-        <jackson.version>2.21.5</jackson.version>
-        <jackson.version.annotations>2.21</jackson.version.annotations>
+        <jackson.version>3.2.0</jackson.version>
+        <jackson.version.annotations>3.0-rc5</jackson.version.annotations>
 
         <!-- Apache Commons -->
         <commons-lang3.version>3.18.0</commons-lang3.version>
@@ -353,14 +353,14 @@
 
         <!-- Jackson Core -->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
+            <groupId>tools.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
             <version>${jackson.version}</version>
         </dependency>
 
         <!-- Jackson Databind -->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
+            <groupId>tools.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
