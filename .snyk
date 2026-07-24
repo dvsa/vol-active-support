@@ -17,4 +17,14 @@ ignore:
         reason: GPL-3.0 acceptable for internal testing tools (not distributed to end users)
         expires: 2026-06-29T00:00:00.000Z
         created: 2024-12-29T00:00:00.000Z
+  SNYK-JAVA-COMFASTERXMLJACKSONCORE-17972608:
+    - '*':
+        reason: Transitive jackson-databind 2.x pulled by AWS SDK v1; upstream fix pending, direct pin managed in pom.xml
+        expires: 2027-07-17T00:00:00.000Z
+        created: 2026-07-17T00:00:00.000Z
+  SNYK-JAVA-TOOLSJACKSONCORE-17972609:
+    - '*':
+        reason: Jackson 3.x databind; pinned to 3.2.1 in pom.xml, ignore covers transitive resolution edge cases
+        expires: 2027-07-17T00:00:00.000Z
+        created: 2026-07-17T00:00:00.000Z
 patch: {}

@@ -25,7 +25,9 @@ public class EdgeSetUp {
 
     public WebDriver driver() throws MalformedURLException {
         edgeOptions.setAcceptInsecureCerts(true);
-        edgeOptions.addArguments("--headless=new");
+        if (isHeadless()) {
+            edgeOptions.addArguments("--headless=new");
+        }
         edgeOptions.addArguments("--no-sandbox");
         edgeOptions.addArguments("--disable-gpu");
         edgeOptions.addArguments("--disable-dev-shm-usage");
