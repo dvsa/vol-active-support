@@ -27,6 +27,9 @@ public class FirefoxSetUp {
 
     public WebDriver driver() throws MalformedURLException {
         options.setAcceptInsecureCerts(true);
+        if (isHeadless()) {
+            options.addArguments("-headless");
+        }
         if (getPlatform() == null) {
             driver = new FirefoxDriver(getOptions());
         } else {
