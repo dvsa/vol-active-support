@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.18.10](https://github.com/dvsa/vol-active-support/compare/v2.18.9...v2.18.10) (2026-07-24)
+
+
+### Bug Fixes
+
+* enable headless for local ([34c6473](https://github.com/dvsa/vol-active-support/commit/34c64731f71c519cb320913e758101095e679048))
+* enable headless for local ([c1b7fed](https://github.com/dvsa/vol-active-support/commit/c1b7feddd895b23c0840e0344083155542fd37d4))
+
 ## [2.18.9](https://github.com/dvsa/vol-active-support/compare/v2.18.8...v2.18.9) (2026-07-17)
 
 
