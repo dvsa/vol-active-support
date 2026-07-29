@@ -26,7 +26,6 @@ public class ChromeSetUp {
 
     public WebDriver driver() throws MalformedURLException {
         chromeOptions.setAcceptInsecureCerts(true);
-        chromeOptions.addArguments("--headless=new");
         chromeOptions.addArguments("--no-sandbox");
         chromeOptions.addArguments("--disable-gpu");
         chromeOptions.addArguments("--disable-dev-shm-usage");

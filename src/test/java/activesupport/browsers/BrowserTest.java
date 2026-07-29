@@ -48,7 +48,7 @@ public class BrowserTest {
 
 
     public void headlessTest() {
-        System.setProperty("browser", "headless");
+        System.setProperty("browser", "chrome-headless");
         Browser.navigate().get(baseURL.concat(resource));
         assertEquals("Browser Test", Browser.navigate().getTitle());
     }

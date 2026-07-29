@@ -95,6 +95,9 @@ public class Browser {
             case "chrome":
                 driver = chrome.driver();
                 break;
+            case "chrome-headless":
+                driver = chrome.driver();
+                break;
             case "edge":
                 driver = edge.driver();
                 break;
@@ -105,7 +108,6 @@ public class Browser {
                 driver = null;
                 break;
             case "headless":
-                chrome.getChromeOptions().addArguments("--headless");
                 driver = chrome.driver();
                 break;
             case "chrome-proxy":
