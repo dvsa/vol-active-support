@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.18.11](https://github.com/dvsa/vol-active-support/compare/v2.18.10...v2.18.11) (2026-08-28)
+
+
+### Bug Fixes
+
+* alter chrome options ([bacce0c](https://github.com/dvsa/vol-active-support/commit/bacce0c8a224d444a00c53217d8741c83f608461))
+* alter chrome options ([eb348ce](https://github.com/dvsa/vol-active-support/commit/eb348ce4aba27c03002d37e1ac7414dd5d7af889))
+* edge ([df75a29](https://github.com/dvsa/vol-active-support/commit/df75a29c0446ae76e4beaa82b37bbbaad290741b))
+
 ## [2.18.10](https://github.com/dvsa/vol-active-support/compare/v2.18.9...v2.18.10) (2026-07-24)
 
 
