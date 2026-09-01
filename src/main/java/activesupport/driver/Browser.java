@@ -133,11 +133,12 @@ public class Browser {
             default:
                 throw new IllegalBrowserException();
         }
-        threadLocalDriver.set(driver);
+        threadLocalDriver.set(BasicAuth.enableFor(driver));
     }
 
     public static void closeBrowser() throws Exception {
         if (getDriver() != null) {
+            BasicAuth.clear();
             getDriver().quit();
             removeLocalDriverThread();
         }
