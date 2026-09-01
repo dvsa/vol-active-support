@@ -16,6 +16,7 @@ public class Browser {
     private static String portNumber;
     private static String platform;
     private static String browserVersion;
+    private static Boolean headless;
     protected static ThreadLocal<WebDriver> threadLocalDriver = new ThreadLocal<>();
     private static final Logger LOGGER = LogManager.getLogger(Browser.class);
 
@@ -51,6 +52,18 @@ public class Browser {
 
     public static void setBrowserVersion(String browserVersion) {
         Browser.browserVersion = browserVersion;
+    }
+
+    public static boolean isHeadless() {
+        if (headless != null) {
+            return headless;
+        }
+        String prop = System.getProperty("headless");
+        return prop == null || prop.isEmpty() || Boolean.parseBoolean(prop);
+    }
+
+    public static void setHeadless(boolean headless) {
+        Browser.headless = headless;
     }
 
     public static String getGridURL() {
@@ -105,6 +118,7 @@ public class Browser {
                 driver = null;
                 break;
             case "headless":
+                setHeadless(true);
                 chrome.getChromeOptions().addArguments("--headless");
                 driver = chrome.driver();
                 break;
