@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.19.0](https://github.com/dvsa/vol-active-support/compare/v2.18.11...v2.19.0) (2026-09-01)
+
+
+### Features
+
+* bump deps ([f629dff](https://github.com/dvsa/vol-active-support/commit/f629dff99f11d2fc8564455d1c77de33706a3cb4))
+* bump deps ([4c274f2](https://github.com/dvsa/vol-active-support/commit/4c274f23f2da42e119c06c5021355383503dd636))
+
 ## [2.18.11](https://github.com/dvsa/vol-active-support/compare/v2.18.10...v2.18.11) (2026-08-28)
 
 
