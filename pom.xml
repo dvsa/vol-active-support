@@ -50,8 +50,8 @@
         <jansi.version>2.4.1</jansi.version>
 
         <!-- HTTP & Networking -->
-        <httpclient.version>5.6.3</httpclient.version>
-        <netty.version>4.2.17.Final</netty.version>
+        <httpclient.version>5.7-alpha1</httpclient.version>
+        <netty.version>4.2.15.Final</netty.version>
 
         <!-- Data & File Processing -->
         <protobuf-java.version>4.28.2</protobuf-java.version>
@@ -80,7 +80,7 @@
         <uri-constructor.version>2.4.0</uri-constructor.version>
 
         <!-- Web Testing & BDD -->
-        <jsoup.version>1.23.1</jsoup.version>
+        <jsoup.version>1.23.2</jsoup.version>
         <webdrivermanager.version>6.1.0</webdrivermanager.version>
         <cucumber.version>7.20.1</cucumber.version>
         <assertj.version>3.27.7</assertj.version>
