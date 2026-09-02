@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.20.0](https://github.com/dvsa/vol-active-support/compare/v2.19.0...v2.20.0) (2026-09-02)
+
+
+### Features
+
+* add network diagnostics ([19976d3](https://github.com/dvsa/vol-active-support/commit/19976d3b53393e7d2fe61d55ee5a15fd09ea1180))
+* add network diagnostics ([a917bd0](https://github.com/dvsa/vol-active-support/commit/a917bd0287ff8119878a2b9019361614963271dd))
+
 ## [2.19.0](https://github.com/dvsa/vol-active-support/compare/v2.18.11...v2.19.0) (2026-09-01)
 
 
