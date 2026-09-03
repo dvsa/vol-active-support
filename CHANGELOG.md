@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.20.1](https://github.com/dvsa/vol-active-support/compare/v2.20.0...v2.20.1) (2026-09-03)
+
+
+### Bug Fixes
+
+* bump selenium ([2bb7216](https://github.com/dvsa/vol-active-support/commit/2bb72169b1cdb66a2d6b3875f5eb5519f1addca4))
+* bump selenium ([af2ed89](https://github.com/dvsa/vol-active-support/commit/af2ed896ceee1a8438e4ad49e7b3a7ea937ab547))
+
 ## [2.20.0](https://github.com/dvsa/vol-active-support/compare/v2.19.0...v2.20.0) (2026-09-02)
 
 
