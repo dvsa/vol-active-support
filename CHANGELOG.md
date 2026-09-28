@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.23.7](https://github.com/dvsa/vol-active-support/compare/v2.23.6...v2.23.7) (2026-09-28)
+
+
+### Bug Fixes
+
+* mailpit ([4a1977b](https://github.com/dvsa/vol-active-support/commit/4a1977badbb25a05429cf0378a8a5de9b7a4c6c1))
+* mailpit ([bec5bf6](https://github.com/dvsa/vol-active-support/commit/bec5bf6fe7bff15c9490317c22affa2916215711))
+
 ## [2.23.6](https://github.com/dvsa/vol-active-support/compare/v2.23.5...v2.23.6) (2026-09-28)
 
 
