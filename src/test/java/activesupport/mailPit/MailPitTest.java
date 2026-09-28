@@ -57,6 +57,42 @@ class MailPitTest {
     }
 
     @Test
+    void retrievesTmEmailRoutedThroughSharedMailboxByExactSubjectPrefix() {
+        String created = Instant.now().toString();
+        String messages = """
+                {"messages":[
+                  {"ID":"wrong","Subject":"other@example.com : %s","Created":"%s","To":[{"Address":"olcs-dev@dvsa.gov.uk"}]},
+                  {"ID":"wrong-address","Subject":"%s : %s","Created":"%s","To":[{"Address":"other@example.com"}]},
+                  {"ID":"correct","Subject":"%s : A Transport Manager has\\r\\n submitted their details for review","Created":"%s","To":[{"Address":"olcs-dev@dvsa.gov.uk"}],"Snippet":"review"}
+                ]}
+                """.formatted(SUBJECT, created, RECIPIENT, SUBJECT, created, RECIPIENT, created);
+        server.stubFor(WireMock.get(WireMock.urlPathEqualTo("/api/v1/messages"))
+                .withQueryParam("q", WireMock.equalTo(RECIPIENT))
+                .willReturn(WireMock.okJson(messages)));
+        server.stubFor(WireMock.get(WireMock.urlEqualTo("/api/v1/message/correct/raw"))
+                .willReturn(WireMock.ok(EMAIL_BODY)));
+
+        assertEquals("review", mailPit.retrieveEmailContent(RECIPIENT, SUBJECT));
+        assertEquals(EMAIL_BODY, mailPit.retrieveEmailRawContent(RECIPIENT, SUBJECT));
+        server.verify(1, WireMock.getRequestedFor(WireMock.urlEqualTo("/api/v1/message/correct/raw")));
+        server.verify(0, WireMock.getRequestedFor(WireMock.urlEqualTo("/api/v1/message/wrong/raw")));
+        server.verify(0, WireMock.getRequestedFor(WireMock.urlEqualTo("/api/v1/message/wrong-address/raw")));
+    }
+
+    @Test
+    void sharedMailboxSubjectCannotMatchAnotherUserOrMessageType() {
+        String message = """
+                {"ID":"wrong","Subject":"other@example.com : %s","Created":"%s","To":[{"Address":"olcs-dev@dvsa.gov.uk"}]}
+                """.formatted(SUBJECT, Instant.now());
+        server.stubFor(WireMock.get(WireMock.urlPathEqualTo("/api/v1/messages"))
+                .willReturn(WireMock.okJson("{\"messages\":[" + message + "]}")));
+
+        assertThrows(IllegalStateException.class, () -> mailPit.retrieveEmailRawContent(RECIPIENT, SUBJECT));
+        assertThrows(IllegalStateException.class, () -> mailPit.retrieveEmailRawContent(RECIPIENT, "submitted their details"));
+        server.verify(0, WireMock.getRequestedFor(WireMock.urlPathMatching("/api/v1/message/.*/raw")));
+    }
+
+    @Test
     void retriesPasswordResetWhenEmailHasNotArrivedYet() throws Exception {
         String resetLink = "https://example.com/reset/123";
         String message = """

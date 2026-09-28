@@ -26,6 +26,8 @@ public class MailPit {
     private static final int DEFAULT_TIME_WINDOW_MINUTES = 5;
     private static final String LOCAL_URL = "http://mailpit.local.olcs.dev-dvsacloud.uk:8025";
     private static final String DEFAULT_URL = "https://selenium-mail.olcs.dev-dvsacloud.uk:8025";
+    private static final String TM_REVIEW_SUBJECT = "A Transport Manager has submitted their details for review";
+    private static final String SHARED_MAILBOX = "olcs-dev@dvsa.gov.uk";
 
     private volatile ValidatableResponse response;
     private String baseUrl;
@@ -238,25 +240,15 @@ public class MailPit {
 
                         for (Map<String, Object> message : recentMessages) {
                             String subject = (String) message.get("Subject");
+                            if (subject != null) {
+                                subject = subject.replaceAll("\\r?\\n[ \\t]+", " ");
+                            }
                             if (subject != null && subject.contains(subjectContains)) {
-                                // Verify this email was sent to the correct recipient
-                                List<Map<String, Object>> toList = (List<Map<String, Object>>) message.get("To");
-                                boolean isCorrectRecipient = false;
-                                if (toList != null) {
-                                    for (Map<String, Object> toEntry : toList) {
-                                        String address = (String) toEntry.get("Address");
-                                        if (emailAddress.equals(address)) {
-                                            isCorrectRecipient = true;
-                                            break;
-                                        }
-                                    }
-                                }
-                                
-                                if (isCorrectRecipient) {
+                                if (matchesRecipient(message, emailAddress, subject, subjectContains)) {
                                     return (String) message.get("Snippet");
                                 } else {
                                     LOGGER.debug("Skipping message with correct subject but wrong recipient. Expected: {}, Found To: {}", 
-                                                emailAddress, toList);
+                                                emailAddress, message.get("To"));
                                 }
                             }
                         }
@@ -296,23 +288,13 @@ public class MailPit {
 
                         for (Map<String, Object> message : recentMessages) {
                             String subject = (String) message.get("Subject");
+                            if (subject != null) {
+                                subject = subject.replaceAll("\\r?\\n[ \\t]+", " ");
+                            }
                             if (subject != null && subject.contains(subjectContains)) {
-                                // Verify this email was sent to the correct recipient
-                                List<Map<String, Object>> toList = (List<Map<String, Object>>) message.get("To");
-                                boolean isCorrectRecipient = false;
-                                if (toList != null) {
-                                    for (Map<String, Object> toEntry : toList) {
-                                        String address = (String) toEntry.get("Address");
-                                        if (emailAddress.equals(address)) {
-                                            isCorrectRecipient = true;
-                                            break;
-                                        }
-                                    }
-                                }
-                                
-                                if (!isCorrectRecipient) {
+                                if (!matchesRecipient(message, emailAddress, subject, subjectContains)) {
                                     LOGGER.debug("Skipping message with correct subject but wrong recipient. Expected: {}, Found To: {}", 
-                                                emailAddress, toList);
+                                                emailAddress, message.get("To"));
                                     continue;
                                 }
                                 
@@ -338,6 +320,25 @@ public class MailPit {
 
     public synchronized String retrieveEmailRawContent(String emailAddress, String subjectContains) {
         return retrieveEmailRawContent(emailAddress, subjectContains, DEFAULT_TIME_WINDOW_MINUTES);
+    }
+
+    private boolean matchesRecipient(Map<String, Object> message, String emailAddress, String subject, String subjectContains) {
+        List<Map<String, Object>> toList = (List<Map<String, Object>>) message.get("To");
+        if (toList == null) {
+            return false;
+        }
+        for (Map<String, Object> toEntry : toList) {
+            String address = (String) toEntry.get("Address");
+            if (emailAddress.equalsIgnoreCase(address)) {
+                return true;
+            }
+            if (TM_REVIEW_SUBJECT.equals(subjectContains)
+                    && SHARED_MAILBOX.equalsIgnoreCase(address)
+                    && (emailAddress + " : " + TM_REVIEW_SUBJECT).equalsIgnoreCase(subject.trim())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public String retrieveSignInCode(String emailAddress, int timeWindowMinutes) {
@@ -416,7 +417,7 @@ public class MailPit {
         while(retries < maxRetries) {
             try {
                 synchronized(this) {
-                    String emailContent = this.retrieveEmailRawContent(emailAddress, "A Transport Manager has submitted their details for review", timeWindowMinutes);
+                    String emailContent = this.retrieveEmailRawContent(emailAddress, TM_REVIEW_SUBJECT, timeWindowMinutes);
                     if (StringUtils.isBlank(emailContent)) {
                         throw new IllegalStateException("TM application email is empty");
                     }
