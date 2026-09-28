@@ -328,7 +328,7 @@ public class MailPit {
                 } finally {
                     rateLimiter.release();
                 }
-                throw new IllegalStateException("Email content not found for the specified email address and subject.");
+                throw new EmailNotFoundException("Email content not found for the specified email address and subject.");
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
@@ -411,38 +411,25 @@ public class MailPit {
 
         int retries = 0;
         final int maxRetries = 6;
+        IllegalStateException lastFailure = null;
 
         while(retries < maxRetries) {
             try {
                 synchronized(this) {
                     String emailContent = this.retrieveEmailRawContent(emailAddress, "A Transport Manager has submitted their details for review", timeWindowMinutes);
-                    if (emailContent == null) {
-                        throw new IllegalStateException("Email content not found");
+                    if (StringUtils.isBlank(emailContent)) {
+                        throw new IllegalStateException("TM application email is empty");
                     }
-
-                    String emailLower = emailAddress.toLowerCase();
-                    String contentLower = emailContent.toLowerCase();
-                    
-                    boolean emailMatches = contentLower.contains(emailLower) ||
-                            emailContent.contains("To: " + emailAddress) ||
-                            emailContent.contains("for <" + emailAddress + ">") ||
-                            emailContent.contains("to:" + emailAddress.toLowerCase()) ||
-                            emailContent.contains("To:" + emailAddress) ||
-                            emailContent.matches("(?i).*to:\\s*" + Pattern.quote(emailAddress) + ".*") ||
-                            isEmailSentToRecipient(emailContent, emailAddress);
-                    
-                    if (!emailMatches) {
-                        LOGGER.warn("Email content does not match the expected user: {} on attempt {}. Content preview: {}...", 
-                                emailAddress, retries + 1, emailContent.substring(0, Math.min(200, emailContent.length())));
-                        throw new IllegalStateException("Email content does not match the expected user: " + emailAddress);
-                    }
-
                     LOGGER.info("Successfully retrieved TM application link for user: {} on attempt {}", emailAddress, retries + 1);
-                    return (new Scanner(emailContent)).useDelimiter("\\A").next();
+                    return emailContent;
                 }
-            } catch (IllegalStateException var6) {
-                LOGGER.warn("Attempt {} failed: {}. Retrying... ({}/{})", retries + 1, var6.getMessage(), retries + 1, maxRetries);
+            } catch (IllegalStateException failure) {
+                lastFailure = failure;
+                LOGGER.warn("Attempt {} failed: {}. ({}/{})", retries + 1, failure.getMessage(), retries + 1, maxRetries);
                 ++retries;
+                if (retries == maxRetries) {
+                    break;
+                }
 
                 try {
                     long baseDelay = Math.min(2000 * (1L << Math.min(retries - 1, 4)), 30000);
@@ -464,30 +451,7 @@ public class MailPit {
             }
         }
 
-        throw new IllegalStateException("Failed to retrieve TM application link after " + maxRetries + " retries for user: " + emailAddress);
-    }
-
-    private boolean isEmailSentToRecipient(String emailContent, String expectedRecipient) {
-        Pattern toPattern = Pattern.compile("^To:\\s*(.+)$", Pattern.MULTILINE);
-        Matcher toMatcher = toPattern.matcher(emailContent);
-
-        if (toMatcher.find()) {
-            String toHeader = toMatcher.group(1).toLowerCase().trim();
-            String expectedLower = expectedRecipient.toLowerCase().trim();
-
-            LOGGER.debug("Checking To header: '{}' against expected: '{}'", toHeader, expectedLower);
-            return toHeader.contains(expectedLower);
-        }
-
-        String[] lines = emailContent.split("\n");
-        for (String line : lines) {
-            if (line.startsWith("To:") && line.toLowerCase().contains(expectedRecipient.toLowerCase())) {
-                return true;
-            }
-        }
-
-        LOGGER.warn("Could not find 'To:' header containing expected recipient: {}", expectedRecipient);
-        return false;
+        throw new IllegalStateException("Failed to retrieve TM application link after " + maxRetries + " retries for user: " + emailAddress, lastFailure);
     }
 
     public String retrievePasswordResetLink(@NotNull String emailAddress, long sleepTime) throws MissingRequiredArgument {
@@ -495,29 +459,32 @@ public class MailPit {
     }
 
     public String retrievePasswordResetLink(@NotNull String emailAddress, long sleepTime, int timeWindowMinutes) throws MissingRequiredArgument {
-        int retries = 0;
-        while (retries < 2) {
+        EmailNotFoundException lastNotFound = null;
+        for (int attempt = 1; attempt <= 2; attempt++) {
             try {
                 TimeUnit.SECONDS.sleep(sleepTime);
                 String emailContent = retrieveEmailRawContent(emailAddress, "Reset your password", timeWindowMinutes);
-                if (emailContent.contains(emailAddress)) {
-                    Pattern pattern = Pattern.compile("href=3D\"([^\"]+)");
-                    Matcher matcher = pattern.matcher(emailContent);
-                    if (matcher.find()) {
-                        return matcher.group(1);
-                    }
-                    throw new IllegalStateException("Password reset link not found in email");
-                } else {
-                    LOGGER.warn("Email content does not match the expected user: {}. Retrying... ({}/{})", emailAddress, retries + 1, 2);
+                Pattern pattern = Pattern.compile("href=3D\"([^\"]+)");
+                Matcher matcher = pattern.matcher(emailContent);
+                if (matcher.find()) {
+                    return matcher.group(1);
                 }
+                throw new IllegalStateException("Password reset link not found in email");
+            } catch (EmailNotFoundException e) {
+                lastNotFound = e;
+                LOGGER.warn("Password reset email not found for user: {} on attempt {}/2", emailAddress, attempt);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                LOGGER.error("Thread interrupted while retrieving password reset link for user: {}", emailAddress, e);
-                return null;
+                throw new IllegalStateException("Interrupted while retrieving password reset link for user: " + emailAddress, e);
             }
-            retries++;
         }
-        throw new IllegalStateException("Failed to retrieve password reset link after 2 retries for user: " + emailAddress);
+        throw new IllegalStateException("Failed to retrieve password reset link after 2 retries for user: " + emailAddress, lastNotFound);
+    }
+
+    private static class EmailNotFoundException extends IllegalStateException {
+        private EmailNotFoundException(String message) {
+            super(message);
+        }
     }
 
     public String retrieveUsernameInfo(String emailAddress) throws MissingRequiredArgument {
