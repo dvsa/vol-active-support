@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.24.1](https://github.com/dvsa/vol-active-support/compare/v2.24.0...v2.24.1) (2026-10-28)
+
+
+### Bug Fixes
+
+* close browser ([ac76e0f](https://github.com/dvsa/vol-active-support/commit/ac76e0ff6cd1838a4aca5fd57baefe8d05745b61))
+* close browser ([6ca5098](https://github.com/dvsa/vol-active-support/commit/6ca50986590a82a0c68135c72408f130a8ed2ea9))
+
 ## [2.24.0](https://github.com/dvsa/vol-active-support/compare/v2.23.8...v2.24.0) (2026-10-23)
 
 
