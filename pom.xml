@@ -34,8 +34,8 @@
         <aws-sdk-batch.version>2.44.7</aws-sdk-batch.version>
 
         <!-- Jackson (JSON Processing) -->
-        <jackson3.version>3.2.3</jackson3.version>
-        <jackson2.version>2.22.3</jackson2.version>
+        <jackson3.version>3.2.4</jackson3.version>
+        <jackson2.version>2.22.4</jackson2.version>
         <jackson-annotations.version>2.22</jackson-annotations.version>
 
         <!-- Apache Commons -->
@@ -143,7 +143,8 @@
                  and other libraries to a patched, internally consistent release.
                  Remediates SNYK-JAVA-COMFASTERXMLJACKSONCORE-19778370,
                  -17440366/-17440598 (jackson-databind) and
-                 -15365924/-15907551 (jackson-core). -->
+                 -15365924/-15907551 (jackson-core) and
+                 -21761837 (jackson-databind). -->
             <dependency>
                 <groupId>com.fasterxml.jackson</groupId>
                 <artifactId>jackson-bom</artifactId>

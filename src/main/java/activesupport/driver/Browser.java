@@ -138,8 +138,11 @@ public class Browser {
 
     public static void closeBrowser() throws Exception {
         if (getDriver() != null) {
-            getDriver().quit();
-            removeLocalDriverThread();
+            try {
+                getDriver().quit();
+            } finally {
+                removeLocalDriverThread();
+            }
         }
     }
 
