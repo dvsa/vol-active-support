@@ -20,7 +20,7 @@
         <maven.surefire.version>3.2.5</maven.surefire.version>
 
         <!-- Core Testing Framework -->
-        <playwright.version>1.52.0</playwright.version>
+        <playwright.version>1.64.0</playwright.version>
         <selenium.version>4.47.0</selenium.version>
         <rest-assured.version>5.4.0</rest-assured.version>
         <junit.version>5.11.3</junit.version>
@@ -399,6 +399,13 @@
                     <artifactId>*</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <!-- AWS CRT async HTTP client: required by InvokeAgent (event stream) now that Netty is excluded -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>aws-crt-client</artifactId>
+            <version>${aws-sdk-batch.version}</version>
         </dependency>
 
         <!-- ====================================== -->
