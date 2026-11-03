@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import software.amazon.awssdk.http.crt.AwsCrtAsyncHttpClient;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.bedrockagentruntime.BedrockAgentRuntimeAsyncClient;
 import software.amazon.awssdk.services.bedrockagentruntime.model.InvokeAgentRequest;
@@ -25,6 +26,7 @@ public class BedrockSelectorService {
         if (client == null) {
             client = BedrockAgentRuntimeAsyncClient.builder()
                     .region(Region.of(SelfHealingConfig.getRegion()))
+                    .httpClientBuilder(AwsCrtAsyncHttpClient.builder())
                     .build();
         }
         return client;
