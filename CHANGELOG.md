@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.25.0](https://github.com/dvsa/vol-active-support/compare/v2.24.1...v2.25.0) (2026-11-03)
+
+
+### Features
+
+* visual regression ([8435b5f](https://github.com/dvsa/vol-active-support/commit/8435b5f64704eb139d31479428705f7c50e06df0))
+* visual regression ([98ed95b](https://github.com/dvsa/vol-active-support/commit/98ed95b4bc5d0340c197aa53109041749fb4fb70))
+
 ## [2.24.1](https://github.com/dvsa/vol-active-support/compare/v2.24.0...v2.24.1) (2026-10-28)
 
 
