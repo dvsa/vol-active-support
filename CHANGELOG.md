@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.25.1](https://github.com/dvsa/vol-active-support/compare/v2.25.0...v2.25.1) (2026-11-09)
+
+
+### Bug Fixes
+
+* downstream ([a64ff1c](https://github.com/dvsa/vol-active-support/commit/a64ff1cd7f9066bfde548706436b9cc1390c258e))
+* downstream ([61652e5](https://github.com/dvsa/vol-active-support/commit/61652e5521c053789ad396836656d867667bea44))
+
 ## [2.25.0](https://github.com/dvsa/vol-active-support/compare/v2.24.1...v2.25.0) (2026-11-03)
 
 
