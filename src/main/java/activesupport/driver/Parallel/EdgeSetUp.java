@@ -2,12 +2,14 @@ package activesupport.driver.Parallel;
 
 import activesupport.proxy.JumpboxProxy;
 import activesupport.proxy.ProxyConfig;
+import activesupport.system.Properties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -39,9 +41,11 @@ public class EdgeSetUp {
         edgeOptions.addArguments("--hide-scrollbars");
         edgeOptions.addArguments("--force-device-scale-factor=1");
 
+        boolean local = "local".equalsIgnoreCase(Properties.get("env"));
         edgeOptions.addArguments("--disable-features=AcceptCHFrame,BackForwardCache,Prerender2," +
                 "PreconnectToSearch,PrefetchProxy,OptimizationHints,Translate,MediaRouter," +
-                "AutofillServerCommunication,InterestFeedContentSuggestions,CalculateNativeWinOcclusion");
+                "AutofillServerCommunication,InterestFeedContentSuggestions,CalculateNativeWinOcclusion" +
+                (local ? ",HttpsUpgrades,HttpsFirstBalancedModeAutoEnable" : ""));
         edgeOptions.addArguments("--disable-back-forward-cache");
         edgeOptions.addArguments("--disable-quic");
         edgeOptions.addArguments("--disable-http2");
@@ -62,6 +66,10 @@ public class EdgeSetUp {
         Map<String, Object> prefs = new HashMap<>();
         prefs.put("net.network_prediction_options", 2);
         prefs.put("safebrowsing.enabled", false);
+        if (local) {
+            prefs.put("https_only_mode_enabled", false);
+            prefs.put("https_upgrades_enabled", false);
+        }
         edgeOptions.setExperimentalOption("prefs", prefs);
 
         edgeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
@@ -74,7 +82,11 @@ public class EdgeSetUp {
             driver = new EdgeDriver(edgeOptions);
         } else {
             edgeOptions.setPlatformName(getPlatform());
-            driver = new RemoteWebDriver(new URL(hubURL()), edgeOptions);
+            RemoteWebDriver remoteDriver = new RemoteWebDriver(new URL(hubURL()), edgeOptions);
+            if (local) {
+                remoteDriver.setFileDetector(new LocalFileDetector());
+            }
+            driver = remoteDriver;
         }
         return driver;
     }
