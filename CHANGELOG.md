@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.26.0](https://github.com/dvsa/vol-active-support/compare/v2.25.1...v2.26.0) (2026-11-19)
+
+
+### Features
+
+* local browser grid ([ff255f5](https://github.com/dvsa/vol-active-support/commit/ff255f58323c3e7b2dfe0e3029045271664471b4))
+
 ## [2.25.1](https://github.com/dvsa/vol-active-support/compare/v2.25.0...v2.25.1) (2026-11-09)
 
 
